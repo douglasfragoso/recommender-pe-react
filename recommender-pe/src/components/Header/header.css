@@ -6,11 +6,11 @@
 }
 
 .nav-link {
-  transition: all 0.3s ease; /* Transição para os links */
+  transition: all 0.3s ease; 
 }
 
 .nav-link:hover {
     color: #b8860b !important;
-    transform: translateY(-2px); /* Eleva ligeiramente o link */
+    transform: translateY(-2px); 
 }
 

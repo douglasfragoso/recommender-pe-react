@@ -1,6 +1,7 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import Button from '../../components/Button';
 
 function Home() {
   const tecnologias = [
@@ -66,13 +67,16 @@ function Home() {
               <span>Recife, Brasil</span>
             </div>
             <div className="d-flex align-items-center gap-1">
-              <button
-                className="btn btn-outline-primary btn-sm d-flex align-items-center gap-1 py-1 px-2 m-0"
-                onClick={() => window.open('https://github.com/douglasfragoso/recommender-pe', '_blank')}
-              >
-                <i className="bi bi-github fs-6"></i>
-                <span className="d-none d-sm-inline">Ver no GitHub</span>
-              </button>
+                <Button
+                  cor="primary"
+                  outline
+                  tamanho="sm"
+                  aoClicar={() => window.open('https://github.com/douglasfragoso/recommender-pe', '_blank')}
+                  className="px-3"
+                >
+                  <i className="bi bi-github"></i>
+                  <span className="d-none d-md-inline">Ver no GitHub</span>
+                </Button>
             </div>
           </div>
         </div>
@@ -101,7 +105,7 @@ function Home() {
               <div className="card h-100">
                 <div className="card-body">
                   <h5 className="card-title">Everton Gomede</h5>
-                  <h6 className="card-subtitle mb-3 text-muted">Orientador de Doutorado</h6>
+                  <h6 className="card-subtitle mb-3 text-muted">Orientador</h6>
                   <p className="card-text small text-muted">
                     Faculdade de Engenharia Elétrica e Computação<br />
                     Universidade Estadual de Campinas (FEEC/UNICAMP)<br />

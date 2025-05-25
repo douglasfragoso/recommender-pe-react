@@ -1,5 +1,6 @@
 import logo from '../../assets/images/logo.png';
 import './header.css';
+import Button from '../Button';
 
 function Header() {
 
@@ -23,10 +24,10 @@ function Header() {
                     >
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    
+
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav ms-auto mx-5 mb-lg-0">
-                             <li className="nav-item">
+                            <li className="nav-item">
                                 <a className="nav-link" href="/">Home</a>
                             </li>
                             <li className="nav-item">
@@ -40,6 +41,18 @@ function Header() {
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="/">Recomendações</a>
+                            </li>
+                            <li className="nav-item">
+                                <Button
+                                    cor="primary"
+                                    outline
+                                    tamanho="md"
+                                    aoClicar={() => null }
+                                    className="px-3"
+                                >
+                                    <i className="bi bi-person-circle"></i>
+                                    <span className="d-none d-md-inline">Fazer Login</span>
+                                </Button>
                             </li>
                         </ul>
                     </div>
