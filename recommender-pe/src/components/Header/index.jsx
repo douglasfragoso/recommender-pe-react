@@ -9,7 +9,7 @@ function Header() {
                 <div className="container">
                     <a className="navbar-brand" href="#">
                         <img src={logo} className="logo-oval-header" alt="Bootstrap" width="150px" />
-                        <span className="fw-semibold brand-name ms-2">Sistema de Recomendação</span>
+                        <span className="fw-semibold brand-name ms-2">Alavancando o Turismo em Recife</span>
                     </a>
 
                     <button
@@ -30,18 +30,17 @@ function Header() {
                                 <a className="nav-link" href="/">Home</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/">Recomendações</a>
+                                <a className="nav-link" href="/">Dashboard</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/">Dashboard</a>
+                                <a className="nav-link" href="/">Usuários</a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="/">Pontos de Interesse</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/">Usuários</a>
+                                <a className="nav-link" href="/">Recomendações</a>
                             </li>
-
                         </ul>
                     </div>
                 </div>

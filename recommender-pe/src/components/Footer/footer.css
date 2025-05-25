@@ -4,3 +4,21 @@
   border-radius: 9999px;
   object-fit: cover;
 }
+
+.nav-link {
+  transition: all 0.3s ease; /* Transição para os links */
+}
+
+.nav-link:hover {
+    color: #b8860b !important;
+    transform: translateY(-2px); /* Eleva ligeiramente o link */
+}
+
+/* Hover para o botão do GitHub */
+.btn-outline-primary:hover {
+    background-color: #b8860b !important;
+    border-color: #b8860b !important;
+    color: white !important;
+    transform: scale(1.05); /* Aumenta ligeiramente o botão */
+}
+

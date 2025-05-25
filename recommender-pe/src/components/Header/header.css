@@ -4,3 +4,13 @@
   border-radius: 9999px;
   object-fit: cover;
 }
+
+.nav-link {
+  transition: all 0.3s ease; /* Transição para os links */
+}
+
+.nav-link:hover {
+    color: #b8860b !important;
+    transform: translateY(-2px); /* Eleva ligeiramente o link */
+}
+
