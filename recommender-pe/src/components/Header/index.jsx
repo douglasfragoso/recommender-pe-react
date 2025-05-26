@@ -1,4 +1,4 @@
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo.webp';
 import './header.css';
 import Button from '../Button';
 
@@ -9,7 +9,7 @@ function Header() {
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container">
                     <a className="navbar-brand" href="#">
-                        <img src={logo} className="logo-oval-header" alt="Bootstrap" width="150px" />
+                        <img src={logo} className="logo-oval-header" alt="Bootstrap"/>
                         <span className="fw-semibold brand-name ms-2">Alavancando o Turismo em Recife</span>
                     </a>
 

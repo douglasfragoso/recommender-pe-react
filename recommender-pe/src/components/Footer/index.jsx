@@ -1,4 +1,4 @@
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo.webp';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './footer.css';
 
