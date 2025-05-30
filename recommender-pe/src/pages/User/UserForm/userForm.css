@@ -1,6 +1,5 @@
 .container {  
   background-image: url('../../assets/images/Ground_Zero_-_Recife_-_Pernambuco_-_Brazil.webp'); 
-  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
@@ -146,10 +145,6 @@
   justify-content: center;
   gap: 8px;
   transition: opacity 0.2s;
-}
-
-.submitButton:hover {
-  opacity: 0.9;
 }
 
 .passwordHint {

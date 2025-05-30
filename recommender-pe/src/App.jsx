@@ -1,7 +1,7 @@
 import './App.css'
-import UserForm from './pages/User/UserForm'
+// import UserForm from './pages/User/UserForm'
 // import Home from './pages/Home'
-// import Login from './pages/Login'
+import Login from './pages/Login'
 
 
 function App() {
@@ -9,8 +9,8 @@ function App() {
   return (
     <>
       {/* <Home/> */}
-      {/* <Login/> */}
-      <UserForm />
+      <Login/>
+      {/* <UserForm /> */}
     </>
   )
 }

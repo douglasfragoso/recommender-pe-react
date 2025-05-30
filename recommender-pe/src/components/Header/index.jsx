@@ -48,7 +48,7 @@ function Header() {
                                     outline
                                     tamanho="md"
                                     aoClicar={() => null }
-                                    className="px-3"
+                                    className="loginButton px-3"
                                 >
                                     <i className="bi bi-person-circle"></i>
                                     <span className="d-none d-md-inline">Fazer Login</span>

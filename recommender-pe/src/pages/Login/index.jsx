@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './login.css';
 import logo from '../../assets/images/logo.webp';
+import Button from '../../components/Button';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -22,7 +23,7 @@ function Login() {
                         <div className='row justify-content-center my-4'>
                             <div className='col-8'>
                                 <div className='d-flex justify-content-center'>
-                                    <img src={logo} className="logo-oval mb-3"alt="Sistema de Gerenciamento de Projetos" />
+                                    <img src={logo} className="logo-oval mb-3" alt="Sistema de Gerenciamento de Projetos" />
                                 </div>
 
                                 {erro && (
@@ -62,20 +63,22 @@ function Login() {
                                 </div>
 
                                 <div className='d-flex justify-content-center'>
-                                    <button 
-                                        type='submit' 
-                                        className='btn btn-primary mt-2 px-4 mx-2'
+                                    <Button
+                                        type="submit"
+                                        cor=''
+                                        className="submitButton mt-2 px-4 mx-2"
                                         disabled={carregando}
                                     >
                                         {carregando ? 'Carregando...' : 'Acessar'}
-                                    </button>
-                                    <button 
-                                        type='button' 
-                                        className='btn btn-secondary mt-2 px-4 mx-2'
-                                        onClick={() => alert("Funcionalidade de registro futura.")}
+                                    </Button>
+
+                                    <Button
+                                        cor=""
+                                        className="cancelButton mt-2 px-4 mx-2"
+                                        aoClicar={() => alert("Funcionalidade de registro futura.")}
                                     >
                                         Registrar
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </div>

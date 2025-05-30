@@ -2,6 +2,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
+import './home.css'; 
 
 function Home() {
   const tecnologias = [
@@ -63,16 +64,15 @@ function Home() {
               <span>Projeto Acadêmico</span>
             </div>
             <div className="d-flex align-items-center gap-1">
-              <i className="bi bi-geo-alt text-primary"></i>
+              <i className="bi bi-geo-alt text-danger"></i>
               <span>Recife, Brasil</span>
             </div>
             <div className="d-flex align-items-center gap-1">
                 <Button
-                  cor="primary"
                   outline
                   tamanho="sm"
                   aoClicar={() => window.open('https://github.com/douglasfragoso/recommender-pe', '_blank')}
-                  className="px-3"
+                  className="gitHubButton px-3"
                 >
                   <i className="bi bi-github"></i>
                   <span className="d-none d-md-inline">Ver no GitHub</span>

@@ -1,5 +1,5 @@
 function Button({ 
-  cor = "primary", 
+  cor = "", 
   tamanho = "md", 
   outline = false, 
   aoClicar, 

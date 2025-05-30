@@ -20,3 +20,21 @@
   border-radius: 9999px;
   object-fit: cover;
 }
+
+.submitButton {
+  background-color: #b8860b;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #b8860b;
+}
+
+.cancelButton {
+  background-color: #374151;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

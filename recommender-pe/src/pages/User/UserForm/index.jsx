@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './userForm.css'; 
+import './userForm.css';
+import Button from '../../../components/Button';
 
 
 function UserForm() {
@@ -237,21 +238,22 @@ function UserForm() {
 
                             {/* Botões */}
                             <div className="buttonGroup">
-                                <button
+                                <Button
                                     type="button"
                                     className="cancelButton"
-                                    onClick={cancelar}
+                                    aoClicar={cancelar}
                                 >
                                     <i className="bi bi-x-circle"></i>
                                     Cancelar
-                                </button>
-                                <button
+                                </Button>
+
+                                <Button
                                     type="submit"
                                     className="submitButton"
                                 >
                                     <i className="bi bi-check2-circle"></i>
                                     Cadastrar
-                                </button>
+                                </Button>
                             </div>
                         </form>
                     </div>
