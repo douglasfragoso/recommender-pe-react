@@ -9,7 +9,7 @@ function RouteService() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<UsuarioForm />} />
-                <Route path="/home" element={<Home />} />
+                <Route path="/" element={<Home />} />
             </Routes>
         </BrowserRouter>
     )
