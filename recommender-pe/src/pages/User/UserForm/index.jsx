@@ -72,7 +72,7 @@ function UserForm() {
 
 
     return (
-        <div className="container">
+        <div className="containerForm">
             <div className="formBox">
                 <div className="formContent">
                     <div className="header">
