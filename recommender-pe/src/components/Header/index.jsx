@@ -1,8 +1,11 @@
 import logo from '../../assets/images/logo.webp';
 import './header.css';
 import Button from '../Button';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+
+    const navigate = useNavigate();
 
     return (
         <>
@@ -47,7 +50,7 @@ function Header() {
                                     cor="primary"
                                     outline
                                     tamanho="md"
-                                    aoClicar={() => null }
+                                    aoClicar={() => navigate("/login") }
                                     className="loginButton px-3"
                                 >
                                     <i className="bi bi-person-circle"></i>

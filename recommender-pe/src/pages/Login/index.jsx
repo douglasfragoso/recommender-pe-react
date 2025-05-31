@@ -2,6 +2,8 @@ import { useState } from 'react';
 import './login.css';
 import logo from '../../assets/images/logo.webp';
 import Button from '../../components/Button';
+import { useNavigate } from 'react-router-dom';
+
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -9,6 +11,7 @@ function Login() {
     const [manterConectado, setManterConectado] = useState(false);
     const [carregando, setCarregando] = useState(false);
     const [erro, setErro] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -75,7 +78,7 @@ function Login() {
                                     <Button
                                         cor=""
                                         className="cancelButton mt-2 px-4 mx-2"
-                                        aoClicar={() => alert("Funcionalidade de registro futura.")}
+                                        aoClicar={() => navigate("/register")}
                                     >
                                         Registrar
                                     </Button>

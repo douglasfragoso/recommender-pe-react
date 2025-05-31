@@ -2,6 +2,7 @@ import { useState } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './userForm.css';
 import Button from '../../../components/Button';
+import { useNavigate } from 'react-router-dom';
 
 
 function UserForm() {
@@ -13,6 +14,7 @@ function UserForm() {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
+    const navigate = useNavigate();
 
     const cancelar = (e) => {
         e.preventDefault();
@@ -241,7 +243,7 @@ function UserForm() {
                                 <Button
                                     type="button"
                                     className="cancelButton"
-                                    aoClicar={cancelar}
+                                    aoClicar={() => navigate("/")}
                                 >
                                     <i className="bi bi-x-circle"></i>
                                     Cancelar
