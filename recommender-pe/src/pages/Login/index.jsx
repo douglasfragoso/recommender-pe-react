@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import './login.css';
 import logo from '../../assets/images/logo.webp';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
-
+import { GlobalContext } from "../../context/globalContext";
 
 function Login() {
+    const { login } = useContext(GlobalContext);
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [manterConectado, setManterConectado] = useState(false);
@@ -13,9 +14,24 @@ function Login() {
     const [erro, setErro] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // lógica de autenticação futura
+        setErro('');
+
+        if (!email || !senha) {
+            setErro("Preencha todos os campos!");
+            return;
+        }
+
+        setCarregando(true);
+        try {
+            await login(email, senha, manterConectado);
+            navigate("/");
+        } catch (error) {
+            setErro("Credenciais inválidas. Tente novamente.");
+        } finally {
+            setCarregando(false);
+        }
     };
 
     return (
