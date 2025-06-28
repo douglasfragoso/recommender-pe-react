@@ -14,7 +14,7 @@ function Login() {
     const [erro, setErro] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+     const handleSubmit = async (e) => {
         e.preventDefault();
         setErro('');
 
@@ -25,10 +25,23 @@ function Login() {
 
         setCarregando(true);
         try {
-            await login(email, senha, manterConectado);
-            navigate("/");
+            console.log("Iniciando login..."); // Debug
+            const userData = await login(email, senha, manterConectado);
+            console.log("Login bem-sucedido:", userData); // Debug
+            
+            // Verifica se o login foi realmente bem-sucedido
+            if (userData && userData.token) {
+                navigate("/");
+            } else {
+                throw new Error("Autenticação falhou");
+            }
         } catch (error) {
-            setErro("Credenciais inválidas. Tente novamente.");
+            console.error("Erro no login:", error); // Debug
+            // Mensagem mais específica do erro
+            const errorMessage = error.response?.data?.message || 
+                               error.message || 
+                               "Credenciais inválidas. Tente novamente.";
+            setErro(errorMessage);
         } finally {
             setCarregando(false);
         }

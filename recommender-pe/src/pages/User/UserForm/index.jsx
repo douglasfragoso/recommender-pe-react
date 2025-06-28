@@ -42,7 +42,6 @@ function UserForm() {
             userPassword
         };
         console.log("Dados do usuário:", userData);
-        // lógica de envio para o backend
     };
 
     const formatCPF = (value) => {

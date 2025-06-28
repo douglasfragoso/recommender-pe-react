@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
-import { authService } from "../services/auth"; 
+import { authService } from "../services/auth";
+import { api } from "../services/api"; // Importação necessária que estava faltando
 
 export const GlobalContext = createContext();
 
@@ -8,29 +9,26 @@ export const GlobalProvider = ({ children }) => {
     const [carregando, setCarregando] = useState(true);
 
     useEffect(() => {
-    const verificarAutenticacao = () => {
-        const userData = authService.getCurrentUser(); 
-        if (userData) {
-            setUsuarioLogado(userData);
-            // Configura o token na API
-            api.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
-        }
-        setCarregando(false);
-    };
+        const verificarAutenticacao = () => {
+            const userData = authService.getCurrentUser(); 
+            if (userData) {
+                setUsuarioLogado(userData);
+                // Configura o token na API
+                api.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
+            }
+            setCarregando(false);
+        };
 
-    verificarAutenticacao();
-}, []);
+        verificarAutenticacao();
+    }, []);
 
     const login = async (email, senha, manterConectado) => {
         try {
-            const userData = await authService.login(email, senha);
+            const userData = await authService.login(email, senha, manterConectado);
             setUsuarioLogado(userData);
             
-            if (manterConectado) {
-                localStorage.setItem("usuarioData", JSON.stringify(userData));
-            } else {
-                sessionStorage.setItem("usuarioData", JSON.stringify(userData));
-            }
+            // Configura o token na API após login bem-sucedido
+            api.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
             
             return userData;
         } catch (error) {
@@ -41,8 +39,8 @@ export const GlobalProvider = ({ children }) => {
     const logout = () => {
         authService.logout();
         setUsuarioLogado(null);
-        localStorage.removeItem("usuarioData");
-        sessionStorage.removeItem("usuarioData");
+        // Remove o token do cabeçalho da API
+        delete api.defaults.headers.common['Authorization'];
     };
 
     return (
@@ -51,3 +49,4 @@ export const GlobalProvider = ({ children }) => {
         </GlobalContext.Provider>
     );
 };
+

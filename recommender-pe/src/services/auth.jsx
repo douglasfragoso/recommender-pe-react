@@ -4,27 +4,58 @@ import { jwtDecode } from 'jwt-decode';
 export const authService = {
     async login(email, senha, manterConectado) {
         try {
-            const response = await api.post('/auth/v1/login', { email, senha });
-            if (response.data.token) {
-                const token = response.data.token;
-                const storage = manterConectado ? localStorage : sessionStorage;
-                
-                storage.setItem("jwtToken", token);
-                api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                
-                const userData = {
-                    nome: response.data.nome,
-                    role: response.data.role,
-                    email: email,
-                    token: token
-                };
-                
-                storage.setItem("usuarioData", JSON.stringify(userData));
-                return userData;
+            const response = await api.post('/auth/v1/login', { 
+                email, 
+                userPassword: senha 
+            });
+
+            console.log("Resposta da API:", response.data); // Debug
+
+            if (!response.data.token) {
+                throw new Error("Token não recebido na resposta");
             }
-            throw new Error("Token não recebido");
+
+            const token = response.data.token;
+            const storage = manterConectado ? localStorage : sessionStorage;
+            
+            // Armazena o token
+            storage.setItem("jwtToken", token);
+            
+            // Configura o header de autorização padrão
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            
+            // Decodifica o token para obter informações do usuário
+            const decodedToken = jwtDecode(token);
+            
+            const userData = {
+                // Ajuste para o formato que seu backend retorna
+                nome: response.data.firstName ? 
+                     `${response.data.firstName} ${response.data.lastName}` : 
+                     decodedToken.sub,
+                role: response.data.role || decodedToken.role || "USER",
+                email: email,
+                token: token
+            };
+            
+            // Armazena os dados do usuário
+            storage.setItem("usuarioData", JSON.stringify(userData));
+            
+            return userData;
         } catch (error) {
-            console.error("Erro ao fazer login:", error);
+            console.error("Erro detalhado no serviço de autenticação:", {
+                error: error.response?.data || error.message,
+                status: error.response?.status
+            });
+            
+            // Melhora a mensagem de erro para o contexto
+            if (error.response) {
+                if (error.response.status === 401) {
+                    throw new Error("Email ou senha incorretos");
+                } else if (error.response.status >= 500) {
+                    throw new Error("Serviço indisponível. Tente novamente mais tarde.");
+                }
+            }
+            
             throw error;
         }
     },
