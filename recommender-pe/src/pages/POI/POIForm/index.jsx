@@ -1,117 +1,26 @@
-import { useState } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './userForm.css';
-import Button from '../../../components/Button';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { saveUser } from '../../../services/user';
+import Button from '../../../components/Button';
+import './POIForm.css';
+import { savePOI } from '../../../services/POI';
 
-
-function UserForm() {
-    // Dados Pessoais
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [age, setAge] = useState("");
-    const [gender, setGender] = useState("");
-
-    // Documentos e Contato
-    const [cpf, setCpf] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-
-    // Segurança
-    const [userPassword, setUserPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-
-    // Endereço
+function POIForm() {
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [motivations, setMotivations] = useState([]);
+    const [hobbies, setHobbies] = useState([]);
+    const [themes, setThemes] = useState([]);
+    // Estados para o endereço 
     const [street, setStreet] = useState("");
     const [number, setNumber] = useState("");
     const [complement, setComplement] = useState("");
     const [neighborhood, setNeighborhood] = useState("");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
-    const [country, setCountry] = useState("Brasil");
     const [zipCode, setZipCode] = useState("");
-
-    const [error, setError] = useState("");
+    const [country, setCountry] = useState("Brasil");
     const navigate = useNavigate();
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
-
-        // Validação da senha
-        if (userPassword !== confirmPassword) {
-            setError("As senhas não coincidem");
-            return;
-        }
-
-        const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,}$/;
-        if (!passwordRegex.test(userPassword)) {
-            setError("A senha deve conter maiúsculas, minúsculas, números e caracteres especiais");
-            return;
-        }
-
-        const userData = {
-            firstName,
-            lastName,
-            age: parseInt(age),
-            gender,
-            cpf: cpf.replace(/\D/g, ''), // Remove formatação do CPF
-            phone: phone.replace(/\D/g, ''), // Remove formatação do telefone
-            email,
-            userPassword,
-            address: {
-                street,
-                number: parseInt(number),
-                complement,
-                neighborhood,
-                city,
-                state,
-                country,
-                zipCode: zipCode.replace(/\D/g, '') // Remove formatação do CEP
-            }
-        };
-
-        try {
-            const result = await saveUser(userData);
-            if (result.success) {
-                alert(result.message);
-                navigate("/login");
-            } else {
-                setError(result.message);
-            }
-        } catch (erro) {
-            setError("Erro ao processar o cadastro");
-            console.error("Erro:", erro);
-        }
-    };
-
-    const formatCPF = (value) => {
-        const numbers = value.replace(/\D/g, '');
-        return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-    };
-
-    const formatPhone = (value) => {
-        const numbers = value.replace(/\D/g, '');
-        if (numbers.length <= 10) {
-            return numbers.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-        }
-        return numbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-    };
-
-    const handleCPFChange = (e) => {
-        const formatted = formatCPF(e.target.value);
-        if (formatted.replace(/\D/g, '').length <= 11) {
-            setCpf(formatted);
-        }
-    };
-
-    const handlePhoneChange = (e) => {
-        const formatted = formatPhone(e.target.value);
-        if (formatted.replace(/\D/g, '').length <= 11) {
-            setPhone(formatted);
-        }
-    };
 
     const formatCEP = (value) => {
         const numbers = value.replace(/\D/g, '');
@@ -130,6 +39,101 @@ function UserForm() {
         setNumber(value);
     };
 
+    const motivationOptions = [
+        "ARTISTIC_VALUE", "CREATIVITY", "CULTURE", "ENTERTAINMENT", "EXPLORATION",
+        "EDUCATION", "FAMILY", "GASTRONOMY", "HERITAGE", "IDENTITY",
+        "IMMERSIVE_EXPERIENCE", "RELAXATION", "SOCIAL", "SPIRITUALITY", "STUDY", "TRADITION"
+    ];
+
+    const hobbiesOptions = [
+        "ADVENTURE", "ART", "DANCING", "GASTRONOMY", "GARDENING",
+        "HIKING", "LEARNING", "MUSIC", "PHOTOGRAPHY", "READING",
+        "SOCIAL", "TECH", "THEATER", "TRAVELING"
+    ];
+
+    const themesOptions = [
+        "ADVENTURE", "AFRO_BRAZILIAN", "BAROQUE", "COLONIAL", "CULTURAL",
+        "FAMILY_FRIENDLY", "FOLKLORE", "GASTRONOMIC", "HISTORY",
+        "ARCHITETURAL_STYLE", "MODERN", "NATURE", "RELIGIOUS", "ROMANTIC", "URBAN_ART"
+    ];
+
+    const cancelar = (e) => {
+        e.preventDefault();
+        setName("");
+        setDescription("");
+        setMotivations([]);
+        setHobbies([]);
+        setThemes([]);
+        setStreet("");
+        setNumber("");
+        setNeighborhood("");
+        setCity("");
+        setState("");
+        setZipCode("");
+        setCountry("");
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
+
+        // Validação básica
+        if (motivations.length !== 5 || hobbies.length !== 5 || themes.length !== 5) {
+            setError("Selecione exatamente 5 itens em cada categoria (Motivações, Hobbies e Temas)");
+            return;
+        }
+
+        const poiData = {
+            name,
+            description,
+            motivations,
+            hobbies,
+            themes,
+            address: {
+                street,
+                number: parseInt(number),
+                complement,
+                neighborhood,
+                city,
+                state,
+                country,
+                zipCode: zipCode.replace(/\D/g, '')
+            }
+        };
+
+        try {
+            const result = await savePOI(poiData);
+            if (result.success) {
+                alert(result.message);
+                navigate("/");
+            } else {
+                setError(result.message);
+            }
+        } catch (erro) {
+            setError("Erro ao processar o cadastro do POI");
+            console.error("Erro:", erro);
+        }
+    };
+
+    const handleCheckboxChange = (value, list, setList) => {
+        if (list.includes(value)) {
+            setList(list.filter(item => item !== value));
+        } else if (list.length < 5) {
+            setList([...list, value]);
+        }
+    };
+
+    const formatZipCode = (value) => {
+        const numbers = value.replace(/\D/g, '');
+        return numbers.replace(/(\d{5})(\d{3})/, '$1-$2');
+    };
+
+    const handleZipCodeChange = (e) => {
+        const formatted = formatZipCode(e.target.value);
+        if (formatted.replace(/\D/g, '').length <= 8) {
+            setZipCode(formatted);
+        }
+    };
 
     return (
         <div className="containerForm">
@@ -137,136 +141,130 @@ function UserForm() {
                 <div className="formContent">
                     <div className="header">
                         <h2 className="headerTitle">
-                            <i className="bi bi-person-circle icon"></i>
-                            Cadastro de Usuário
+                            <i className="bi bi-geo-alt-fill icon"></i>
+                            Cadastro de POI (Ponto de Interesse)
                         </h2>
                     </div>
                     <div className="formBody">
                         <form onSubmit={handleSubmit} className="form">
-                            {/* Dados Pessoais */}
+                            {/* Informações Básicas */}
                             <div className="section">
                                 <h5 className="sectionHeader">
-                                    <i className="bi bi-person-vcard sectionIcon"></i>
-                                    Dados Pessoais
+                                    <i className="bi bi-info-circle sectionIcon"></i>
+                                    Informações Básicas
                                 </h5>
                                 <div className="gridContainer">
                                     <div className="inputGroup">
-                                        <label htmlFor="firstName" className="label">
-                                            Nome <span className="required">*</span>
+                                        <label htmlFor="name" className="label">
+                                            Nome do POI <span className="required">*</span>
                                         </label>
                                         <input
                                             type="text"
-                                            id="firstName"
+                                            id="name"
                                             className="input"
-                                            placeholder="Digite seu primeiro nome"
-                                            value={firstName}
-                                            onChange={(e) => setFirstName(e.target.value)}
-                                            maxLength="20"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="inputGroup">
-                                        <label htmlFor="lastName" className="label">
-                                            Sobrenome <span className="required">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="lastName"
-                                            className="input"
-                                            placeholder="Digite seu sobrenome"
-                                            value={lastName}
-                                            onChange={(e) => setLastName(e.target.value)}
-                                            maxLength="20"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="inputGroup">
-                                        <label htmlFor="age" className="label">
-                                            Idade <span className="required">*</span>
-                                        </label>
-                                        <input
-                                            type="number"
-                                            id="age"
-                                            className="input"
-                                            placeholder="Digite sua idade"
-                                            value={age}
-                                            onChange={(e) => setAge(e.target.value)}
-                                            min="1"
-                                            max="120"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="inputGroup">
-                                        <label htmlFor="gender" className="label">
-                                            Gênero <span className="required">*</span>
-                                        </label>
-                                        <select
-                                            id="gender"
-                                            className="input"
-                                            value={gender}
-                                            onChange={(e) => setGender(e.target.value)}
-                                            required
-                                        >
-                                            <option value="">Selecione o gênero</option>
-                                            <option value="Masculino">Masculino</option>
-                                            <option value="Feminino">Feminino</option>
-                                            <option value="Outro">Outro</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Documentos e Contato */}
-                            <div className="section">
-                                <h5 className="sectionHeader">
-                                    <i className="bi bi-card-checklist sectionIcon"></i>
-                                    Documentos e Contato
-                                </h5>
-                                <div className="gridContainer">
-                                    <div className="inputGroup">
-                                        <label htmlFor="cpf" className="label">
-                                            CPF <span className="required">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="cpf"
-                                            className="input"
-                                            placeholder="000.000.000-00"
-                                            value={cpf}
-                                            onChange={handleCPFChange}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="inputGroup">
-                                        <label htmlFor="phone" className="label">
-                                            Telefone <span className="required">*</span>
-                                        </label>
-                                        <input
-                                            type="tel"
-                                            id="phone"
-                                            className="input"
-                                            placeholder="(00) 00000-0000"
-                                            value={phone}
-                                            onChange={handlePhoneChange}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="inputGroup">
-                                        <label htmlFor="email" className="label">
-                                            E-mail <span className="required">*</span>
-                                        </label>
-                                        <input
-                                            type="email"
-                                            id="email"
-                                            className="input"
-                                            placeholder="seu@email.com"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="Digite o nome do ponto de interesse"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
                                             maxLength="50"
                                             required
                                         />
                                     </div>
+                                    <div className="inputGroup fullWidth">
+                                        <label htmlFor="description" className="label">
+                                            Descrição <span className="required">*</span>
+                                        </label>
+                                        <textarea
+                                            id="description"
+                                            className="input textArea"
+                                            placeholder="Descreva o ponto de interesse (mínimo 50 caracteres)"
+                                            value={description}
+                                            onChange={(e) => setDescription(e.target.value)}
+                                            minLength="50"
+                                            maxLength="1000"
+                                            rows="4"
+                                            required
+                                        />
+                                        <p className="hint">{description.length}/1000 caracteres</p>
+                                    </div>
                                 </div>
+                            </div>
+
+                            {/* Motivações */}
+                            <div className="section">
+                                <h5 className="sectionHeader">
+                                    <i className="bi bi-heart sectionIcon"></i>
+                                    Motivações <span className="required">*</span>
+                                </h5>
+                                <p className="sectionDescription">Selecione exatamente 5 motivações:</p>
+                                <div className="checkboxGrid">
+                                    {motivationOptions.map((motivation) => (
+                                        <div key={motivation} className="checkboxItem">
+                                            <input
+                                                type="checkbox"
+                                                id={`motivation-${motivation}`}
+                                                checked={motivations.includes(motivation)}
+                                                onChange={() => handleCheckboxChange(motivation, motivations, setMotivations)}
+                                                disabled={!motivations.includes(motivation) && motivations.length >= 5}
+                                            />
+                                            <label htmlFor={`motivation-${motivation}`} className="checkboxLabel">
+                                                {motivation}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
+                                <p className="selectionCount">Selecionadas: {motivations.length}/5</p>
+                            </div>
+
+                            {/* Hobbies */}
+                            <div className="section">
+                                <h5 className="sectionHeader">
+                                    <i className="bi bi-palette sectionIcon"></i>
+                                    Hobbies <span className="required">*</span>
+                                </h5>
+                                <p className="sectionDescription">Selecione exatamente 5 hobbies:</p>
+                                <div className="checkboxGrid">
+                                    {hobbiesOptions.map((hobby) => (
+                                        <div key={hobby} className="checkboxItem">
+                                            <input
+                                                type="checkbox"
+                                                id={`hobby-${hobby}`}
+                                                checked={hobbies.includes(hobby)}
+                                                onChange={() => handleCheckboxChange(hobby, hobbies, setHobbies)}
+                                                disabled={!hobbies.includes(hobby) && hobbies.length >= 5}
+                                            />
+                                            <label htmlFor={`hobby-${hobby}`} className="checkboxLabel">
+                                                {hobby}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
+                                <p className="selectionCount">Selecionadas: {hobbies.length}/5</p>
+                            </div>
+
+                            {/* Temas */}
+                            <div className="section">
+                                <h5 className="sectionHeader">
+                                    <i className="bi bi-tags sectionIcon"></i>
+                                    Temas <span className="required">*</span>
+                                </h5>
+                                <p className="sectionDescription">Selecione exatamente 5 temas:</p>
+                                <div className="checkboxGrid">
+                                    {themesOptions.map((theme) => (
+                                        <div key={theme} className="checkboxItem">
+                                            <input
+                                                type="checkbox"
+                                                id={`theme-${theme}`}
+                                                checked={themes.includes(theme)}
+                                                onChange={() => handleCheckboxChange(theme, themes, setThemes)}
+                                                disabled={!themes.includes(theme) && themes.length >= 5}
+                                            />
+                                            <label htmlFor={`theme-${theme}`} className="checkboxLabel">
+                                                {theme}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
+                                <p className="selectionCount">Selecionadas: {themes.length}/5</p>
                             </div>
 
                             {/* Endereço */}
@@ -425,52 +423,6 @@ function UserForm() {
                                 </div>
                             </div>
 
-                            {/* Segurança */}
-                            <div className="section">
-                                <h5 className="sectionHeader">
-                                    <i className="bi bi-shield-lock sectionIcon"></i>
-                                    Segurança
-                                </h5>
-                                <div className="gridContainer">
-                                    <div className="inputGroup">
-                                        <label htmlFor="userPassword" className="label">
-                                            Senha <span className="required">*</span>
-                                        </label>
-                                        <input
-                                            type="password"
-                                            id="userPassword"
-                                            className="input"
-                                            placeholder="Digite uma senha segura"
-                                            value={userPassword}
-                                            onChange={(e) => setUserPassword(e.target.value)}
-                                            minLength="8"
-                                            maxLength="100"
-                                            required
-                                        />
-                                        <p className="passwordHint">
-                                            A senha deve ter pelo menos 8 caracteres, incluindo maiúsculas, minúsculas, números e caracteres especiais.
-                                        </p>
-                                    </div>
-                                    <div className="inputGroup">
-                                        <label htmlFor="confirmPassword" className="label">
-                                            Confirmar Senha <span className="required">*</span>
-                                        </label>
-                                        <input
-                                            type="password"
-                                            id="confirmPassword"
-                                            className="input"
-                                            placeholder="Confirme sua senha"
-                                            value={confirmPassword}
-                                            onChange={(e) => setConfirmPassword(e.target.value)}
-                                            minLength="8"
-                                            maxLength="100"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Botões */}
                             <div className="buttonGroup">
                                 <Button
                                     type="button"
@@ -497,4 +449,4 @@ function UserForm() {
     );
 }
 
-export default UserForm;
+export default POIForm;
