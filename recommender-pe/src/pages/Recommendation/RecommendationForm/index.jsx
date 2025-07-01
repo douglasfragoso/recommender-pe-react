@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './recommendationForm.css';
+import './RecommendationForm.css';
 import Button from '../../../components/Button';
-import Footer from '../../../components/Footer';
 import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
+import { getRecommendations } from "../../../services/recommender";
 
 function RecommendationForm() {
     const [motivations, setMotivations] = useState([]);
@@ -12,7 +13,6 @@ function RecommendationForm() {
     const [themes, setThemes] = useState([]);
     const [error, setError] = useState("");
     
-    // Campos de localização atual
     const [street, setStreet] = useState("");
     const [number, setNumber] = useState("");
     const [neighborhood, setNeighborhood] = useState("");
@@ -80,19 +80,12 @@ function RecommendationForm() {
         setError("");
     };
 
-    const getRecommendations = async (preferencesData) => {
-        // Esta é uma função mock - substitua pela chamada real à sua API
-        console.log("Dados enviados:", preferencesData);
-        return { success: true, data: [] };
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
 
-        // Validação básica
         if (motivations.length === 0 || hobbies.length === 0 || themes.length === 0) {
-            setError("Selecione pelo menos 1 item em cada categoria (Motivações, Hobbies e Temas)");
+            setError("Selecione pelo menos 1 item em cada categoria");
             return;
         }
 
@@ -113,28 +106,23 @@ function RecommendationForm() {
                 state,
                 zipCode: zipCode.replace(/\D/g, ''),
                 country
-            },
-            date: new Date().toISOString()
+            }
         };
 
         try {
-            const result = await getRecommendations(preferencesData);
-            if (result.success) {
-                navigate("/recommendations/results", { state: { recommendations: result.data } });
-            } else {
-                setError(result.message || "Erro ao obter recomendações");
-            }
-        } catch (erro) {
-            setError("Erro ao processar a solicitação de recomendações");
-            console.error("Erro:", erro);
+            const recommendations = await getRecommendations(preferencesData);
+            navigate("/recommendation/results", { state: { recommendations } });
+        } catch (error) {
+            setError("Erro ao obter recomendações. Por favor, tente novamente.");
+            console.error("Erro:", error);
         }
     };
 
     const isFormValid = () => {
         return motivations.length > 0 &&
-            hobbies.length > 0 &&
-            themes.length > 0 &&
-            street && number && neighborhood && city && state && zipCode;
+               hobbies.length > 0 &&
+               themes.length > 0 &&
+               street && number && neighborhood && city && state && zipCode;
     };
 
     return (
@@ -151,7 +139,7 @@ function RecommendationForm() {
                     <div className="formBody">
                         {error && <div className="errorMessage">{error}</div>}
                         <form onSubmit={handleSubmit} className="form">
-                            {/* Motivações */}
+                            {/* Seções de Motivações, Hobbies e Temas */}
                             <div className="section">
                                 <h5 className="sectionHeader">
                                     <i className="bi bi-heart sectionIcon"></i>
@@ -177,7 +165,6 @@ function RecommendationForm() {
                                 <p className="selectionCount">Selecionadas: {motivations.length}/5</p>
                             </div>
 
-                            {/* Hobbies */}
                             <div className="section">
                                 <h5 className="sectionHeader">
                                     <i className="bi bi-palette sectionIcon"></i>
@@ -203,7 +190,6 @@ function RecommendationForm() {
                                 <p className="selectionCount">Selecionadas: {hobbies.length}/5</p>
                             </div>
 
-                            {/* Temas */}
                             <div className="section">
                                 <h5 className="sectionHeader">
                                     <i className="bi bi-tags sectionIcon"></i>
@@ -229,15 +215,12 @@ function RecommendationForm() {
                                 <p className="selectionCount">Selecionadas: {themes.length}/5</p>
                             </div>
 
-                            {/* Localização Atual */}
+                            {/* Seção de Localização */}
                             <div className="section">
                                 <h5 className="sectionHeader">
                                     <i className="bi bi-geo-alt sectionIcon"></i>
-                                    Sua Localização Atual <span className="required">*</span>
+                                    Localização Atual <span className="required">*</span>
                                 </h5>
-                                <p className="sectionDescription">
-                                    Informe sua localização atual para receber recomendações próximas
-                                </p>
                                 <div className="gridContainer">
                                     <div className="inputGroup">
                                         <label htmlFor="street" className="label">
@@ -363,7 +346,7 @@ function RecommendationForm() {
                                     aoClicar={cancelar}
                                 >
                                     <i className="bi bi-x-circle"></i>
-                                    Cancelar
+                                    Limpar
                                 </Button>
 
                                 <Button
@@ -372,7 +355,7 @@ function RecommendationForm() {
                                     disabled={!isFormValid()}
                                 >
                                     <i className="bi bi-search"></i>
-                                    Obter Recomendações
+                                    Buscar Recomendações
                                 </Button>
                             </div>
                         </form>

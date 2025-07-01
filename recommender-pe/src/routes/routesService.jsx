@@ -6,6 +6,7 @@ import RecommendationForm from '../pages/Recommendation/RecommendationForm';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import POIList from '../pages/POI';
 import Protection from './protection';
+import RecommendationResults from '../pages/Recommendation';
 
 
 
@@ -32,6 +33,12 @@ function RouteService() {
                 <Route path="/recommendation" element={
                     <Protection allowedRoles={['ADMIN', 'USER', 'MASTER']}>
                         <RecommendationForm />
+                    </Protection>
+                } />
+
+                <Route path="/recommendation/results" element={
+                    <Protection allowedRoles={['ADMIN', 'USER', 'MASTER']}>
+                        <RecommendationResults />
                     </Protection>
                 } />
 

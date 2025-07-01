@@ -1,0 +1,87 @@
+.recommendationsList {
+    margin: 2rem 0;
+}
+
+.recommendationItem {
+    background-color: #f8f9fa;
+    border-left: 4px solid #8a6708;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0 4px 4px 0;
+    transition: transform 0.2s ease;
+}
+
+.recommendationItem:hover {
+    transform: translateX(5px);
+}
+
+.itemHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.itemRank {
+    background-color: #8a6708;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+.itemTitle {
+    margin: 0;
+    color: #333;
+}
+
+.itemDescription {
+    color: #555;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+}
+
+.itemLocation {
+    display: flex;
+    align-items: center;
+    color: #8a6708;
+    font-size: 0.9rem;
+}
+
+.itemLocation i {
+    margin-right: 0.5rem;
+}
+
+.noResults {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.noResults i {
+    font-size: 2rem;
+    color: #8a6708;
+    margin-bottom: 1rem;
+}
+
+.backButton {
+    background-color: #8a6708;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.backButton:hover {
+    background-color: #6c5506;
+}
+
+.backButton i {
+    margin-right: 0.5rem;
+}
