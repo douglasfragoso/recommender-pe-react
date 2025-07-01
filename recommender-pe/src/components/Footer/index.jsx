@@ -15,8 +15,8 @@ function Footer() {
 
                     <ul className="nav col-md-4 justify-content-end">
                         <li className="nav-item"><a href="#" className="nav-link px-2 text-body-secondary">Home</a></li>
-                        <li className="nav-item"><a href="#" className="nav-link px-2 text-body-secondary">Recomendações</a></li>
-                        <li className="nav-item"><a href="#" className="nav-link px-2 text-body-secondary">Pontos de Interesse</a></li>
+                              <li className="nav-item"><a href="/POIs" className="nav-link px-2 text-body-secondary">Pontos de Interesse</a></li>
+                        <li className="nav-item"><a href="/recommendation" className="nav-link px-2 text-body-secondary">Recomendações</a></li>
                     </ul>
                 </footer>
             </div>

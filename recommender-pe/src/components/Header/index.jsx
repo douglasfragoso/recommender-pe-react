@@ -40,10 +40,10 @@ function Header() {
                                 <a className="nav-link" href="/">Usuários</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/">Pontos de Interesse</a>
+                                <a className="nav-link" href="/POIs">Pontos de Interesse</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/">Recomendações</a>
+                                <a className="nav-link" href="/recommendation">Recomendações</a>
                             </li>
                             <li className="nav-item">
                                 <Button

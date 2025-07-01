@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './recommendationForm.css';
 import Button from '../../../components/Button';
+import Footer from '../../../components/Footer';
+import Header from '../../../components/Header';
 
 function RecommendationForm() {
     const [motivations, setMotivations] = useState([]);
@@ -137,6 +139,7 @@ function RecommendationForm() {
 
     return (
         <div className="containerForm">
+            <Header />
             <div className="formBox">
                 <div className="formContent">
                     <div className="header">
@@ -376,6 +379,7 @@ function RecommendationForm() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }

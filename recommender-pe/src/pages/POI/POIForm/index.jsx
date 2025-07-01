@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../../components/Button';
 import './POIForm.css';
 import { savePOI } from '../../../services/POI';
+import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
 
 function POIForm() {
     const [name, setName] = useState("");
@@ -137,6 +139,7 @@ function POIForm() {
 
     return (
         <div className="containerForm">
+            <Header />
             <div className="formBox">
                 <div className="formContent">
                     <div className="header">
@@ -445,7 +448,8 @@ function POIForm() {
                     </div>
                 </div>
             </div>
-        </div>
+            <Footer />
+        </div >
     );
 }
 

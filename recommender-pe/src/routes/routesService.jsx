@@ -4,6 +4,9 @@ import POIForm from '../pages/POI/POIForm';
 import Home from '../pages/Home';
 import RecommendationForm from '../pages/Recommendation/RecommendationForm';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import POIList from '../pages/POI';
+import Protection from './protection';
+
 
 
 function RouteService() {
@@ -13,8 +16,26 @@ function RouteService() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<UsuarioForm />} />
                 <Route path="/" element={<Home />} />
-                <Route path="/POI/register" element={<POIForm />} />
-                <Route path="/recommendation" element={<RecommendationForm />} />
+
+                <Route path="/POIs/register" element={
+                    <Protection allowedRoles={['ADMIN', 'MASTER']}>
+                        <POIForm />
+                    </Protection>
+                } />
+
+                <Route path="/POIs" element={
+                    <Protection allowedRoles={['ADMIN', 'MASTER']}>
+                        <POIList />
+                    </Protection>
+                } />
+
+                <Route path="/recommendation" element={
+                    <Protection allowedRoles={['ADMIN', 'USER', 'MASTER']}>
+                        <RecommendationForm />
+                    </Protection>
+                } />
+
+
             </Routes>
         </BrowserRouter>
     )
