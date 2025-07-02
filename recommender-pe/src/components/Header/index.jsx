@@ -2,10 +2,21 @@ import logo from '../../assets/images/logo.webp';
 import './header.css';
 import Button from '../Button';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { GlobalContext } from '../../contexts/GlobalContext';
 
 function Header() {
-
     const navigate = useNavigate();
+    const { usuarioLogado, logout } = useContext(GlobalContext);
+
+    const handleAuthAction = () => {
+        if (usuarioLogado) {
+            logout();
+            navigate('/');
+        } else {
+            navigate('/login');
+        }
+    };
 
     return (
         <>
@@ -50,11 +61,13 @@ function Header() {
                                     cor="primary"
                                     outline
                                     tamanho="md"
-                                    aoClicar={() => navigate("/login") }
+                                    aoClicar={handleAuthAction}
                                     className="loginButton px-3"
                                 >
-                                    <i className="bi bi-person-circle"></i>
-                                    <span className="d-none d-md-inline">Fazer Login</span>
+                                    <i className={`bi ${usuarioLogado ? 'bi-box-arrow-right' : 'bi-person-circle'}`}></i>
+                                    <span className="d-none d-md-inline">
+                                        {usuarioLogado ? 'Sair' : 'Fazer Login'}
+                                    </span>
                                 </Button>
                             </li>
                         </ul>
