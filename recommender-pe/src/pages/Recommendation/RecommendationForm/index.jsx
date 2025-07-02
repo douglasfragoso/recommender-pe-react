@@ -12,7 +12,7 @@ function RecommendationForm() {
     const [hobbies, setHobbies] = useState([]);
     const [themes, setThemes] = useState([]);
     const [error, setError] = useState("");
-    
+
     const [street, setStreet] = useState("");
     const [number, setNumber] = useState("");
     const [neighborhood, setNeighborhood] = useState("");
@@ -20,7 +20,7 @@ function RecommendationForm() {
     const [state, setState] = useState("");
     const [zipCode, setZipCode] = useState("");
     const [country, setCountry] = useState("Brasil");
-    
+
     const navigate = useNavigate();
 
     const motivationOptions = [
@@ -110,8 +110,13 @@ function RecommendationForm() {
         };
 
         try {
-            const recommendations = await getRecommendations(preferencesData);
-            navigate("/recommendation/results", { state: { recommendations } });
+            const response = await getRecommendations(preferencesData);
+            navigate('/recommendation/results', {
+                state: {
+                    recommendations: response.pois,
+                    recommendationId: response.id 
+                }
+            });
         } catch (error) {
             setError("Erro ao obter recomendações. Por favor, tente novamente.");
             console.error("Erro:", error);
@@ -120,9 +125,9 @@ function RecommendationForm() {
 
     const isFormValid = () => {
         return motivations.length > 0 &&
-               hobbies.length > 0 &&
-               themes.length > 0 &&
-               street && number && neighborhood && city && state && zipCode;
+            hobbies.length > 0 &&
+            themes.length > 0 &&
+            street && number && neighborhood && city && state && zipCode;
     };
 
     return (
