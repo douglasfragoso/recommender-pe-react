@@ -7,6 +7,60 @@ import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import { getRecommendations } from "../../../services/recommender";
 
+const motivationLabels = {
+    ARTISTIC_VALUE: "Valor Artístico",
+    CREATIVITY: "Criatividade",
+    CULTURE: "Cultura",
+    ENTERTAINMENT: "Entretenimento",
+    EXPLORATION: "Exploração",
+    EDUCATION: "Educação",
+    FAMILY: "Família",
+    GASTRONOMY: "Gastronomia",
+    HERITAGE: "Patrimônio",
+    IDENTITY: "Identidade",
+    IMMERSIVE_EXPERIENCE: "Experiência Imersiva",
+    RELAXATION: "Relaxamento",
+    SOCIAL: "Social",
+    SPIRITUALITY: "Espiritualidade",
+    STUDY: "Estudo",
+    TRADITION: "Tradição"
+};
+
+const hobbyLabels = {
+    ADVENTURE: "Aventura",
+    ART: "Arte",
+    DANCING: "Dança",
+    GASTRONOMY: "Gastronomia",
+    GARDENING: "Jardinagem",
+    HIKING: "Caminhada",
+    LEARNING: "Aprendizado",
+    MUSIC: "Música",
+    PHOTOGRAPHY: "Fotografia",
+    READING: "Leitura",
+    SOCIAL: "Social",
+    TECH: "Tecnologia",
+    THEATER: "Teatro",
+    TRAVELING: "Viagem"
+};
+
+const themeLabels = {
+    ADVENTURE: "Aventura",
+    AFRO_BRAZILIAN: "Afro-brasileiro",
+    BAROQUE: "Barroco",
+    COLONIAL: "Colonial",
+    CULTURAL: "Cultural",
+    FAMILY_FRIENDLY: "Para Família",
+    FOLKLORE: "Folclore",
+    GASTRONOMIC: "Gastronômico",
+    HISTORY: "Histórico",
+    ARCHITETURAL_STYLE: "Estilo Arquitetônico",
+    MODERN: "Moderno",
+    NATURE: "Natureza",
+    RELIGIOUS: "Religioso",
+    ROMANTIC: "Romântico",
+    URBAN_ART: "Arte Urbana"
+};
+
 function RecommendationForm() {
     const [motivations, setMotivations] = useState([]);
     const [hobbies, setHobbies] = useState([]);
@@ -23,23 +77,9 @@ function RecommendationForm() {
 
     const navigate = useNavigate();
 
-    const motivationOptions = [
-        "ARTISTIC_VALUE", "CREATIVITY", "CULTURE", "ENTERTAINMENT", "EXPLORATION",
-        "EDUCATION", "FAMILY", "GASTRONOMY", "HERITAGE", "IDENTITY",
-        "IMMERSIVE_EXPERIENCE", "RELAXATION", "SOCIAL", "SPIRITUALITY", "STUDY", "TRADITION"
-    ];
-
-    const hobbiesOptions = [
-        "ADVENTURE", "ART", "DANCING", "GASTRONOMY", "GARDENING",
-        "HIKING", "LEARNING", "MUSIC", "PHOTOGRAPHY", "READING",
-        "SOCIAL", "TECH", "THEATER", "TRAVELING"
-    ];
-
-    const themesOptions = [
-        "ADVENTURE", "AFRO_BRAZILIAN", "BAROQUE", "COLONIAL", "CULTURAL",
-        "FAMILY_FRIENDLY", "FOLKLORE", "GASTRONOMIC", "HISTORY",
-        "ARCHITETURAL_STYLE", "MODERN", "NATURE", "RELIGIOUS", "ROMANTIC", "URBAN_ART"
-    ];
+    const motivationOptions = Object.keys(motivationLabels);
+    const hobbiesOptions = Object.keys(hobbyLabels);
+    const themesOptions = Object.keys(themeLabels);
 
     const handleCheckboxChange = (value, list, setList) => {
         if (list.includes(value)) {
@@ -144,7 +184,8 @@ function RecommendationForm() {
                     <div className="formBody">
                         {error && <div className="errorMessage">{error}</div>}
                         <form onSubmit={handleSubmit} className="form">
-                            {/* Seções de Motivações, Hobbies e Temas */}
+
+                            {/* Motivações */}
                             <div className="section">
                                 <h5 className="sectionHeader">
                                     <i className="bi bi-heart sectionIcon"></i>
@@ -162,7 +203,7 @@ function RecommendationForm() {
                                                 disabled={!motivations.includes(motivation) && motivations.length >= 5}
                                             />
                                             <label htmlFor={`motivation-${motivation}`} className="checkboxLabel">
-                                                {motivation}
+                                                {motivationLabels[motivation]}
                                             </label>
                                         </div>
                                     ))}
@@ -170,6 +211,7 @@ function RecommendationForm() {
                                 <p className="selectionCount">Selecionadas: {motivations.length}/5</p>
                             </div>
 
+                            {/* Hobbies */}
                             <div className="section">
                                 <h5 className="sectionHeader">
                                     <i className="bi bi-palette sectionIcon"></i>
@@ -187,7 +229,7 @@ function RecommendationForm() {
                                                 disabled={!hobbies.includes(hobby) && hobbies.length >= 5}
                                             />
                                             <label htmlFor={`hobby-${hobby}`} className="checkboxLabel">
-                                                {hobby}
+                                                {hobbyLabels[hobby]}
                                             </label>
                                         </div>
                                     ))}
@@ -195,6 +237,7 @@ function RecommendationForm() {
                                 <p className="selectionCount">Selecionadas: {hobbies.length}/5</p>
                             </div>
 
+                            {/* Temas */}
                             <div className="section">
                                 <h5 className="sectionHeader">
                                     <i className="bi bi-tags sectionIcon"></i>
@@ -212,7 +255,7 @@ function RecommendationForm() {
                                                 disabled={!themes.includes(theme) && themes.length >= 5}
                                             />
                                             <label htmlFor={`theme-${theme}`} className="checkboxLabel">
-                                                {theme}
+                                                {themeLabels[theme]}
                                             </label>
                                         </div>
                                     ))}
@@ -220,7 +263,7 @@ function RecommendationForm() {
                                 <p className="selectionCount">Selecionadas: {themes.length}/5</p>
                             </div>
 
-                            {/* Seção de Localização */}
+                                                        {/* Seção de Localização */}
                             <div className="section">
                                 <h5 className="sectionHeader">
                                     <i className="bi bi-geo-alt sectionIcon"></i>
@@ -343,7 +386,7 @@ function RecommendationForm() {
                                     </div>
                                 </div>
                             </div>
-
+                            
                             <div className="buttonGroup">
                                 <Button
                                     type="button"

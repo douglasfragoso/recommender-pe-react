@@ -3,7 +3,7 @@ import './header.css';
 import Button from '../Button';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { GlobalContext } from '../../contexts/GlobalContext';
+import { GlobalContext } from '../../context/GlobalContext';
 
 function Header() {
     const navigate = useNavigate();
