@@ -22,7 +22,6 @@ const motivationLabels = {
     RELAXATION: "Relaxamento",
     SOCIAL: "Social",
     SPIRITUALITY: "Espiritualidade",
-    STUDY: "Estudo",
     TRADITION: "Tradição"
 };
 
@@ -40,7 +39,8 @@ const hobbyLabels = {
     SOCIAL: "Social",
     TECH: "Tecnologia",
     THEATER: "Teatro",
-    TRAVELING: "Viagem"
+    TRAVELING: "Viagem",
+    VOLUNTEERING: "Voluntariado" 
 };
 
 const themeLabels = {
@@ -53,7 +53,7 @@ const themeLabels = {
     FOLKLORE: "Folclore",
     GASTRONOMIC: "Gastronômico",
     HISTORY: "Histórico",
-    ARCHITETURAL_STYLE: "Estilo Arquitetônico",
+    ARCHITECTURAL_STYLE: "Estilo Arquitetônico",
     MODERN: "Moderno",
     NATURE: "Natureza",
     RELIGIOUS: "Religioso",
