@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { deletePOIById, getAllPOI } from "../../services/POI";
+import { getAllUsers } from "../../services/user";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
 import { useContext } from "react";
-import "./POIList.css";
+import "./UserList.css";
 import Button from "../../components/Button";
 
-function POIList() {
+function UserList() {
     const navigate = useNavigate();
-    const [pois, setPOIs] = useState([]);
+    const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
@@ -19,39 +19,39 @@ function POIList() {
     const itemsPerPage = 10; 
     
     useEffect(() => {
-        fetchPOIs();
+        fetchUsers();
     }, [currentPage]);
 
-    const fetchPOIs = async () => {
+    const fetchUsers = async () => {
         setIsLoading(true);
         try {
-            const response = await getAllPOI(currentPage, itemsPerPage);
-            setPOIs(response.content);
+            const response = await getAllUsers(currentPage, itemsPerPage);
+            setUsers(response.content);
             setTotalPages(response.totalPages);
             setTotalElements(response.totalElements);
         } catch (error) {
-            console.error("Erro ao buscar POIs:", error);
+            console.error("Erro ao buscar usuários:", error);
         } finally {
             setIsLoading(false);
         }
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm("Tem certeza que deseja excluir este POI?")) {
-            try {
-                await deletePOIById(id);
-                if (pois.length === 1 && currentPage > 0) {
-                    setCurrentPage(currentPage - 1);
-                } else {
-                    fetchPOIs();
-                }
-                alert("POI excluído com sucesso!");
-            } catch (error) {
-                alert("Erro ao excluir POI.");
-                console.error("Erro:", error);
-            }
-        }
-    };
+    // const handleDelete = async (id) => {
+    //     if (window.confirm("Tem certeza que deseja excluir este usuário?")) {
+    //         try {
+    //             await deleteUserById(id);
+    //             if (users.length === 1 && currentPage > 0) {
+    //                 setCurrentPage(currentPage - 1);
+    //             } else {
+    //                 fetchUsers();
+    //             }
+    //             alert("Usuário excluído com sucesso!");
+    //         } catch (error) {
+    //             alert("Erro ao excluir usuário.");
+    //             console.error("Erro:", error);
+    //         }
+    //     }
+    // };
 
     const getPageNumbers = () => {
         const pages = [];
@@ -73,6 +73,12 @@ function POIList() {
         return pages;
     };
 
+    // Função para mascarar parte do CPF
+    const maskCPF = (cpf) => {
+        if (!cpf) return '';
+        return cpf.substring(0, 3) + '.***.***-' + cpf.substring(9);
+    };
+
     return (
         <div className="containerForm">
             <Header />
@@ -81,30 +87,30 @@ function POIList() {
                 <div className="formContent">
                     <div className="header">
                         <h2 className="headerTitle">
-                            <i className="bi bi-geo-alt-fill icon"></i>
-                            Pontos de Interesse
+                            <i className="bi bi-people-fill icon"></i>
+                            Usuários
                         </h2>
                     </div>
                     
                     <div className="formBody">
                         <div className="d-flex justify-content-between align-items-center mb-4">
                             <h5 className="sectionHeader">
-                                <i className="bi bi-pin-map sectionIcon"></i>
-                                Lista de POIs Cadastrados
+                                <i className="bi bi-person-lines-fill sectionIcon"></i>
+                                Lista de Usuários Cadastrados
                             </h5>
                             <div className="d-flex align-items-center">
                                 <span className="me-3">
-                                    Total: {totalElements} POIs
+                                    Total: {totalElements} usuários
                                 </span>
                                 {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
                                     <Button
-                                            aoClicar={() => navigate("/POIs/register")} 
-                                            cor="primary"         
-                                            className="submitButton"
-                                            role="button"  
-                                            >
-                                            <i className="bi bi-plus-circle"></i>
-                                            Novo POI
+                                        aoClicar={() => navigate("/users/register")}
+                                        cor="primary"
+                                        className="submitButton"
+                                        role="button"  
+                                    >
+                                        <i className="bi bi-plus-circle"></i>
+                                        Novo Usuário
                                     </Button>
                                 )}
                             </div>
@@ -116,11 +122,12 @@ function POIList() {
                                     <tr>
                                         <th scope="col">ID</th>
                                         <th scope="col">Nome</th>
-                                        <th scope="col">Descrição</th>
-                                        <th scope="col">Endereço</th>
-                                        <th scope="col">Motivações</th>
-                                        <th scope="col">Hobbies</th>
-                                        <th scope="col">Temas</th>
+                                        <th scope="col">Idade</th>
+                                        <th scope="col">Gênero</th>
+                                        <th scope="col">CPF</th>
+                                        <th scope="col">Telefone</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Perfil</th>
                                         {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
                                             <th scope="col">Opções</th>
                                         )}
@@ -129,49 +136,38 @@ function POIList() {
                                 <tbody>
                                     {isLoading ? (
                                         <tr>
-                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 8 : 7} 
+                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8} 
                                                 className="text-center">
                                                 <div className="spinner-border text-primary" role="status">
                                                     <span className="visually-hidden">Carregando...</span>
                                                 </div>
                                             </td>
                                         </tr>
-                                    ) : pois.length > 0 ? (
-                                        pois.map((poi) => (
-                                            <tr key={poi.id}>
-                                                <th scope="row">{poi.id}</th>
-                                                <td>{poi.name}</td>
-                                                <td>{poi.description.length > 50 ? `${poi.description.substring(0, 50)}...` : poi.description}</td>
-                                                <td>
-                                                    {poi.address?.street}, {poi.address?.number}<br/>
-                                                    {poi.address?.neighborhood}, {poi.address?.city}
-                                                </td>
-                                                <td>
-                                                    {poi.motivations?.slice(0, 3).map(m => m.substring(0, 3)).join(', ')}
-                                                    {poi.motivations?.length > 3 && '...'}
-                                                </td>
-                                                <td>
-                                                    {poi.hobbies?.slice(0, 3).map(h => h.substring(0, 3)).join(', ')}
-                                                    {poi.hobbies?.length > 3 && '...'}
-                                                </td>
-                                                <td>
-                                                    {poi.themes?.slice(0, 3).map(t => t.substring(0, 3)).join(', ')}
-                                                    {poi.themes?.length > 3 && '...'}
-                                                </td>
+                                    ) : users.length > 0 ? (
+                                        users.map((user) => (
+                                            <tr key={user.id}>
+                                                <th scope="row">{user.id}</th>
+                                                <td>{user.firstName} {user.lastName}</td>
+                                                <td>{user.age}</td>
+                                                <td>{user.gender}</td>
+                                                <td>{maskCPF(user.cpf)}</td>
+                                                <td>{user.phone}</td>
+                                                <td>{user.email}</td>
+                                                <td>{user.role}</td>
                                                 {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
                                                     <td>
                                                         <div className="btn-group" role="group">
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-primary"
-                                                                onClick={() => navigate(`/poi/${poi.id}`)}
+                                                                onClick={() => navigate(`/user/${user.id}`)}
                                                             >
                                                                 <i className="bi bi-pencil"></i> Editar
                                                             </button>
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-danger"
-                                                                onClick={() => handleDelete(poi.id)}
+                                                                onClick={() => handleDelete(user.id)}
                                                             >
                                                                 <i className="bi bi-trash"></i> Excluir
                                                             </button>
@@ -182,9 +178,9 @@ function POIList() {
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 8 : 7} 
+                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8} 
                                                 className="text-center">
-                                                {currentPage === 0 ? "Nenhum POI encontrado" : "Nenhum POI nesta página"}
+                                                {currentPage === 0 ? "Nenhum usuário encontrado" : "Nenhum usuário nesta página"}
                                             </td>
                                         </tr>
                                     )}
@@ -251,7 +247,7 @@ function POIList() {
                         )}
 
                         <div className="text-center text-muted mt-2">
-                            Página {currentPage + 1} de {totalPages} - Mostrando {pois.length} de {totalElements} itens
+                            Página {currentPage + 1} de {totalPages} - Mostrando {users.length} de {totalElements} itens
                         </div>
                     </div>
                 </div>
@@ -262,4 +258,4 @@ function POIList() {
     );
 }
 
-export default POIList;
+export default UserList;

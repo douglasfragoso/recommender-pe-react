@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import POIList from '../pages/POI';
 import Protection from './protection';
 import RecommendationResults from '../pages/Recommendation';
-
+import UserList from '../pages/User';
 
 
 function RouteService() {
@@ -21,6 +21,12 @@ function RouteService() {
                 <Route path="/POIs/register" element={
                     <Protection allowedRoles={['ADMIN', 'MASTER']}>
                         <POIForm />
+                    </Protection>
+                } />
+
+                <Route path="/users" element={
+                    <Protection allowedRoles={['ADMIN', 'MASTER']}>
+                        <UserList />
                     </Protection>
                 } />
 

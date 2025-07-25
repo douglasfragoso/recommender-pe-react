@@ -48,7 +48,7 @@ function Header() {
                                 <a className="nav-link" href="/">Dashboard</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/">Usuários</a>
+                                <a className="nav-link" href="/users">Usuários</a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="/POIs">Pontos de Interesse</a>
