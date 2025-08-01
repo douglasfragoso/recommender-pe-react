@@ -1,11 +1,12 @@
-function Button({ 
-  cor = "", 
-  tamanho = "md", 
-  outline = false, 
-  aoClicar, 
+const Button = ({
+  cor = "",
+  tamanho = "md",
+  outline = false,
+  aoClicar,
   children,
-  className = "" 
-}) {
+  className = "",
+  ...props 
+}) => {
   return (
     <button
       className={`
@@ -18,6 +19,7 @@ function Button({
         ${className}
       `}
       onClick={aoClicar}
+      {...props} 
     >
       {children}
     </button>

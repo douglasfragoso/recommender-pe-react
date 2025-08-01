@@ -3,7 +3,9 @@ import './login.css';
 import logo from '../../assets/images/logo.webp';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { GlobalContext } from "../../context/globalContext";
+import { GlobalContext } from "../../context/GlobalContext";
+import '../../App.css';
+
 
 function Login() {
     const { login } = useContext(GlobalContext);
@@ -14,7 +16,7 @@ function Login() {
     const [erro, setErro] = useState('');
     const navigate = useNavigate();
 
-     const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setErro('');
 
@@ -28,7 +30,7 @@ function Login() {
             console.log("Iniciando login..."); // Debug
             const userData = await login(email, senha, manterConectado);
             console.log("Login bem-sucedido:", userData); // Debug
-            
+
             // Verifica se o login foi realmente bem-sucedido
             if (userData && userData.token) {
                 navigate("/");
@@ -38,9 +40,9 @@ function Login() {
         } catch (error) {
             console.error("Erro no login:", error); // Debug
             // Mensagem mais específica do erro
-            const errorMessage = error.response?.data?.message || 
-                               error.message || 
-                               "Credenciais inválidas. Tente novamente.";
+            const errorMessage = error.response?.data?.message ||
+                error.message ||
+                "Credenciais inválidas. Tente novamente.";
             setErro(errorMessage);
         } finally {
             setCarregando(false);
@@ -97,7 +99,8 @@ function Login() {
                                 <div className='d-flex justify-content-center'>
                                     <Button
                                         type="submit"
-                                        cor=''
+                                        cor="primary" 
+                                        tamanho="md" 
                                         className="submitButton mt-2 px-4 mx-2"
                                         disabled={carregando}
                                     >
@@ -105,7 +108,9 @@ function Login() {
                                     </Button>
 
                                     <Button
-                                        cor=""
+                                        cor="" 
+                                        tamanho="md" 
+                                        outline={true} 
                                         className="cancelButton mt-2 px-4 mx-2"
                                         aoClicar={() => navigate("/register")}
                                     >

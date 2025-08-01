@@ -4,6 +4,7 @@ import './userForm.css';
 import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { saveUser } from '../../../services/user';
+import '../../../App.css';
 
 
 function UserForm() {
@@ -33,31 +34,43 @@ function UserForm() {
     const [zipCode, setZipCode] = useState("");
 
     const [error, setError] = useState("");
+    const [carregando, setCarregando] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("✅ 1. handleSubmit iniciado. O recarregamento da página foi prevenido.");
+
         setError("");
+        setCarregando(true);
 
         // Validação da senha
         if (userPassword !== confirmPassword) {
+            console.error("❌ Erro: As senhas não coincidem.");
             setError("As senhas não coincidem");
+            setCarregando(false);
             return;
         }
 
-        const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,}$/;
+        console.log("✅ 2. Validação de senhas (coincidência) passou.");
+
+        const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=*])(?=\S+$).{8,}$/;
         if (!passwordRegex.test(userPassword)) {
-            setError("A senha deve conter maiúsculas, minúsculas, números e caracteres especiais");
+            console.error("❌ Erro: A senha não atende aos requisitos do regex.");
+            setError("A senha deve conter maiúsculas, minúsculas, números e caracteres especiais.");
+            setCarregando(false);
             return;
         }
+
+        console.log("✅ 3. Validação de complexidade da senha (regex) passou.");
 
         const userData = {
             firstName,
             lastName,
             age: parseInt(age),
             gender,
-            cpf: cpf.replace(/\D/g, ''), // Remove formatação do CPF
-            phone: phone.replace(/\D/g, ''), // Remove formatação do telefone
+            cpf: cpf.replace(/\D/g, ''),
+            phone: phone.replace(/\D/g, ''),
             email,
             userPassword,
             address: {
@@ -68,23 +81,36 @@ function UserForm() {
                 city,
                 state,
                 country,
-                zipCode: zipCode.replace(/\D/g, '') // Remove formatação do CEP
+                zipCode: zipCode.replace(/\D/g, '')
             }
         };
 
+        console.log("✅ 4. Objeto 'userData' foi criado. Dados que serão enviados:", userData);
+
         try {
+            console.log("⏳ 5. Tentando chamar 'saveUser'. A requisição para o backend será feita agora...");
             const result = await saveUser(userData);
+
+            console.log("🎉 6. 'saveUser' retornou um resultado do backend:", result);
+
             if (result.success) {
-                alert(result.message);
+                alert("Usuário cadastrado com sucesso!");
                 navigate("/login");
             } else {
-                setError(result.message);
+                const errorMessage = result.messages?.join(', ') || "Erro ao cadastrar";
+                console.error("❌ Erro retornado pelo backend:", errorMessage);
+                setError(errorMessage);
             }
         } catch (erro) {
-            setError("Erro ao processar o cadastro");
-            console.error("Erro:", erro);
+            console.error("💥 7. Ocorreu um erro CRÍTICO na chamada da API (bloco catch):", erro);
+            setError(erro.message || "Erro ao processar o cadastro");
+        }
+        finally {
+            setCarregando(false);
+            console.log("🏁 8. Fim da execução de handleSubmit.");
         }
     };
+
 
     const formatCPF = (value) => {
         const numbers = value.replace(/\D/g, '');
@@ -474,6 +500,9 @@ function UserForm() {
                             <div className="buttonGroup">
                                 <Button
                                     type="button"
+                                    cor="secondary"
+                                    tamanho="md"
+                                    outline={true}
                                     className="cancelButton"
                                     aoClicar={() => navigate("/")}
                                 >
@@ -483,10 +512,13 @@ function UserForm() {
 
                                 <Button
                                     type="submit"
+                                    cor="primary"
+                                    tamanho="md"
                                     className="submitButton"
+                                    disabled={carregando}
                                 >
+                                    {carregando ? 'Carregando...' : 'Cadastrar'}
                                     <i className="bi bi-check2-circle"></i>
-                                    Cadastrar
                                 </Button>
                             </div>
                         </form>

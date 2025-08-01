@@ -7,6 +7,7 @@ import { GlobalContext } from "../../context/GlobalContext";
 import { useContext } from "react";
 import "./UserList.css";
 import Button from "../../components/Button";
+import '../../App.css';
 
 function UserList() {
     const navigate = useNavigate();
@@ -16,25 +17,30 @@ function UserList() {
     const [totalElements, setTotalElements] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const { usuarioLogado } = useContext(GlobalContext);
-    const itemsPerPage = 10; 
-    
+    const itemsPerPage = 10;
+
     useEffect(() => {
         fetchUsers();
     }, [currentPage]);
 
-    const fetchUsers = async () => {
-        setIsLoading(true);
-        try {
-            const response = await getAllUsers(currentPage, itemsPerPage);
-            setUsers(response.content);
-            setTotalPages(response.totalPages);
-            setTotalElements(response.totalElements);
-        } catch (error) {
-            console.error("Erro ao buscar usuários:", error);
-        } finally {
-            setIsLoading(false);
+   const fetchUsers = async () => {
+    setIsLoading(true);
+    try {
+        const response = await getAllUsers(currentPage, itemsPerPage);
+        
+        if (response.success) {
+            setUsers(response.data?.content ?? []);
+            setTotalPages(response.data?.totalPages ?? 0);
+            setTotalElements(response.data?.totalElements ?? 0);
+        } else {
+            console.error("Erro ao buscar usuários:", response.messages);
         }
-    };
+    } catch (error) {
+        console.error("Erro ao buscar usuários:", error);
+    } finally {
+        setIsLoading(false);
+    }
+};
 
     // const handleDelete = async (id) => {
     //     if (window.confirm("Tem certeza que deseja excluir este usuário?")) {
@@ -56,20 +62,20 @@ function UserList() {
     const getPageNumbers = () => {
         const pages = [];
         const maxVisiblePages = 5;
-        
+
         let startPage = Math.max(0, currentPage - Math.floor(maxVisiblePages / 2));
         let endPage = Math.min(totalPages - 1, startPage + maxVisiblePages - 1);
-        
+
         if (endPage - startPage < maxVisiblePages - 1) {
             startPage = Math.max(0, endPage - maxVisiblePages + 1);
         }
-        
+
         for (let i = startPage; i <= endPage; i++) {
             if (i >= 0 && i < totalPages) {
                 pages.push(i);
             }
         }
-        
+
         return pages;
     };
 
@@ -91,7 +97,7 @@ function UserList() {
                             Usuários
                         </h2>
                     </div>
-                    
+
                     <div className="formBody">
                         <div className="d-flex justify-content-between align-items-center mb-4">
                             <h5 className="sectionHeader">
@@ -104,10 +110,10 @@ function UserList() {
                                 </span>
                                 {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
                                     <Button
-                                        aoClicar={() => navigate("/users/register")}
+                                        aoClicar={() => navigate("/register")}
                                         cor="primary"
+                                        tamanho="md"
                                         className="submitButton"
-                                        role="button"  
                                     >
                                         <i className="bi bi-plus-circle"></i>
                                         Novo Usuário
@@ -136,7 +142,7 @@ function UserList() {
                                 <tbody>
                                     {isLoading ? (
                                         <tr>
-                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8} 
+                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8}
                                                 className="text-center">
                                                 <div className="spinner-border text-primary" role="status">
                                                     <span className="visually-hidden">Carregando...</span>
@@ -178,7 +184,7 @@ function UserList() {
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8} 
+                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8}
                                                 className="text-center">
                                                 {currentPage === 0 ? "Nenhum usuário encontrado" : "Nenhum usuário nesta página"}
                                             </td>
@@ -193,49 +199,49 @@ function UserList() {
                             <nav aria-label="Page navigation">
                                 <ul className="pagination justify-content-center mt-4">
                                     <li className={`page-item ${currentPage === 0 ? 'disabled' : ''}`}>
-                                        <button 
-                                            className="page-link" 
+                                        <button
+                                            className="page-link"
                                             onClick={() => setCurrentPage(0)}
                                             disabled={currentPage === 0}
                                         >
                                             &laquo; Primeira
                                         </button>
                                     </li>
-                                    
+
                                     <li className={`page-item ${currentPage === 0 ? 'disabled' : ''}`}>
-                                        <button 
-                                            className="page-link" 
+                                        <button
+                                            className="page-link"
                                             onClick={() => setCurrentPage(prev => prev - 1)}
                                             disabled={currentPage === 0}
                                         >
                                             Anterior
                                         </button>
                                     </li>
-                                    
+
                                     {getPageNumbers().map(number => (
                                         <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-                                            <button 
-                                                className="page-link" 
+                                            <button
+                                                className="page-link"
                                                 onClick={() => setCurrentPage(number)}
                                             >
                                                 {number + 1}
                                             </button>
                                         </li>
                                     ))}
-                                    
+
                                     <li className={`page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`}>
-                                        <button 
-                                            className="page-link" 
+                                        <button
+                                            className="page-link"
                                             onClick={() => setCurrentPage(prev => prev + 1)}
                                             disabled={currentPage === totalPages - 1}
                                         >
                                             Próxima
                                         </button>
                                     </li>
-                                    
+
                                     <li className={`page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`}>
-                                        <button 
-                                            className="page-link" 
+                                        <button
+                                            className="page-link"
                                             onClick={() => setCurrentPage(totalPages - 1)}
                                             disabled={currentPage === totalPages - 1}
                                         >

@@ -92,60 +92,6 @@
     background-color: rgba(0, 0, 0, 0.03);
 }
 
-.btn-group {
-    display: flex;
-    gap: 8px;
-}
-
-.btn {
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    transition: all 0.2s;
-}
-
-.btn-primary {
-    background-color: #b8860b;
-    border-color: #b8860b;
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: #a3780a;
-    border-color: #a3780a;
-}
-
-.btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: white;
-}
-
-.btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-}
-
-.submitButton {
-    padding: 8px 16px;
-    background-color: #b8860b;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    text-decoration: none;
-}
-
-.submitButton:hover {
-    background-color: #a3780a;
-    color: white;
-}
-
 @media (max-width: 768px) {
 
     .table th,

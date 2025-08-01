@@ -1,24 +1,78 @@
 import { api } from "./api";
 
-export async function saveUser(user) {
-    await api.post('/user/register', user)
-        .then((resposta) => {
-            if (resposta.status === 201) {
-                alert("Usuário cadastrado com sucesso!");
-            }
-        })
-        .catch((erro) => {
-            alert("Erro ao cadastrar usuario.");
-            console.error("Erro ao cadastro usuario: ", erro);
-        });
-}
-
-export async function getAllUsers(page = 0, size = 10) {
-    try {
-        const response = await api.get(`/user?page=${page}&size=${size}`);
-        return response.data;
-    } catch (error) {
-        console.error("Erro ao listar Usuários:", error);
-        throw error;
+const handleApiError = (error) => {
+    if (error.response) {
+        const message = error.response.data?.message || error.response.data?.error || "Erro desconhecido.";
+        return {
+            success: false,
+            messages: Array.isArray(message) ? message : [message]
+        };
+    } else {
+        return {
+            success: false,
+            messages: ["Erro de rede ou conexão. Verifique sua internet."]
+        };
     }
-}
+};
+
+
+export const saveUser = async (user) => {
+    try {
+        const response = await api.post('/user/register', user);
+        return {
+            success: true,
+            data: response.data
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export const getAllUsers = async (page = 0, size = 10, sort = "id,asc") => {
+    try {
+        const response = await api.get(`/user?page=${page}&size=${size}&sort=${sort}`);
+        return {
+            success: true,
+            data: response.data
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export const getUserById = async (id) => {
+    try {
+        const response = await api.get(`/user/id/${id}`);
+        return {
+            success: true,
+            data: response.data
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export const updateUser = async (dadosUser) => {
+    try {
+        const response = await api.put(`/user/id/${dadosUser.id}`, dadosUser);
+        return {
+            success: true,
+            data: response.data
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+
+export const deleteUserById = async (id) => {
+    try {
+        const response = await api.delete(`/user/id/${id}`);
+        return {
+            success: true,
+            data: response.data
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};

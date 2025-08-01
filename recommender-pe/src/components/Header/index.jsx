@@ -23,7 +23,7 @@ function Header() {
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container">
                     <a className="navbar-brand" href="#">
-                        <img src={logo} className="logo-oval-header" alt="Bootstrap"/>
+                        <img src={logo} className="logo-oval-header" alt="Bootstrap" />
                         <span className="fw-semibold brand-name ms-2">Alavancando o Turismo em Recife</span>
                     </a>
 
@@ -59,7 +59,7 @@ function Header() {
                             <li className="nav-item">
                                 <Button
                                     cor="primary"
-                                    outline
+                                    outline={true}
                                     tamanho="md"
                                     aoClicar={handleAuthAction}
                                     className="loginButton px-3"

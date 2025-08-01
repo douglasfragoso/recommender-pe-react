@@ -6,11 +6,12 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Button from '../../components/Button';
 import { sendScores } from '../../services/recommender';
+import '../../App.css';
 
 function RecommendationResults() {
     const { state } = useLocation();
-    const recommendations = state?.recommendations || [];  
-    const recommendationId = state?.recommendationId;  
+    const recommendations = state?.recommendations || [];
+    const recommendationId = state?.recommendationId;
     const navigate = useNavigate();
 
     const [scores, setScores] = useState({});
@@ -149,38 +150,36 @@ function RecommendationResults() {
                                     </div>
                                 )}
 
-                                <div className="recommendationActions">
+                                <div className="buttonGroup">
                                     <Button
                                         type="button"
                                         cor="secondary"
-                                        tamanho="lg"
+                                        tamanho="md"
                                         outline={true}
                                         onClick={() => navigate('/recommendation')}
-                                        className="btnBackToSearch"
+                                        className="cancelButton"
                                     >
                                         <i className="bi bi-arrow-left"></i>
                                         Refazer minha busca
                                     </Button>
 
-                                    {recommendations.length > 0 && (
-                                        <Button
-                                            type="submit"
-                                            cor="primary"
-                                            tamanho="lg"
-                                            outline={false}
-                                            disabled={isSubmitting || Object.keys(scores).length === 0}
-                                            className="submitScoresButton"
-                                        >
-                                            {isSubmitting ? (
-                                                <>
-                                                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                    Enviando...
-                                                </>
-                                            ) : (
-                                                'Enviar Avaliações'
-                                            )}
-                                        </Button>
-                                    )}
+                                    <Button
+                                        type="submit"
+                                        cor="primary"
+                                        tamanho="md"
+                                        outline={false}
+                                        disabled={isSubmitting || Object.keys(scores).length === 0}
+                                        className="submitButton"
+                                    >
+                                        {isSubmitting ? (
+                                            <>
+                                                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                Enviando...
+                                            </>
+                                        ) : (
+                                            'Enviar Avaliações'
+                                        )}
+                                    </Button>
                                 </div>
                             </div>
                         </form>

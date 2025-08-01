@@ -6,14 +6,70 @@ import './POIForm.css';
 import { savePOI } from '../../../services/POI';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import '../../../App.css';
+
+const motivationLabels = {
+    ARTISTIC_VALUE: "Valor Artístico",
+    CREATIVITY: "Criatividade",
+    CULTURE: "Cultura",
+    ENTERTAINMENT: "Entretenimento",
+    EXPLORATION: "Exploração",
+    EDUCATION: "Educação",
+    FAMILY: "Família",
+    GASTRONOMY: "Gastronomia",
+    HERITAGE: "Patrimônio",
+    IDENTITY: "Identidade",
+    IMMERSIVE_EXPERIENCE: "Experiência Imersiva",
+    RELAXATION: "Relaxamento",
+    SOCIAL: "Social",
+    SPIRITUALITY: "Espiritualidade",
+    TRADITION: "Tradição"
+};
+
+const hobbyLabels = {
+    ADVENTURE: "Aventura",
+    ART: "Arte",
+    DANCING: "Dança",
+    GASTRONOMY: "Gastronomia",
+    GARDENING: "Jardinagem",
+    HIKING: "Caminhada",
+    LEARNING: "Aprendizado",
+    MUSIC: "Música",
+    PHOTOGRAPHY: "Fotografia",
+    READING: "Leitura",
+    SOCIAL: "Social",
+    TECH: "Tecnologia",
+    THEATER: "Teatro",
+    TRAVELING: "Viagem",
+    VOLUNTEERING: "Voluntariado"
+};
+
+const themeLabels = {
+    ADVENTURE: "Aventura",
+    AFRO_BRAZILIAN: "Afro-brasileiro",
+    BAROQUE: "Barroco",
+    COLONIAL: "Colonial",
+    CULTURAL: "Cultural",
+    FAMILY_FRIENDLY: "Para Família",
+    FOLKLORE: "Folclore",
+    GASTRONOMIC: "Gastronômico",
+    HISTORY: "Histórico",
+    ARCHITECTURAL_STYLE: "Estilo Arquitetônico",
+    MODERN: "Moderno",
+    NATURE: "Natureza",
+    RELIGIOUS: "Religioso",
+    ROMANTIC: "Romântico",
+    URBAN_ART: "Arte Urbana"
+};
 
 function POIForm() {
     const [name, setName] = useState("");
+    const [error, setError] = useState("");
     const [description, setDescription] = useState("");
     const [motivations, setMotivations] = useState([]);
     const [hobbies, setHobbies] = useState([]);
     const [themes, setThemes] = useState([]);
-    // Estados para o endereço 
+    const [carregando, setCarregando] = useState(false); 
     const [street, setStreet] = useState("");
     const [number, setNumber] = useState("");
     const [complement, setComplement] = useState("");
@@ -41,49 +97,21 @@ function POIForm() {
         setNumber(value);
     };
 
-    const motivationOptions = [
-        "ARTISTIC_VALUE", "CREATIVITY", "CULTURE", "ENTERTAINMENT", "EXPLORATION",
-        "EDUCATION", "FAMILY", "GASTRONOMY", "HERITAGE", "IDENTITY",
-        "IMMERSIVE_EXPERIENCE", "RELAXATION", "SOCIAL", "SPIRITUALITY", "STUDY", "TRADITION"
-    ];
-
-    const hobbiesOptions = [
-        "ADVENTURE", "ART", "DANCING", "GASTRONOMY", "GARDENING",
-        "HIKING", "LEARNING", "MUSIC", "PHOTOGRAPHY", "READING",
-        "SOCIAL", "TECH", "THEATER", "TRAVELING"
-    ];
-
-    const themesOptions = [
-        "ADVENTURE", "AFRO_BRAZILIAN", "BAROQUE", "COLONIAL", "CULTURAL",
-        "FAMILY_FRIENDLY", "FOLKLORE", "GASTRONOMIC", "HISTORY",
-        "ARCHITETURAL_STYLE", "MODERN", "NATURE", "RELIGIOUS", "ROMANTIC", "URBAN_ART"
-    ];
-
-    const cancelar = (e) => {
-        e.preventDefault();
-        setName("");
-        setDescription("");
-        setMotivations([]);
-        setHobbies([]);
-        setThemes([]);
-        setStreet("");
-        setNumber("");
-        setNeighborhood("");
-        setCity("");
-        setState("");
-        setZipCode("");
-        setCountry("");
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError("");
+        console.log("✅ 1. handleSubmit iniciado. O recarregamento da página foi prevenido.");
 
-        // Validação básica
+        setError("");
+        setCarregando(true); 
+
         if (motivations.length !== 5 || hobbies.length !== 5 || themes.length !== 5) {
+            console.error("❌ Erro: Quantidade incorreta de seleções. Devem ser 5 motivações, hobbies e temas.");
             setError("Selecione exatamente 5 itens em cada categoria (Motivações, Hobbies e Temas)");
+            setCarregando(false);
             return;
         }
+
+        console.log("✅ 2. Validação de seleção passou.");
 
         const poiData = {
             name,
@@ -103,37 +131,37 @@ function POIForm() {
             }
         };
 
+        console.log("✅ 3. Objeto 'poiData' foi criado. Dados que serão enviados:", poiData);
+
         try {
+            console.log("⏳ 4. Tentando chamar 'savePOI'. Enviando dados ao backend...");
             const result = await savePOI(poiData);
+
+            console.log("🎉 5. 'savePOI' retornou um resultado:", result);
+
             if (result.success) {
-                alert(result.message);
+                alert("POI cadastrado com sucesso!");
                 navigate("/");
             } else {
-                setError(result.message);
+                const errorMessage = result.messages?.join(', ') || "Erro ao cadastrar POI";
+                console.error("❌ 6. Erro retornado pelo backend:", errorMessage);
+                setError(errorMessage);
             }
         } catch (erro) {
-            setError("Erro ao processar o cadastro do POI");
-            console.error("Erro:", erro);
+            console.error("💥 7. Ocorreu um erro CRÍTICO na chamada da API:", erro);
+            setError(erro.message || "Erro ao processar o cadastro do POI");
+        } finally {
+            setCarregando(false);
+            console.log("🏁 8. Fim da execução de handleSubmit.");
         }
     };
+
 
     const handleCheckboxChange = (value, list, setList) => {
         if (list.includes(value)) {
             setList(list.filter(item => item !== value));
         } else if (list.length < 5) {
             setList([...list, value]);
-        }
-    };
-
-    const formatZipCode = (value) => {
-        const numbers = value.replace(/\D/g, '');
-        return numbers.replace(/(\d{5})(\d{3})/, '$1-$2');
-    };
-
-    const handleZipCodeChange = (e) => {
-        const formatted = formatZipCode(e.target.value);
-        if (formatted.replace(/\D/g, '').length <= 8) {
-            setZipCode(formatted);
         }
     };
 
@@ -200,7 +228,7 @@ function POIForm() {
                                 </h5>
                                 <p className="sectionDescription">Selecione exatamente 5 motivações:</p>
                                 <div className="checkboxGrid">
-                                    {motivationOptions.map((motivation) => (
+                                    {motivationLabels.map((motivation) => (
                                         <div key={motivation} className="checkboxItem">
                                             <input
                                                 type="checkbox"
@@ -226,7 +254,7 @@ function POIForm() {
                                 </h5>
                                 <p className="sectionDescription">Selecione exatamente 5 hobbies:</p>
                                 <div className="checkboxGrid">
-                                    {hobbiesOptions.map((hobby) => (
+                                    {hobbyLabels.map((hobby) => (
                                         <div key={hobby} className="checkboxItem">
                                             <input
                                                 type="checkbox"
@@ -252,7 +280,7 @@ function POIForm() {
                                 </h5>
                                 <p className="sectionDescription">Selecione exatamente 5 temas:</p>
                                 <div className="checkboxGrid">
-                                    {themesOptions.map((theme) => (
+                                    {themeLabels.map((theme) => (
                                         <div key={theme} className="checkboxItem">
                                             <input
                                                 type="checkbox"
@@ -429,6 +457,9 @@ function POIForm() {
                             <div className="buttonGroup">
                                 <Button
                                     type="button"
+                                    cor="secondary"
+                                    tamanho="md"
+                                    outline={true}
                                     className="cancelButton"
                                     aoClicar={() => navigate("/")}
                                 >
@@ -438,6 +469,8 @@ function POIForm() {
 
                                 <Button
                                     type="submit"
+                                    cor="primary"
+                                    tamanho="md"
                                     className="submitButton"
                                 >
                                     <i className="bi bi-check2-circle"></i>

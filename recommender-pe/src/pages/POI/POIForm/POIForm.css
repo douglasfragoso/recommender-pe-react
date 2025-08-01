@@ -99,12 +99,6 @@
   font-size: 16px;
 }
 
-.buttonGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .checkboxGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -137,50 +131,4 @@
     margin-top: 0.25rem;
 }
 
-@media (min-width: 640px) {
-  .buttonGroup {
-    flex-direction: row;
-    justify-content: flex-end;
-  }
-}
-
-.cancelButton {
-  padding: 8px 24px;
-  border: 2px solid #9ca3af;
-  background-color: transparent;
-  color: #374151;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background-color 0.2s;
-}
-
-.cancelButton:hover {
-  background-color: #f9fafb;
-}
-
-.submitButton {
-  padding: 8px 24px;
-  border: none;
-  background-color: #b8860b;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: opacity 0.2s;
-}
-
-.passwordHint {
-  font-size: 14px;
-  color: #6b7280;
-  margin: 4px 0 0 0;
-}
 

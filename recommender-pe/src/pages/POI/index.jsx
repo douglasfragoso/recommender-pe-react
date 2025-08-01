@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { deletePOIById, getAllPOI } from "../../services/POI";
+import { getAllPOI } from "../../services/POI";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
 import { useContext } from "react";
 import "./POIList.css";
 import Button from "../../components/Button";
+import '../../App.css';
 
 function POIList() {
     const navigate = useNavigate();
@@ -16,8 +17,8 @@ function POIList() {
     const [totalElements, setTotalElements] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const { usuarioLogado } = useContext(GlobalContext);
-    const itemsPerPage = 10; 
-    
+    const itemsPerPage = 10;
+
     useEffect(() => {
         fetchPOIs();
     }, [currentPage]);
@@ -26,9 +27,13 @@ function POIList() {
         setIsLoading(true);
         try {
             const response = await getAllPOI(currentPage, itemsPerPage);
-            setPOIs(response.content);
-            setTotalPages(response.totalPages);
-            setTotalElements(response.totalElements);
+            if (response.success) {
+                setPOIs(response.data.content || []);
+                setTotalPages(response.data.totalPages || 0);
+                setTotalElements(response.data.totalElements || 0);
+            } else {
+                console.error("Erro ao buscar POIs:", response.messages);
+            }
         } catch (error) {
             console.error("Erro ao buscar POIs:", error);
         } finally {
@@ -36,40 +41,40 @@ function POIList() {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm("Tem certeza que deseja excluir este POI?")) {
-            try {
-                await deletePOIById(id);
-                if (pois.length === 1 && currentPage > 0) {
-                    setCurrentPage(currentPage - 1);
-                } else {
-                    fetchPOIs();
-                }
-                alert("POI excluído com sucesso!");
-            } catch (error) {
-                alert("Erro ao excluir POI.");
-                console.error("Erro:", error);
-            }
-        }
-    };
+    // const handleDelete = async (id) => {
+    //     if (window.confirm("Tem certeza que deseja excluir este POI?")) {
+    //         try {
+    //             await deletePOIById(id);
+    //             if (pois.length === 1 && currentPage > 0) {
+    //                 setCurrentPage(currentPage - 1);
+    //             } else {
+    //                 fetchPOIs();
+    //             }
+    //             alert("POI excluído com sucesso!");
+    //         } catch (error) {
+    //             alert("Erro ao excluir POI.");
+    //             console.error("Erro:", error);
+    //         }
+    //     }
+    // };
 
     const getPageNumbers = () => {
         const pages = [];
         const maxVisiblePages = 5;
-        
+
         let startPage = Math.max(0, currentPage - Math.floor(maxVisiblePages / 2));
         let endPage = Math.min(totalPages - 1, startPage + maxVisiblePages - 1);
-        
+
         if (endPage - startPage < maxVisiblePages - 1) {
             startPage = Math.max(0, endPage - maxVisiblePages + 1);
         }
-        
+
         for (let i = startPage; i <= endPage; i++) {
             if (i >= 0 && i < totalPages) {
                 pages.push(i);
             }
         }
-        
+
         return pages;
     };
 
@@ -85,7 +90,7 @@ function POIList() {
                             Pontos de Interesse
                         </h2>
                     </div>
-                    
+
                     <div className="formBody">
                         <div className="d-flex justify-content-between align-items-center mb-4">
                             <h5 className="sectionHeader">
@@ -98,13 +103,13 @@ function POIList() {
                                 </span>
                                 {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
                                     <Button
-                                            aoClicar={() => navigate("/POIs/register")} 
-                                            cor="primary"         
-                                            className="submitButton"
-                                            role="button"  
-                                            >
-                                            <i className="bi bi-plus-circle"></i>
-                                            Novo POI
+                                        aoClicar={() => navigate("/POIs/register")}
+                                        cor="primary"
+                                        tamanho="md"
+                                        className="submitButton"
+                                    >
+                                        <i className="bi bi-plus-circle"></i>
+                                        Novo POI
                                     </Button>
                                 )}
                             </div>
@@ -129,7 +134,7 @@ function POIList() {
                                 <tbody>
                                     {isLoading ? (
                                         <tr>
-                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 8 : 7} 
+                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 8 : 7}
                                                 className="text-center">
                                                 <div className="spinner-border text-primary" role="status">
                                                     <span className="visually-hidden">Carregando...</span>
@@ -143,7 +148,7 @@ function POIList() {
                                                 <td>{poi.name}</td>
                                                 <td>{poi.description.length > 50 ? `${poi.description.substring(0, 50)}...` : poi.description}</td>
                                                 <td>
-                                                    {poi.address?.street}, {poi.address?.number}<br/>
+                                                    {poi.address?.street}, {poi.address?.number}<br />
                                                     {poi.address?.neighborhood}, {poi.address?.city}
                                                 </td>
                                                 <td>
@@ -171,7 +176,7 @@ function POIList() {
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-danger"
-                                                                onClick={() => handleDelete(poi.id)}
+                                                            // onClick={() => handleDelete(poi.id)}
                                                             >
                                                                 <i className="bi bi-trash"></i> Excluir
                                                             </button>
@@ -182,7 +187,7 @@ function POIList() {
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 8 : 7} 
+                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 8 : 7}
                                                 className="text-center">
                                                 {currentPage === 0 ? "Nenhum POI encontrado" : "Nenhum POI nesta página"}
                                             </td>
@@ -197,49 +202,49 @@ function POIList() {
                             <nav aria-label="Page navigation">
                                 <ul className="pagination justify-content-center mt-4">
                                     <li className={`page-item ${currentPage === 0 ? 'disabled' : ''}`}>
-                                        <button 
-                                            className="page-link" 
+                                        <button
+                                            className="page-link"
                                             onClick={() => setCurrentPage(0)}
                                             disabled={currentPage === 0}
                                         >
                                             &laquo; Primeira
                                         </button>
                                     </li>
-                                    
+
                                     <li className={`page-item ${currentPage === 0 ? 'disabled' : ''}`}>
-                                        <button 
-                                            className="page-link" 
+                                        <button
+                                            className="page-link"
                                             onClick={() => setCurrentPage(prev => prev - 1)}
                                             disabled={currentPage === 0}
                                         >
                                             Anterior
                                         </button>
                                     </li>
-                                    
+
                                     {getPageNumbers().map(number => (
                                         <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-                                            <button 
-                                                className="page-link" 
+                                            <button
+                                                className="page-link"
                                                 onClick={() => setCurrentPage(number)}
                                             >
                                                 {number + 1}
                                             </button>
                                         </li>
                                     ))}
-                                    
+
                                     <li className={`page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`}>
-                                        <button 
-                                            className="page-link" 
+                                        <button
+                                            className="page-link"
                                             onClick={() => setCurrentPage(prev => prev + 1)}
                                             disabled={currentPage === totalPages - 1}
                                         >
                                             Próxima
                                         </button>
                                     </li>
-                                    
+
                                     <li className={`page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`}>
-                                        <button 
-                                            className="page-link" 
+                                        <button
+                                            className="page-link"
                                             onClick={() => setCurrentPage(totalPages - 1)}
                                             disabled={currentPage === totalPages - 1}
                                         >
