@@ -2,7 +2,7 @@
 
 This project is proprietary. The source code is made available exclusively for academic study and evaluation purposes.
 
-[![License: Proprietary](https://img.shields.io/badge/license-proprietary-red.svg)](https://github.com/douglasfragoso/recommender-pe?tab=License-1-ov-file)
+[![License: Proprietary](https://img.shields.io/badge/license-proprietary-red.svg)](https://github.com/douglasfragoso/recommender-pe-react?tab=License-1-ov-file)
 
 
 # Points of Interest Recommendation System in Recife with Content-Based Filtering and Pernambuco Passport
@@ -70,6 +70,6 @@ npm install
 ```bash
 npm run dev
 ```
-- Access the app at: - acesse http://localhost:3000
+- Access the app at: - http://localhost:3000
 
 Important: Ensure the [Backend Service](https://github.com/douglasfragoso/recommender-pe) is running before starting the frontend.
