@@ -7,7 +7,7 @@ import { GlobalContext } from "../../context/GlobalContext";
 import '../../App.css';
 
 
-function Login() {
+const Login = () => {
     const { login } = useContext(GlobalContext);
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');

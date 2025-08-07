@@ -9,7 +9,7 @@ import "./POIList.css";
 import Button from "../../components/Button";
 import '../../App.css';
 
-function POIList() {
+const POIList = () => {
     const navigate = useNavigate();
     const [pois, setPOIs] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);

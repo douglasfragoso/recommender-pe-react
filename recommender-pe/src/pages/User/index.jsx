@@ -9,7 +9,7 @@ import "./UserList.css";
 import Button from "../../components/Button";
 import '../../App.css';
 
-function UserList() {
+const UserList = () => {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);

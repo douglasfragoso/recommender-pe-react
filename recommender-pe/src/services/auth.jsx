@@ -9,8 +9,6 @@ export const authService = {
                 userPassword: senha
             });
 
-            console.log("Resposta da API:", response.data); // Debug
-
             if (!response.data.token) {
                 throw new Error("Token não recebido na resposta");
             }
@@ -18,17 +16,13 @@ export const authService = {
             const token = response.data.token;
             const storage = manterConectado ? localStorage : sessionStorage;
 
-            // Armazena o token
             storage.setItem("jwtToken", token);
 
-            // Configura o header de autorização padrão
             api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-            // Decodifica o token para obter informações do usuário
             const decodedToken = jwtDecode(token);
 
             const userData = {
-                // Ajuste para o formato que seu backend retorna
                 nome: response.data.firstName ?
                     `${response.data.firstName} ${response.data.lastName}` :
                     decodedToken.sub,
@@ -37,7 +31,6 @@ export const authService = {
                 token: token
             };
 
-            // Armazena os dados do usuário
             storage.setItem("usuarioData", JSON.stringify(userData));
 
             return userData;
@@ -75,7 +68,6 @@ export const authService = {
             return JSON.parse(userData);
         }
 
-        // Fallback para token antigo (se necessário)
         const token = localStorage.getItem("jwtToken") ||
             sessionStorage.getItem("jwtToken");
         if (token) {

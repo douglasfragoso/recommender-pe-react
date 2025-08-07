@@ -62,7 +62,7 @@ const themeLabels = {
     URBAN_ART: "Arte Urbana"
 };
 
-function POIForm() {
+const POIForm = () => {
     const [name, setName] = useState("");
     const [error, setError] = useState("");
     const [description, setDescription] = useState("");

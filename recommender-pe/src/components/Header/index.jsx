@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalContext';
 
-function Header() {
+const Header = () => {
     const navigate = useNavigate();
     const { usuarioLogado, logout } = useContext(GlobalContext);
 

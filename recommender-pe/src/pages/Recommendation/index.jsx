@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 import { sendScores } from '../../services/recommender';
 import '../../App.css';
 
-function RecommendationResults() {
+const RecommendationResults = () => {
     const { state } = useLocation();
     const recommendations = state?.recommendations || [];
     const recommendationId = state?.recommendationId;

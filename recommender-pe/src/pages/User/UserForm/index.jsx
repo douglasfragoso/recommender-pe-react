@@ -7,7 +7,7 @@ import { saveUser } from '../../../services/user';
 import '../../../App.css';
 
 
-function UserForm() {
+const UserForm = () => {
     // Dados Pessoais
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");

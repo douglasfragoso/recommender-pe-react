@@ -4,7 +4,7 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import './home.css'; 
 
-function Home() {
+const Home = () => {
   const tecnologias = [
     { nome: 'Java 21', descricao: 'Desenvolvimento backend' },
     { nome: 'Spring Boot', descricao: 'Framework para APIs' },

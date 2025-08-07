@@ -61,7 +61,7 @@ const themeLabels = {
     URBAN_ART: "Arte Urbana"
 };
 
-function RecommendationForm() {
+const RecommendationForm = () => {
     const [motivations, setMotivations] = useState([]);
     const [hobbies, setHobbies] = useState([]);
     const [themes, setThemes] = useState([]);

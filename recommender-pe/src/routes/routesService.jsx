@@ -10,7 +10,7 @@ import RecommendationResults from '../pages/Recommendation';
 import UserList from '../pages/User';
 
 
-function RouteService() {
+const RouteService = () => {
     return (
         <BrowserRouter>
             <Routes>
