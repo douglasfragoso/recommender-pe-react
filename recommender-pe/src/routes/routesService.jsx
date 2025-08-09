@@ -8,6 +8,7 @@ import POIList from '../pages/POI';
 import Protection from './protection';
 import RecommendationResults from '../pages/Recommendation';
 import UserList from '../pages/User';
+import NotFoundPage from '../pages/NotFoundPage';
 
 
 const RouteService = () => {
@@ -17,6 +18,7 @@ const RouteService = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<UsuarioForm />} />
                 <Route path="/" element={<Home />} />
+                <Route path="*" element={<NotFoundPage />} />
 
                 <Route path="/POIs/register" element={
                     <Protection allowedRoles={['ADMIN', 'MASTER']}>
