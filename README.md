@@ -4,6 +4,14 @@ This project is proprietary. The source code is made available exclusively for a
 
 [![License: Proprietary](https://img.shields.io/badge/license-proprietary-red.svg)](https://github.com/douglasfragoso/recommender-pe-react?tab=License-1-ov-file)
 
+## Authors and Affiliations
+
+**Douglas Inácio Fragoso Ferreira¹\***; **Everton Gomede²**
+
+1. University of São Paulo (USP). MBA in Software Engineering, Luiz de Queiroz College of Agriculture (Esalq), Pecege.
+2. School of Electrical and Computer Engineering, State University of Campinas (FEEC/UNICAMP). PhD in Computer Science.
+
+\*Corresponding author: douglas.iff@gmail.com
 
 # Points of Interest Recommendation System in Recife with Content-Based Filtering and Pernambuco Passport
 

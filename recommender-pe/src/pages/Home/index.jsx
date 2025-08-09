@@ -56,7 +56,7 @@ const Home = () => {
           </h2>
           <p className="lead text-muted mb-4 mx-auto" style={{ maxWidth: '800px' }}>
             Sistema de filtragem baseada em conteúdo que recomenda Pontos de Interesse (POIs)
-            personalizados no Recife, utilizando algoritmos de similaridade avançados.
+            personalizados no Recife, utilizando algoritmos de similaridade.
           </p>
           <div className="d-flex justify-content-center align-items-center gap-4 small text-muted">
             <div className="d-flex align-items-center gap-1">
