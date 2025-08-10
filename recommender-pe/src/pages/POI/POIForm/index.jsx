@@ -6,6 +6,7 @@ import './POIForm.css';
 import { savePOI } from '../../../services/POI';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import Modal from '../../../components/Modal';
 import '../../../App.css';
 
 const motivationLabels = {
@@ -69,7 +70,7 @@ const POIForm = () => {
     const [motivations, setMotivations] = useState([]);
     const [hobbies, setHobbies] = useState([]);
     const [themes, setThemes] = useState([]);
-    const [carregando, setCarregando] = useState(false); 
+    const [carregando, setCarregando] = useState(false);
     const [street, setStreet] = useState("");
     const [number, setNumber] = useState("");
     const [complement, setComplement] = useState("");
@@ -79,6 +80,12 @@ const POIForm = () => {
     const [zipCode, setZipCode] = useState("");
     const [country, setCountry] = useState("Brasil");
     const navigate = useNavigate();
+    const [showCancelModal, setShowCancelModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    const motivationOptions = Object.keys(motivationLabels);
+    const hobbiesOptions = Object.keys(hobbyLabels);
+    const themesOptions = Object.keys(themeLabels);
 
     const formatCEP = (value) => {
         const numbers = value.replace(/\D/g, '');
@@ -102,7 +109,7 @@ const POIForm = () => {
         console.log("✅ 1. handleSubmit iniciado. O recarregamento da página foi prevenido.");
 
         setError("");
-        setCarregando(true); 
+        setCarregando(true);
 
         if (motivations.length !== 5 || hobbies.length !== 5 || themes.length !== 5) {
             console.error("❌ Erro: Quantidade incorreta de seleções. Devem ser 5 motivações, hobbies e temas.");
@@ -140,8 +147,7 @@ const POIForm = () => {
             console.log("🎉 5. 'savePOI' retornou um resultado:", result);
 
             if (result.success) {
-                alert("POI cadastrado com sucesso!");
-                navigate("/");
+                setShowSuccessModal(true);
             } else {
                 const errorMessage = result.messages?.join(', ') || "Erro ao cadastrar POI";
                 console.error("❌ 6. Erro retornado pelo backend:", errorMessage);
@@ -228,7 +234,7 @@ const POIForm = () => {
                                 </h5>
                                 <p className="sectionDescription">Selecione exatamente 5 motivações:</p>
                                 <div className="checkboxGrid">
-                                    {motivationLabels.map((motivation) => (
+                                    {motivationOptions.map((motivation) => (
                                         <div key={motivation} className="checkboxItem">
                                             <input
                                                 type="checkbox"
@@ -238,7 +244,7 @@ const POIForm = () => {
                                                 disabled={!motivations.includes(motivation) && motivations.length >= 5}
                                             />
                                             <label htmlFor={`motivation-${motivation}`} className="checkboxLabel">
-                                                {motivation}
+                                                {motivationLabels[motivation]}
                                             </label>
                                         </div>
                                     ))}
@@ -254,7 +260,7 @@ const POIForm = () => {
                                 </h5>
                                 <p className="sectionDescription">Selecione exatamente 5 hobbies:</p>
                                 <div className="checkboxGrid">
-                                    {hobbyLabels.map((hobby) => (
+                                    {hobbiesOptions.map((hobby) => (
                                         <div key={hobby} className="checkboxItem">
                                             <input
                                                 type="checkbox"
@@ -264,7 +270,7 @@ const POIForm = () => {
                                                 disabled={!hobbies.includes(hobby) && hobbies.length >= 5}
                                             />
                                             <label htmlFor={`hobby-${hobby}`} className="checkboxLabel">
-                                                {hobby}
+                                                {hobbyLabels[hobby]}
                                             </label>
                                         </div>
                                     ))}
@@ -280,7 +286,7 @@ const POIForm = () => {
                                 </h5>
                                 <p className="sectionDescription">Selecione exatamente 5 temas:</p>
                                 <div className="checkboxGrid">
-                                    {themeLabels.map((theme) => (
+                                    {themesOptions.map((theme) => (
                                         <div key={theme} className="checkboxItem">
                                             <input
                                                 type="checkbox"
@@ -290,7 +296,7 @@ const POIForm = () => {
                                                 disabled={!themes.includes(theme) && themes.length >= 5}
                                             />
                                             <label htmlFor={`theme-${theme}`} className="checkboxLabel">
-                                                {theme}
+                                                {themeLabels[theme]}
                                             </label>
                                         </div>
                                     ))}
@@ -461,7 +467,7 @@ const POIForm = () => {
                                     tamanho="md"
                                     outline={true}
                                     className="cancelButton"
-                                    aoClicar={() => navigate("/")}
+                                    aoClicar={() => setShowCancelModal(true)}
                                 >
                                     <i className="bi bi-x-circle"></i>
                                     Cancelar
@@ -482,6 +488,27 @@ const POIForm = () => {
                 </div>
             </div>
             <Footer />
+            {showCancelModal && (
+                <Modal
+                    titulo="Cancelar Cadastro"
+                    texto="Tem certeza que deseja cancelar o cadastro? Todos os dados preenchidos serão perdidos."
+                    txtBtn01="Confirmar"
+                    onClickBtn01={() => navigate("/")}
+                    txtBtn02="Voltar"
+                    onClickBtn02={() => setShowCancelModal(false)}
+                    onClickBtnClose={() => setShowCancelModal(false)}
+                />
+            )}
+
+            {showSuccessModal && (
+                <Modal
+                    titulo="Cadastro Realizado!"
+                    texto="POI cadastrado com sucesso!"
+                    txtBtn01="Voltar à Página Inicial"
+                    onClickBtn01={() => navigate("/")}
+                    onClickBtnClose={() => navigate("/")} 
+                />
+            )}
         </div >
     );
 }
