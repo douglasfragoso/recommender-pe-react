@@ -5,6 +5,9 @@ import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { saveUser } from '../../../services/user';
 import '../../../App.css';
+import Modal from '../../../components/Modal';
+import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
 
 
 const UserForm = () => {
@@ -36,6 +39,8 @@ const UserForm = () => {
     const [error, setError] = useState("");
     const [carregando, setCarregando] = useState(false);
     const navigate = useNavigate();
+    const [showCancelModal, setShowCancelModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -94,8 +99,7 @@ const UserForm = () => {
             console.log("🎉 6. 'saveUser' retornou um resultado do backend:", result);
 
             if (result.success) {
-                alert("Usuário cadastrado com sucesso!");
-                navigate("/login");
+                setShowSuccessModal(true);
             } else {
                 const errorMessage = result.messages?.join(', ') || "Erro ao cadastrar";
                 console.error("❌ Erro retornado pelo backend:", errorMessage);
@@ -159,6 +163,7 @@ const UserForm = () => {
 
     return (
         <div className="containerForm">
+             <Header />
             <div className="formBox">
                 <div className="formContent">
                     <div className="header">
@@ -504,7 +509,7 @@ const UserForm = () => {
                                     tamanho="md"
                                     outline={true}
                                     className="cancelButton"
-                                    aoClicar={() => navigate("/")}
+                                    aoClicar={() => setShowCancelModal(true)}
                                 >
                                     <i className="bi bi-x-circle"></i>
                                     Cancelar
@@ -525,6 +530,29 @@ const UserForm = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
+
+            {showCancelModal && (
+                <Modal
+                    titulo="Cancelar Cadastro"
+                    texto="Tem certeza que deseja cancelar o cadastro? Todos os dados preenchidos serão perdidos."
+                    txtBtn01="Confirmar"
+                    onClickBtn01={() => navigate("/")}
+                    txtBtn02="Voltar"
+                    onClickBtn02={() => setShowCancelModal(false)}
+                    onClickBtnClose={() => setShowCancelModal(false)}
+                />
+            )}
+
+            {showSuccessModal && (
+                <Modal
+                    titulo="Cadastro Realizado!"
+                    texto="Usuário cadastrado com sucesso! Você será redirecionado para a página de login."
+                    txtBtn01="Ir para Login"
+                    onClickBtn01={() => navigate("/login")}
+                    onClickBtnClose={() => navigate("/login")}
+                />
+            )}
         </div>
     );
 }

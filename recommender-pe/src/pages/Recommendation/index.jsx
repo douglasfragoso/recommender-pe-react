@@ -5,6 +5,7 @@ import './recommendationResults.css';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Button from '../../components/Button';
+import Modal from '../../components/Modal';
 import { sendScores } from '../../services/recommender';
 import '../../App.css';
 
@@ -13,6 +14,7 @@ const RecommendationResults = () => {
     const recommendations = state?.recommendations || [];
     const recommendationId = state?.recommendationId;
     const navigate = useNavigate();
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const [scores, setScores] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,7 +49,8 @@ const RecommendationResults = () => {
             }));
 
             await sendScores(recommendationId, scoresArray);
-            setSubmitMessage('Obrigado por avaliar as recomendações!');
+            setShowSuccessModal(true);
+            setSubmitMessage('');
 
             setTimeout(() => {
                 navigate('/');
@@ -188,6 +191,16 @@ const RecommendationResults = () => {
             </div>
 
             <Footer />
+            
+            {showSuccessModal && (
+                <Modal
+                    titulo="Avaliações Enviadas!"
+                    texto="Obrigado por avaliar as recomendações! Sua contribuição ajuda a melhorar nosso sistema."
+                    txtBtn01="Voltar à Página Inicial"
+                    onClickBtn01={() => navigate("/")}
+                    onClickBtnClose={() => navigate("/")} 
+                />
+            )}
         </div>
     );
 }
