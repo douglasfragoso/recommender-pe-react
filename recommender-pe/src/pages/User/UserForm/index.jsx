@@ -14,7 +14,7 @@ const UserForm = () => {
     // Dados Pessoais
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [age, setAge] = useState("");
+    const [birthDate, setBirthDate] = useState("");
     const [gender, setGender] = useState("");
 
     // Documentos e Contato
@@ -72,7 +72,7 @@ const UserForm = () => {
         const userData = {
             firstName,
             lastName,
-            age: parseInt(age),
+            birthDate,
             gender,
             cpf: cpf.replace(/\D/g, ''),
             phone: phone.replace(/\D/g, ''),
@@ -212,18 +212,15 @@ const UserForm = () => {
                                         />
                                     </div>
                                     <div className="inputGroup">
-                                        <label htmlFor="age" className="label">
-                                            Idade <span className="required">*</span>
+                                        <label htmlFor="birthDate" className="label">
+                                            Data de Nascimento <span className="required">*</span>
                                         </label>
                                         <input
-                                            type="number"
-                                            id="age"
+                                            type="date"
+                                            id="birthDate"
                                             className="input"
-                                            placeholder="Digite sua idade"
-                                            value={age}
-                                            onChange={(e) => setAge(e.target.value)}
-                                            min="1"
-                                            max="120"
+                                            value={birthDate}
+                                            onChange={(e) => setBirthDate(e.target.value)}
                                             required
                                         />
                                     </div>
