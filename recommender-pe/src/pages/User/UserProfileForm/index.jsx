@@ -1,29 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import './userProfileForm.css';
 import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { saveUser } from '../../../services/user';
+import { updateUser, getUserById } from '../../../services/user';
 import '../../../App.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import Modal from '../../../components/Modal';
 import Footer from '../../../components/Footer';
-import './userForm.css';
+import { useContext } from 'react';
+import { GlobalContext } from '../../../context/GlobalContext';
 
+const UserProfileForm = () => {
+    const navigate = useNavigate();
+    const { usuarioLogado } = useContext(GlobalContext);
 
-const UserForm = () => {
-    // Dados Pessoais
+    // Dados Pessoais (apenas campos permitidos para updateUser)
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [birthDate, setBirthDate] = useState("");
     const [gender, setGender] = useState("");
 
-    // Documentos e Contato
-    const [cpf, setCpf] = useState("");
+    // Contato
     const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-
-    // Segurança
-    const [userPassword, setUserPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
 
     // Endereço
     const [street, setStreet] = useState("");
@@ -37,49 +35,58 @@ const UserForm = () => {
 
     const [error, setError] = useState("");
     const [carregando, setCarregando] = useState(false);
-    const navigate = useNavigate();
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+    // Carregar dados do usuário logado
+    useEffect(() => {
+        if (usuarioLogado) {
+            loadUserData();
+        }
+    }, [usuarioLogado]);
+
+    const loadUserData = async () => {
+        setCarregando(true);
+        try {
+            const response = await getUserById(usuarioLogado.id);
+            if (response.success) {
+                const user = response.data;
+                setFirstName(user.firstName);
+                setLastName(user.lastName);
+                setBirthDate(user.birthDate);
+                setGender(user.gender);
+                setPhone(user.phone);
+                setStreet(user.address.street);
+                setNumber(user.address.number);
+                setComplement(user.address.complement);
+                setNeighborhood(user.address.neighborhood);
+                setCity(user.address.city);
+                setState(user.address.state);
+                setCountry(user.address.country);
+                setZipCode(user.address.zipCode);
+            }
+        } catch (error) {
+            setError("Erro ao carregar dados do usuário");
+            console.error("Erro:", error);
+        } finally {
+            setCarregando(false);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("✅ 1. handleSubmit iniciado. O recarregamento da página foi prevenido.");
-
         setError("");
         setCarregando(true);
-
-        // Validação da senha
-        if (userPassword !== confirmPassword) {
-            console.error("❌ Erro: As senhas não coincidem.");
-            setError("As senhas não coincidem");
-            setCarregando(false);
-            return;
-        }
-
-        console.log("✅ 2. Validação de senhas (coincidência) passou.");
-
-        const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=*])(?=\S+$).{8,}$/;
-        if (!passwordRegex.test(userPassword)) {
-            console.error("❌ Erro: A senha não atende aos requisitos do regex.");
-            setError("A senha deve conter maiúsculas, minúsculas, números e caracteres especiais.");
-            setCarregando(false);
-            return;
-        }
-
-        console.log("✅ 3. Validação de complexidade da senha (regex) passou.");
 
         const userData = {
             firstName,
             lastName,
             birthDate,
             gender,
-            cpf: cpf.replace(/\D/g, ''),
             phone: phone.replace(/\D/g, ''),
-            email,
-            userPassword,
             address: {
                 street,
-                number: parseInt(number),
+                number: parseInt(number) || 0,
                 complement,
                 neighborhood,
                 city,
@@ -89,37 +96,23 @@ const UserForm = () => {
             }
         };
 
-        console.log("✅ 4. Objeto 'userData' foi criado. Dados que serão enviados:", userData);
-
         try {
-            console.log("⏳ 5. Tentando chamar 'saveUser'. A requisição para o backend será feita agora...");
-            const result = await saveUser(userData);
-
-            console.log("🎉 6. 'saveUser' retornou um resultado do backend:", result);
+            const result = await updateUser(userData);
 
             if (result.success) {
                 setShowSuccessModal(true);
             } else {
-                const errorMessage = result.messages?.join(', ') || "Erro ao cadastrar";
-                console.error("❌ Erro retornado pelo backend:", errorMessage);
+                const errorMessage = result.messages?.join(', ') || "Erro ao atualizar perfil";
                 setError(errorMessage);
             }
         } catch (erro) {
-            console.error("💥 7. Ocorreu um erro CRÍTICO na chamada da API (bloco catch):", erro);
-            setError(erro.message || "Erro ao processar o cadastro");
-        }
-        finally {
+            setError(erro.message || "Erro ao processar atualização");
+        } finally {
             setCarregando(false);
-            console.log("🏁 8. Fim da execução de handleSubmit.");
         }
     };
 
-
-    const formatCPF = (value) => {
-        const numbers = value.replace(/\D/g, '');
-        return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-    };
-
+    // Funções de formatação
     const formatPhone = (value) => {
         const numbers = value.replace(/\D/g, '');
         if (numbers.length <= 10) {
@@ -128,11 +121,9 @@ const UserForm = () => {
         return numbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
     };
 
-    const handleCPFChange = (e) => {
-        const formatted = formatCPF(e.target.value);
-        if (formatted.replace(/\D/g, '').length <= 11) {
-            setCpf(formatted);
-        }
+    const formatCEP = (value) => {
+        const numbers = value.replace(/\D/g, '');
+        return numbers.replace(/(\d{5})(\d{3})/, '$1-$2');
     };
 
     const handlePhoneChange = (e) => {
@@ -140,11 +131,6 @@ const UserForm = () => {
         if (formatted.replace(/\D/g, '').length <= 11) {
             setPhone(formatted);
         }
-    };
-
-    const formatCEP = (value) => {
-        const numbers = value.replace(/\D/g, '');
-        return numbers.replace(/(\d{5})(\d{3})/, '$1-$2');
     };
 
     const handleCEPChange = (e) => {
@@ -159,18 +145,33 @@ const UserForm = () => {
         setNumber(value);
     };
 
+    const handleCancel = () => {
+        setShowCancelModal(true);
+    };
+
+    const handleSuccessConfirm = () => {
+        setShowSuccessModal(false);
+        navigate("/");
+    };
 
     return (
         <div className="containerForm">
             <div className="formBox">
                 <div className="formContent">
-                    <div className="formHeader">
+                    <div className="header">
                         <h2 className="formHeaderTitle">
-                            <i className="bi bi-person-circle icon"></i>
-                            Cadastro de Usuário
+                            <i className="bi bi-person-gear icon"></i>
+                            Editar Meu Perfil
                         </h2>
                     </div>
                     <div className="formBody">
+                        {error && (
+                            <div className="alert alert-danger" role="alert">
+                                <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                                {error}
+                            </div>
+                        )}
+
                         <form onSubmit={handleSubmit} className="form">
                             {/* Dados Pessoais */}
                             <div className="section">
@@ -181,7 +182,7 @@ const UserForm = () => {
                                 <div className="gridContainer">
                                     <div className="inputGroup">
                                         <label htmlFor="firstName" className="label">
-                                            Nome <span className="required">*</span>
+                                            Nome <span className="">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -191,12 +192,12 @@ const UserForm = () => {
                                             value={firstName}
                                             onChange={(e) => setFirstName(e.target.value)}
                                             maxLength="20"
-                                            required
+
                                         />
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="lastName" className="label">
-                                            Sobrenome <span className="required">*</span>
+                                            Sobrenome <span className="">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -206,12 +207,12 @@ const UserForm = () => {
                                             value={lastName}
                                             onChange={(e) => setLastName(e.target.value)}
                                             maxLength="20"
-                                            required
+
                                         />
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="birthDate" className="label">
-                                            Data de Nascimento <span className="required">*</span>
+                                            Data de Nascimento <span className="">*</span>
                                         </label>
                                         <input
                                             type="date"
@@ -219,19 +220,19 @@ const UserForm = () => {
                                             className="input"
                                             value={birthDate}
                                             onChange={(e) => setBirthDate(e.target.value)}
-                                            required
+
                                         />
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="gender" className="label">
-                                            Gênero <span className="required">*</span>
+                                            Gênero <span className="">*</span>
                                         </label>
                                         <select
                                             id="gender"
                                             className="input"
                                             value={gender}
                                             onChange={(e) => setGender(e.target.value)}
-                                            required
+
                                         >
                                             <option value="">Selecione o gênero</option>
                                             <option value="Masculino">Masculino</option>
@@ -242,30 +243,16 @@ const UserForm = () => {
                                 </div>
                             </div>
 
-                            {/* Documentos e Contato */}
+                            {/* Contato */}
                             <div className="section">
                                 <h5 className="sectionHeader">
-                                    <i className="bi bi-card-checklist sectionIcon"></i>
-                                    Documentos e Contato
+                                    <i className="bi bi-telephone sectionIcon"></i>
+                                    Contato
                                 </h5>
                                 <div className="gridContainer">
                                     <div className="inputGroup">
-                                        <label htmlFor="cpf" className="label">
-                                            CPF <span className="required">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="cpf"
-                                            className="input"
-                                            placeholder="000.000.000-00"
-                                            value={cpf}
-                                            onChange={handleCPFChange}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="inputGroup">
                                         <label htmlFor="phone" className="label">
-                                            Telefone <span className="required">*</span>
+                                            Telefone <span className="">*</span>
                                         </label>
                                         <input
                                             type="tel"
@@ -274,22 +261,7 @@ const UserForm = () => {
                                             placeholder="(00) 00000-0000"
                                             value={phone}
                                             onChange={handlePhoneChange}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="inputGroup">
-                                        <label htmlFor="email" className="label">
-                                            E-mail <span className="required">*</span>
-                                        </label>
-                                        <input
-                                            type="email"
-                                            id="email"
-                                            className="input"
-                                            placeholder="seu@email.com"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            maxLength="50"
-                                            required
+
                                         />
                                     </div>
                                 </div>
@@ -304,7 +276,7 @@ const UserForm = () => {
                                 <div className="gridContainer">
                                     <div className="inputGroup">
                                         <label htmlFor="street" className="label">
-                                            Rua <span className="required">*</span>
+                                            Rua <span className="">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -314,12 +286,12 @@ const UserForm = () => {
                                             value={street}
                                             onChange={(e) => setStreet(e.target.value)}
                                             maxLength="40"
-                                            required
+
                                         />
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="number" className="label">
-                                            Número <span className="required">*</span>
+                                            Número <span className="">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -328,7 +300,7 @@ const UserForm = () => {
                                             placeholder="Digite o número"
                                             value={number}
                                             onChange={handleNumberChange}
-                                            required
+
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -342,12 +314,12 @@ const UserForm = () => {
                                             placeholder="Apto, bloco, etc."
                                             value={complement}
                                             onChange={(e) => setComplement(e.target.value)}
-                                            maxLength="50"
+                                            maxLength="20"
                                         />
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="neighborhood" className="label">
-                                            Bairro <span className="required">*</span>
+                                            Bairro <span className="">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -357,12 +329,12 @@ const UserForm = () => {
                                             value={neighborhood}
                                             onChange={(e) => setNeighborhood(e.target.value)}
                                             maxLength="30"
-                                            required
+
                                         />
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="city" className="label">
-                                            Cidade <span className="required">*</span>
+                                            Cidade <span className="">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -372,68 +344,41 @@ const UserForm = () => {
                                             value={city}
                                             onChange={(e) => setCity(e.target.value)}
                                             maxLength="30"
-                                            required
+
                                         />
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="state" className="label">
-                                            Estado <span className="required">*</span>
+                                            Estado <span className="">*</span>
                                         </label>
-                                        <select
+                                        <input
+                                            type="text"
                                             id="state"
                                             className="input"
+                                            placeholder="Digite o estado"
                                             value={state}
                                             onChange={(e) => setState(e.target.value)}
-                                            required
-                                        >
-                                            <option value="">Selecione o estado</option>
-                                            <option value="AC">Acre</option>
-                                            <option value="AL">Alagoas</option>
-                                            <option value="AP">Amapá</option>
-                                            <option value="AM">Amazonas</option>
-                                            <option value="BA">Bahia</option>
-                                            <option value="CE">Ceará</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="ES">Espírito Santo</option>
-                                            <option value="GO">Goiás</option>
-                                            <option value="MA">Maranhão</option>
-                                            <option value="MT">Mato Grosso</option>
-                                            <option value="MS">Mato Grosso do Sul</option>
-                                            <option value="MG">Minas Gerais</option>
-                                            <option value="PA">Pará</option>
-                                            <option value="PB">Paraíba</option>
-                                            <option value="PR">Paraná</option>
-                                            <option value="PE">Pernambuco</option>
-                                            <option value="PI">Piauí</option>
-                                            <option value="RJ">Rio de Janeiro</option>
-                                            <option value="RN">Rio Grande do Norte</option>
-                                            <option value="RS">Rio Grande do Sul</option>
-                                            <option value="RO">Rondônia</option>
-                                            <option value="RR">Roraima</option>
-                                            <option value="SC">Santa Catarina</option>
-                                            <option value="SP">São Paulo</option>
-                                            <option value="SE">Sergipe</option>
-                                            <option value="TO">Tocantins</option>
-                                        </select>
+                                            maxLength="30"
+
+                                        />
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="country" className="label">
-                                            País <span className="required">*</span>
+                                            País <span className="">*</span>
                                         </label>
                                         <input
                                             type="text"
                                             id="country"
                                             className="input"
-                                            placeholder="Digite o país"
                                             value={country}
                                             onChange={(e) => setCountry(e.target.value)}
-                                            maxLength="20"
-                                            required
+                                            maxLength="30"
+
                                         />
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="zipCode" className="label">
-                                            CEP <span className="required">*</span>
+                                            CEP <span className="">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -442,55 +387,7 @@ const UserForm = () => {
                                             placeholder="00000-000"
                                             value={zipCode}
                                             onChange={handleCEPChange}
-                                            required
-                                        />
-                                        {zipCode.replace(/\D/g, '').length !== 8 && zipCode && (
-                                            <p className="errorText">CEP deve ter 8 dígitos</p>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
 
-                            {/* Segurança */}
-                            <div className="section">
-                                <h5 className="sectionHeader">
-                                    <i className="bi bi-shield-lock sectionIcon"></i>
-                                    Segurança
-                                </h5>
-                                <div className="gridContainer">
-                                    <div className="inputGroup">
-                                        <label htmlFor="userPassword" className="label">
-                                            Senha <span className="required">*</span>
-                                        </label>
-                                        <input
-                                            type="password"
-                                            id="userPassword"
-                                            className="input"
-                                            placeholder="Digite uma senha segura"
-                                            value={userPassword}
-                                            onChange={(e) => setUserPassword(e.target.value)}
-                                            minLength="8"
-                                            maxLength="100"
-                                            required
-                                        />
-                                        <p className="passwordHint">
-                                            A senha deve ter pelo menos 8 caracteres, incluindo maiúsculas, minúsculas, números e caracteres especiais.
-                                        </p>
-                                    </div>
-                                    <div className="inputGroup">
-                                        <label htmlFor="confirmPassword" className="label">
-                                            Confirmar Senha <span className="required">*</span>
-                                        </label>
-                                        <input
-                                            type="password"
-                                            id="confirmPassword"
-                                            className="input"
-                                            placeholder="Confirme sua senha"
-                                            value={confirmPassword}
-                                            onChange={(e) => setConfirmPassword(e.target.value)}
-                                            minLength="8"
-                                            maxLength="100"
-                                            required
                                         />
                                     </div>
                                 </div>
@@ -504,7 +401,7 @@ const UserForm = () => {
                                     tamanho="md"
                                     outline={true}
                                     className="cancelButton"
-                                    aoClicar={() => setShowCancelModal(true)}
+                                    aoClicar={handleCancel}
                                 >
                                     <i className="bi bi-x-circle"></i>
                                     Cancelar
@@ -517,7 +414,7 @@ const UserForm = () => {
                                     className="submitButton"
                                     disabled={carregando}
                                 >
-                                    {carregando ? 'Carregando...' : 'Cadastrar'}
+                                    {carregando ? 'Carregando...' : 'Atualizar Perfil'}
                                     <i className="bi bi-check2-circle"></i>
                                 </Button>
                             </div>
@@ -529,8 +426,8 @@ const UserForm = () => {
 
             {showCancelModal && (
                 <Modal
-                    titulo="Cancelar Cadastro"
-                    texto="Tem certeza que deseja cancelar o cadastro? Todos os dados preenchidos serão perdidos."
+                    titulo="Cancelar Edição"
+                    texto="Tem certeza que deseja cancelar a edição? Todas as alterações serão perdidas."
                     txtBtn01="Confirmar"
                     onClickBtn01={() => navigate("/")}
                     txtBtn02="Voltar"
@@ -541,15 +438,15 @@ const UserForm = () => {
 
             {showSuccessModal && (
                 <Modal
-                    titulo="Cadastro Realizado!"
-                    texto="Usuário cadastrado com sucesso! Você será redirecionado para a página de login."
-                    txtBtn01="Ir para Login"
-                    onClickBtn01={() => navigate("/login")}
-                    onClickBtnClose={() => navigate("/login")}
+                    titulo="Perfil Atualizado!"
+                    texto="Seu perfil foi atualizado com sucesso!"
+                    txtBtn01="OK"
+                    onClickBtn01={handleSuccessConfirm}
+                    onClickBtnClose={handleSuccessConfirm}
                 />
             )}
         </div>
     );
 }
 
-export default UserForm;
+export default UserProfileForm;

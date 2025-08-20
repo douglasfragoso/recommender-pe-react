@@ -54,7 +54,19 @@ export const getUserById = async (id) => {
 
 export const updateUser = async (dadosUser) => {
     try {
-        const response = await api.put(`/user/id/${dadosUser.id}`, dadosUser);
+        const response = await api.patch(`user/profile/me`, dadosUser);
+        return {
+            success: true,
+            data: response.data
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export const updateUserById = async (id, dadosUser) => {
+    try {
+        const response = await api.patch(`/user/id/${id}`, dadosUser);
         return {
             success: true,
             data: response.data

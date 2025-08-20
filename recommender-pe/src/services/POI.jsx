@@ -27,9 +27,9 @@ export const savePOI = async (POI) => {
     }
 };
 
-export const updatePOI = async (dadosPOI) => {
+export const updatePOI = async (id, dadosPOI) => {
     try {
-        const response = await api.put(`/poi/id/${dadosPOI.id}`, dadosPOI);
+        const response = await api.patch(`/poi/id/${id}`, dadosPOI);
         return {
             success: true,
             data: response.data

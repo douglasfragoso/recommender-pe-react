@@ -5,7 +5,7 @@ import { getAllUsers } from "../../services/user";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
 import { useContext } from "react";
-import "./UserList.css";
+import "./userList.css";
 import Button from "../../components/Button";
 import '../../App.css';
 
@@ -86,10 +86,10 @@ const UserList = () => {
     };
 
     return (
-        <div className="containerForm">
+        <div className="userListContainer">
             <Header />
 
-            <div className="formBox">
+            <div className="userListBox">
                 <div className="formContent">
                     <div className="header">
                         <h2 className="headerTitle">
@@ -128,7 +128,7 @@ const UserList = () => {
                                     <tr>
                                         <th scope="col">ID</th>
                                         <th scope="col">Nome</th>
-                                        <th scope="col">Idade</th>
+                                        <th scope="col">Data de Nasc.</th>
                                         <th scope="col">Gênero</th>
                                         <th scope="col">CPF</th>
                                         <th scope="col">Telefone</th>
@@ -154,7 +154,7 @@ const UserList = () => {
                                             <tr key={user.id}>
                                                 <th scope="row">{user.id}</th>
                                                 <td>{user.firstName} {user.lastName}</td>
-                                                <td>{user.age}</td>
+                                                <td>{user.birthDate}</td>
                                                 <td>{user.gender}</td>
                                                 <td>{maskCPF(user.cpf)}</td>
                                                 <td>{user.phone}</td>
@@ -166,7 +166,7 @@ const UserList = () => {
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-primary"
-                                                                onClick={() => navigate(`/user/${user.id}`)}
+                                                                onClick={() => navigate(`/users/${user.id}`)}
                                                             >
                                                                 <i className="bi bi-pencil"></i> Editar
                                                             </button>

@@ -9,6 +9,8 @@ import Protection from './protection';
 import RecommendationResults from '../pages/Recommendation';
 import UserList from '../pages/User';
 import NotFoundPage from '../pages/NotFoundPage';
+import UserProfileForm from '../pages/User/UserProfileForm';
+import UserAdminForm from '../pages/User/UserAdminForm';     
 
 
 const RouteService = () => {
@@ -29,6 +31,18 @@ const RouteService = () => {
                 <Route path="/users" element={
                     <Protection allowedRoles={['ADMIN', 'MASTER']}>
                         <UserList />
+                    </Protection>
+                } />
+
+                <Route path="/profile/me" element={
+                    <Protection allowedRoles={['ADMIN', 'USER', 'MASTER']}>
+                        <UserProfileForm />
+                    </Protection>
+                } />
+
+                <Route path="/users/:id" element={
+                    <Protection allowedRoles={['ADMIN', 'MASTER']}>
+                        <UserAdminForm />
                     </Protection>
                 } />
 
