@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './RecommendationForm.css';
 import Button from '../../../components/Button';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';

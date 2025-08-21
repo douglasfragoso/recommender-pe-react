@@ -5,7 +5,6 @@ import { getAllPOI } from "../../services/POI";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
 import { useContext } from "react";
-import "./POIList.css";
 import Button from "../../components/Button";
 import '../../App.css';
 
@@ -79,13 +78,13 @@ const POIList = () => {
     };
 
     return (
-        <div className="containerForm">
+        <div className="ListContainer">
             <Header />
 
-            <div className="formBox">
-                <div className="formContent">
-                    <div className="header">
-                        <h2 className="headerTitle">
+            <div className="ListBox">
+                <div className="ListContent">
+                    <div className="formHeader">
+                        <h2 className="formHeaderTitle">
                             <i className="bi bi-geo-alt-fill icon"></i>
                             Pontos de Interesse
                         </h2>

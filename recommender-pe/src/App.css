@@ -1,9 +1,9 @@
 .buttonGroup {
   display: flex;
-  justify-content: flex-end; /* Alinha os botões à direita */
-  gap: 6px; /* Espaço entre os botões */
+  justify-content: flex-end;
+  gap: 6px;
   margin-top: 6px;
-  flex-wrap: wrap; /* Evita quebra feia em telas pequenas */
+  flex-wrap: wrap;
 }
 
 .submitButton {
@@ -24,20 +24,354 @@
 }
 
 .submitButton:hover {
-    background-color: #a3780a; 
-    color: white;
+  background-color: #a3780a;
+  color: white;
 }
 
 .cancelButton:hover {
-    background-color: #2d3748; 
-    color: white;
+  background-color: #2d3748;
+  color: white;
 }
 
 .submitButton:disabled,
 .submitButton[disabled] {
-  background-color: #d1d5db; /* cinza claro */
+  background-color: #d1d5db;
   border-color: #d1d5db;
-  color: #6b7280; /* cinza escuro */
+  color: #6b7280;
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+/* FORMULÁRIOS UNIFICADOS */
+.containerForm {
+  min-height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.formBox {
+  width: 100%;
+  max-width: 896px;
+  margin: 20px 0;
+  flex: 1;
+}
+
+.formContent {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.formHeader,
+.header {
+  background-color: #b8860b;
+  padding: 16px 24px;
+  text-align: center;
+}
+
+.formHeaderTitle,
+.headerTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.formBody {
+  padding: 24px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionHeader {
+  font-size: 18px;
+  font-weight: 600;
+  color: #b8860b;
+  border-bottom: 2px solid #b8860b;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.inputGroup {
+  margin-bottom: 16px;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.required {
+  color: #ef4444;
+}
+
+.input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: #b8860b;
+}
+
+.passwordHint {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 4px 0 0 0;
+}
+
+.textArea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.checkboxGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+}
+
+.checkboxItem input {
+  margin-right: 8px;
+}
+
+.checkboxLabel {
+  font-size: 0.9rem;
+}
+
+.selectionCount {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.errorText {
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.errorMessage {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.containerForm>*:last-child {
+  margin-top: auto;
+}
+
+@media (max-width: 640px) {
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .gridContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .checkboxGrid {
+    grid-template-columns: 1fr;
+  }
+
+  /* LISTAGEM */
+  .ListContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 0;
+    background-color: #f8f9fa;
+  }
+
+  .ListBox {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    flex: 1;
+    padding: 20px;
+  }
+
+  .ListContent {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .headerTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .formBody {
+    padding: 24px;
+  }
+
+  .sectionHeader {
+    font-size: 18px;
+    font-weight: 600;
+    color: #b8860b;
+    /* Cor principal alterada */
+    border-bottom: 2px solid #b8860b;
+    /* Cor principal alterada */
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sectionIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    padding: 12px;
+    text-align: left;
+  }
+
+  .table td {
+    padding: 12px;
+    border-top: 1px solid #dee2e6;
+    vertical-align: top;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+
+  .page-item.active .page-link {
+    background-color: #b8860b;
+    /* Cor principal alterada */
+    border-color: #b8860b;
+    /* Cor principal alterada */
+    color: white;
+  }
+
+  .page-link {
+    color: #b8860b;
+    /* Cor principal alterada */
+    min-width: 40px;
+    text-align: center;
+  }
+
+  .page-link:hover {
+    color: #8a6708;
+    /* Tom mais escuro da cor principal */
+    background-color: #f8f9fa;
+  }
+
+  .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+  }
+
+  .table-responsive {
+    min-height: 300px;
+  }
+
+  .text-muted {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+
+  @media (max-width: 768px) {
+
+    .table th,
+    .table td {
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    .btn {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    .headerTitle {
+      font-size: 20px;
+    }
+
+    .pagination {
+      margin: 20px 0;
+    }
+  }
 }

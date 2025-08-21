@@ -5,7 +5,6 @@ import { getAllUsers } from "../../services/user";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
 import { useContext } from "react";
-import "./userList.css";
 import Button from "../../components/Button";
 import '../../App.css';
 
@@ -86,11 +85,11 @@ const UserList = () => {
     };
 
     return (
-        <div className="userListContainer">
+        <div className="listContainer">
             <Header />
 
-            <div className="userListBox">
-                <div className="formContent">
+            <div className="listBox">
+                <div className="ListContent">
                     <div className="header">
                         <h2 className="headerTitle">
                             <i className="bi bi-people-fill icon"></i>
@@ -134,6 +133,7 @@ const UserList = () => {
                                         <th scope="col">Telefone</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Perfil</th>
+                                        <th scope="col">Status</th>
                                         {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
                                             <th scope="col">Opções</th>
                                         )}
@@ -160,6 +160,7 @@ const UserList = () => {
                                                 <td>{user.phone}</td>
                                                 <td>{user.email}</td>
                                                 <td>{user.role}</td>
+                                                <td>{user.status}</td>
                                                 {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
                                                     <td>
                                                         <div className="btn-group" role="group">

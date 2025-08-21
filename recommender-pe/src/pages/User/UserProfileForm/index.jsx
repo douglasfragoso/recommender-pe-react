@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './userProfileForm.css';
 import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { updateUser, getUserById } from '../../../services/user';
@@ -40,7 +39,7 @@ const UserProfileForm = () => {
 
     // Carregar dados do usuário logado
     useEffect(() => {
-        if (usuarioLogado) {
+        if (usuarioLogado && usuarioLogado.id) {
             loadUserData();
         }
     }, [usuarioLogado]);

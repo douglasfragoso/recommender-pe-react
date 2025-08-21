@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './userAdminForm.css';
 import Button from '../../../components/Button';
 import { useNavigate, useParams } from 'react-router-dom';
 import { updateUserById, getUserById } from '../../../services/user';

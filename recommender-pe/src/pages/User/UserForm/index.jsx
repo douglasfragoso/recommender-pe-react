@@ -6,8 +6,6 @@ import '../../../App.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Modal from '../../../components/Modal';
 import Footer from '../../../components/Footer';
-import './userForm.css';
-
 
 const UserForm = () => {
     // Dados Pessoais

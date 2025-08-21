@@ -2,7 +2,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../components/Button';
-import './POIForm.css';
 import { savePOI } from '../../../services/POI';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
