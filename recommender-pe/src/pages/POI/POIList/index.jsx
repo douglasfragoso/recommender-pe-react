@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import { getAllPOI } from "../../services/POI";
+import Header from "../../../components/Header";
+import Footer from "../../../components/Footer";
+import { getAllPOI } from "../../../services/POI";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../context/GlobalContext";
+import { GlobalContext } from "../../../context/GlobalContext";
 import { useContext } from "react";
-import Button from "../../components/Button";
-import '../../App.css';
+import Button from "../../../components/Button";
+import '../../../App.css';
 
 const POIList = () => {
     const navigate = useNavigate();
@@ -171,13 +171,6 @@ const POIList = () => {
                                                                 onClick={() => navigate(`/POIs/${poi.id}`)}
                                                             >
                                                                 <i className="bi bi-pencil"></i> Editar
-                                                            </button>
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-danger"
-                                                            // onClick={() => handleDelete(poi.id)}
-                                                            >
-                                                                <i className="bi bi-trash"></i> Excluir
                                                             </button>
                                                         </div>
                                                     </td>

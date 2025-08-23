@@ -4,14 +4,15 @@ import POIForm from '../pages/POI/POIForm';
 import Home from '../pages/Home';
 import RecommendationForm from '../pages/Recommendation/RecommendationForm';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import POIList from '../pages/POI';
+import POIList from '../pages/POI/POIList';
 import Protection from './protection';
 import RecommendationResults from '../pages/Recommendation';
 import UserList from '../pages/User';
 import NotFoundPage from '../pages/NotFoundPage';
 import UserProfileForm from '../pages/User/UserProfileForm';
-import UserAdminForm from '../pages/User/UserAdminForm';   
-import POIUpdateForm from '../pages/POI/POIUpdateForm';  
+import UserAdminForm from '../pages/User/UserAdminForm';
+import POIUpdateForm from '../pages/POI/POIUpdateForm';
+import POICards from '../pages/POI/POICard';
 
 
 const RouteService = () => {
@@ -22,8 +23,7 @@ const RouteService = () => {
                 <Route path="/register" element={<UsuarioForm />} />
                 <Route path="/" element={<Home />} />
                 <Route path="*" element={<NotFoundPage />} />
-
-                
+                <Route path="/POIs/cards" element={<POICards />} />
 
                 <Route path="/users" element={
                     <Protection allowedRoles={['ADMIN', 'MASTER']}>
@@ -43,7 +43,7 @@ const RouteService = () => {
                     </Protection>
                 } />
 
-                <Route path="/POIs" element={
+                <Route path="/POIs/list" element={
                     <Protection allowedRoles={['ADMIN', 'MASTER']}>
                         <POIList />
                     </Protection>

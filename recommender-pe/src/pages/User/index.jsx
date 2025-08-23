@@ -166,7 +166,7 @@ const UserList = () => {
                                                         <div className="btn-group" role="group">
                                                             <button
                                                                 type="button"
-                                                                className="btn btn-primary"
+                                                                className="btn btn-primary mx-2"
                                                                 onClick={() => navigate(`/users/${user.id}`)}
                                                             >
                                                                 <i className="bi bi-pencil"></i> Editar

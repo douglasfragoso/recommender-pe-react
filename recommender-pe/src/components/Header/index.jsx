@@ -1,9 +1,9 @@
-import logo from '../../assets/images/logo.webp';
-import './header.css';
-import Button from '../Button';
-import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/images/logo.webp';
 import { GlobalContext } from '../../context/GlobalContext';
+import Button from '../Button';
+import './header.css';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -16,6 +16,13 @@ const Header = () => {
         } else {
             navigate('/login');
         }
+    };
+
+    const getPOIUrl = () => {
+        if (!usuarioLogado) return "/POIs/cards"; 
+        if (usuarioLogado.role === "USER") return "/POIs/cards";
+        if (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") return "/POIs/list";
+        return "/POIs/cards";
     };
 
     return (
@@ -49,22 +56,24 @@ const Header = () => {
                                     <a className="nav-link" href="/">Dashboard</a>
                                 </li>
                             )}
-                             {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
+                            {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/users">Usuários</a>
+                                </li>
+                            )}
                             <li className="nav-item">
-                                <a className="nav-link" href="/users">Usuários</a>
+                                <a className="nav-link"  href={getPOIUrl()}>Pontos de Interesse</a>
                             </li>
-                             )}
-                            <li className="nav-item">
-                                <a className="nav-link" href="/POIs">Pontos de Interesse</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/recommendation">Recomendações</a>
-                            </li>
-                             {usuarioLogado && (
-                            <li className="nav-item">
-                                <a className="nav-link" href="/profile/me">Editar Perfil</a>
-                            </li>
-                             )}
+                            {usuarioLogado && (
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/recommendation">Recomendações</a>
+                                </li>
+                            )}
+                            {usuarioLogado && (
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/profile/me">Editar Perfil</a>
+                                </li>
+                            )}
                             <li className="nav-item">
                                 <Button
                                     cor="primary"

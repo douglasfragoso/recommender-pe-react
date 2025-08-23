@@ -212,6 +212,30 @@
   margin-top: auto;
 }
 
+/* Estilo para o badge de total de POIs */
+.badge.bg-primary {
+  background-color: #b8860b !important;
+  color: white;
+}
+
+/* Estilo para o cabeçalho do card */
+.card-header.bg-primary {
+  background-color: #b8860b !important;
+  color: white;
+}
+
+/* Estilo para os títulos de seção */
+.sectionHeader {
+  color: #b8860b;
+  border-bottom-color: #b8860b;
+}
+
+/* Estilo para ícones */
+.icon,
+.sectionIcon {
+  color: #b8860b;
+}
+
 @media (max-width: 640px) {
   .buttonGroup {
     flex-direction: column;
