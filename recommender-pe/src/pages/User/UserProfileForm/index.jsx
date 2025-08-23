@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { updateUser, getUserById } from '../../../services/user';
+import { updateUser, getOwnProfile } from '../../../services/user';
 import '../../../App.css';
 import Modal from '../../../components/Modal';
 import Footer from '../../../components/Footer';
@@ -37,9 +37,8 @@ const UserProfileForm = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-    // Carregar dados do usuário logado
     useEffect(() => {
-        if (usuarioLogado && usuarioLogado.id) {
+        if (usuarioLogado) {
             loadUserData();
         }
     }, [usuarioLogado]);
@@ -47,7 +46,7 @@ const UserProfileForm = () => {
     const loadUserData = async () => {
         setCarregando(true);
         try {
-            const response = await getUserById(usuarioLogado.id);
+            const response = await getOwnProfile();
             if (response.success) {
                 const user = response.data;
                 setFirstName(user.firstName);
@@ -55,22 +54,24 @@ const UserProfileForm = () => {
                 setBirthDate(user.birthDate);
                 setGender(user.gender);
                 setPhone(user.phone);
-                setStreet(user.address.street);
-                setNumber(user.address.number);
-                setComplement(user.address.complement);
-                setNeighborhood(user.address.neighborhood);
-                setCity(user.address.city);
-                setState(user.address.state);
-                setCountry(user.address.country);
-                setZipCode(user.address.zipCode);
+                setStreet(user.address.street || "");
+                setNumber(user.address.number ? user.address.number.toString() : "");
+                setComplement(user.address.complement || "");
+                setNeighborhood(user.address.neighborhood || "");
+                setCity(user.address.city || "");
+                setState(user.address.state || "");
+                setCountry(user.address.country || "Brasil");
+                setZipCode(user.address.zipCode || "");
             }
-        } catch (error) {
+        }
+        catch (error) {
             setError("Erro ao carregar dados do usuário");
             console.error("Erro:", error);
         } finally {
             setCarregando(false);
         }
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -181,7 +182,7 @@ const UserProfileForm = () => {
                                 <div className="gridContainer">
                                     <div className="inputGroup">
                                         <label htmlFor="firstName" className="label">
-                                            Nome <span className="">*</span>
+                                            Nome
                                         </label>
                                         <input
                                             type="text"
@@ -196,7 +197,7 @@ const UserProfileForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="lastName" className="label">
-                                            Sobrenome <span className="">*</span>
+                                            Sobrenome
                                         </label>
                                         <input
                                             type="text"
@@ -211,7 +212,7 @@ const UserProfileForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="birthDate" className="label">
-                                            Data de Nascimento <span className="">*</span>
+                                            Data de Nascimento 
                                         </label>
                                         <input
                                             type="date"
@@ -224,7 +225,7 @@ const UserProfileForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="gender" className="label">
-                                            Gênero <span className="">*</span>
+                                            Gênero 
                                         </label>
                                         <select
                                             id="gender"
@@ -251,7 +252,7 @@ const UserProfileForm = () => {
                                 <div className="gridContainer">
                                     <div className="inputGroup">
                                         <label htmlFor="phone" className="label">
-                                            Telefone <span className="">*</span>
+                                            Telefone 
                                         </label>
                                         <input
                                             type="tel"
@@ -275,7 +276,7 @@ const UserProfileForm = () => {
                                 <div className="gridContainer">
                                     <div className="inputGroup">
                                         <label htmlFor="street" className="label">
-                                            Rua <span className="">*</span>
+                                            Rua 
                                         </label>
                                         <input
                                             type="text"
@@ -290,7 +291,7 @@ const UserProfileForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="number" className="label">
-                                            Número <span className="">*</span>
+                                            Número 
                                         </label>
                                         <input
                                             type="text"
@@ -318,7 +319,7 @@ const UserProfileForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="neighborhood" className="label">
-                                            Bairro <span className="">*</span>
+                                            Bairro 
                                         </label>
                                         <input
                                             type="text"
@@ -333,7 +334,7 @@ const UserProfileForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="city" className="label">
-                                            Cidade <span className="">*</span>
+                                            Cidade 
                                         </label>
                                         <input
                                             type="text"
@@ -348,7 +349,7 @@ const UserProfileForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="state" className="label">
-                                            Estado <span className="">*</span>
+                                            Estado 
                                         </label>
                                         <input
                                             type="text"
@@ -363,7 +364,7 @@ const UserProfileForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="country" className="label">
-                                            País <span className="">*</span>
+                                            País 
                                         </label>
                                         <input
                                             type="text"
@@ -377,7 +378,7 @@ const UserProfileForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="zipCode" className="label">
-                                            CEP <span className="">*</span>
+                                            CEP 
                                         </label>
                                         <input
                                             type="text"

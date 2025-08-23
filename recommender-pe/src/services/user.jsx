@@ -52,6 +52,18 @@ export const getUserById = async (id) => {
     }
 };
 
+export const getOwnProfile = async () => {
+    try {
+        const response = await api.get('/user/profile/me');
+        return {
+            success: true,
+            data: response.data 
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
 export const updateUser = async (dadosUser) => {
     try {
         const response = await api.patch(`user/profile/me`, dadosUser);

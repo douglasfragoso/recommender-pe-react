@@ -175,7 +175,7 @@ const UserAdminForm = () => {
                                 <div className="gridContainer">
                                     <div className="inputGroup">
                                         <label htmlFor="firstName" className="label">
-                                            Nome <span className="">*</span>
+                                            Nome 
                                         </label>
                                         <input
                                             type="text"
@@ -190,7 +190,7 @@ const UserAdminForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="lastName" className="label">
-                                            Sobrenome <span className="">*</span>
+                                            Sobrenome 
                                         </label>
                                         <input
                                             type="text"
@@ -205,7 +205,7 @@ const UserAdminForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="birthDate" className="label">
-                                            Data de Nascimento <span className="">*</span>
+                                            Data de Nascimento 
                                         </label>
                                         <input
                                             type="date"
@@ -218,7 +218,7 @@ const UserAdminForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="gender" className="label">
-                                            Gênero <span className="">*</span>
+                                            Gênero 
                                         </label>
                                         <select
                                             id="gender"
@@ -245,7 +245,7 @@ const UserAdminForm = () => {
                                 <div className="gridContainer">
                                     <div className="inputGroup">
                                         <label htmlFor="cpf" className="label">
-                                            CPF <span className="">*</span>
+                                            CPF 
                                         </label>
                                         <input
                                             type="text"
@@ -259,7 +259,7 @@ const UserAdminForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="phone" className="label">
-                                            Telefone <span className="">*</span>
+                                            Telefone 
                                         </label>
                                         <input
                                             type="tel"
@@ -273,7 +273,7 @@ const UserAdminForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="email" className="label">
-                                            E-mail <span className="">*</span>
+                                            E-mail 
                                         </label>
                                         <input
                                             type="email"
@@ -298,7 +298,7 @@ const UserAdminForm = () => {
                                 <div className="gridContainer">
                                     <div className="inputGroup">
                                         <label htmlFor="role" className="label">
-                                            Perfil <span className="">*</span>
+                                            Perfil 
                                         </label>
                                         <select
                                             id="role"
@@ -314,7 +314,7 @@ const UserAdminForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="status" className="label">
-                                            Status <span className="">*</span>
+                                            Status 
                                         </label>
                                         <select
                                             id="status"
