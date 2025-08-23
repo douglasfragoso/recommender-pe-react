@@ -168,7 +168,7 @@ const POIList = () => {
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-primary"
-                                                                onClick={() => navigate(`/poi/${poi.id}`)}
+                                                                onClick={() => navigate(`/POIs/${poi.id}`)}
                                                             >
                                                                 <i className="bi bi-pencil"></i> Editar
                                                             </button>

@@ -10,7 +10,8 @@ import RecommendationResults from '../pages/Recommendation';
 import UserList from '../pages/User';
 import NotFoundPage from '../pages/NotFoundPage';
 import UserProfileForm from '../pages/User/UserProfileForm';
-import UserAdminForm from '../pages/User/UserAdminForm';     
+import UserAdminForm from '../pages/User/UserAdminForm';   
+import POIUpdateForm from '../pages/POI/POIUpdateForm';  
 
 
 const RouteService = () => {
@@ -22,11 +23,7 @@ const RouteService = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="*" element={<NotFoundPage />} />
 
-                <Route path="/POIs/register" element={
-                    <Protection allowedRoles={['ADMIN', 'MASTER']}>
-                        <POIForm />
-                    </Protection>
-                } />
+                
 
                 <Route path="/users" element={
                     <Protection allowedRoles={['ADMIN', 'MASTER']}>
@@ -49,6 +46,18 @@ const RouteService = () => {
                 <Route path="/POIs" element={
                     <Protection allowedRoles={['ADMIN', 'MASTER']}>
                         <POIList />
+                    </Protection>
+                } />
+
+                <Route path="/POIs/register" element={
+                    <Protection allowedRoles={['ADMIN', 'MASTER']}>
+                        <POIForm />
+                    </Protection>
+                } />
+
+                <Route path="/POIs/:id" element={
+                    <Protection allowedRoles={['ADMIN', 'MASTER']}>
+                        <POIUpdateForm />
                     </Protection>
                 } />
 

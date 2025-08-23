@@ -1,8 +1,8 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../../components/Button';
-import { savePOI } from '../../../services/POI';
+import { getPOIById, updatePOI } from '../../../services/POI';
 import Footer from '../../../components/Footer';
 import Modal from '../../../components/Modal';
 import '../../../App.css';
@@ -61,7 +61,7 @@ const themeLabels = {
     URBAN_ART: "Arte Urbana"
 };
 
-const POIForm = () => {
+const POIUpdateForm = () => {
     const [name, setName] = useState("");
     const [error, setError] = useState("");
     const [description, setDescription] = useState("");
@@ -80,6 +80,7 @@ const POIForm = () => {
     const navigate = useNavigate();
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const { id } = useParams();
 
     const motivationOptions = Object.keys(motivationLabels);
     const hobbiesOptions = Object.keys(hobbyLabels);
@@ -100,6 +101,55 @@ const POIForm = () => {
     const handleNumberChange = (e) => {
         const value = e.target.value.replace(/\D/g, '');
         setNumber(value);
+    };
+
+    useEffect(() => {
+        if (id) {
+            loadPOIData();
+        }
+    }, [id]);
+
+    const loadPOIData = async () => {
+        setCarregando(true);
+        try {
+            const result = await getPOIById(id);
+            if (result && result.data) {
+                const poiData = result.data;
+
+                setName(poiData.name || "");
+                setDescription(poiData.description || "");
+                setMotivations(poiData.motivations || []);
+                setHobbies(poiData.hobbies || []);
+                setThemes(poiData.themes || []);
+
+                // Lógica segura para o endereço
+                if (poiData.address) {
+                    setStreet(poiData.address.street || "");
+                    setNumber(poiData.address.number ? poiData.address.number.toString() : "");
+                    setComplement(poiData.address.complement || "");
+                    setNeighborhood(poiData.address.neighborhood || "");
+                    setCity(poiData.address.city || "");
+                    setState(poiData.address.state || "");
+                    setZipCode(poiData.address.zipCode || "");
+                    setCountry(poiData.address.country || "Brasil");
+                } else {
+                    // Se não houver endereço, limpa todos os campos
+                    setStreet("");
+                    setNumber("");
+                    setComplement("");
+                    setNeighborhood("");
+                    setCity("");
+                    setState("");
+                    setZipCode("");
+                    setCountry("Brasil");
+                }
+            }
+        } catch (error) {
+            console.error("💥 Erro ao carregar dados do POI:", error);
+            setError("Erro ao carregar dados do POI");
+        } finally {
+            setCarregando(false);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -139,10 +189,10 @@ const POIForm = () => {
         console.log("✅ 3. Objeto 'poiData' foi criado. Dados que serão enviados:", poiData);
 
         try {
-            console.log("⏳ 4. Tentando chamar 'savePOI'. Enviando dados ao backend...");
-            const result = await savePOI(poiData);
+            console.log("⏳ 4. Tentando chamar 'updatePOI'. Enviando dados ao backend...");
+            const result = await updatePOI(id, poiData);
 
-            console.log("🎉 5. 'savePOI' retornou um resultado:", result);
+            console.log("🎉 5. 'updatePOI' retornou um resultado:", result);
 
             if (result.success) {
                 setShowSuccessModal(true);
@@ -190,7 +240,7 @@ const POIForm = () => {
                                 <div className="gridContainer">
                                     <div className="inputGroup">
                                         <label htmlFor="name" className="label">
-                                            Nome do POI <span className="required">*</span>
+                                            Nome do POI
                                         </label>
                                         <input
                                             type="text"
@@ -205,7 +255,7 @@ const POIForm = () => {
                                     </div>
                                     <div className="inputGroup fullWidth">
                                         <label htmlFor="description" className="label">
-                                            Descrição <span className="required">*</span>
+                                            Descrição
                                         </label>
                                         <textarea
                                             id="description"
@@ -227,7 +277,7 @@ const POIForm = () => {
                             <div className="section">
                                 <h5 className="sectionHeader">
                                     <i className="bi bi-heart sectionIcon"></i>
-                                    Motivações <span className="required">*</span>
+                                    Motivações
                                 </h5>
                                 <p className="sectionDescription">Selecione exatamente 5 motivações:</p>
                                 <div className="checkboxGrid">
@@ -253,7 +303,7 @@ const POIForm = () => {
                             <div className="section">
                                 <h5 className="sectionHeader">
                                     <i className="bi bi-palette sectionIcon"></i>
-                                    Hobbies <span className="required">*</span>
+                                    Hobbies
                                 </h5>
                                 <p className="sectionDescription">Selecione exatamente 5 hobbies:</p>
                                 <div className="checkboxGrid">
@@ -279,7 +329,7 @@ const POIForm = () => {
                             <div className="section">
                                 <h5 className="sectionHeader">
                                     <i className="bi bi-tags sectionIcon"></i>
-                                    Temas <span className="required">*</span>
+                                    Temas
                                 </h5>
                                 <p className="sectionDescription">Selecione exatamente 5 temas:</p>
                                 <div className="checkboxGrid">
@@ -310,7 +360,7 @@ const POIForm = () => {
                                 <div className="gridContainer">
                                     <div className="inputGroup">
                                         <label htmlFor="street" className="label">
-                                            Rua <span className="required">*</span>
+                                            Rua
                                         </label>
                                         <input
                                             type="text"
@@ -325,7 +375,7 @@ const POIForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="number" className="label">
-                                            Número <span className="required">*</span>
+                                            Número
                                         </label>
                                         <input
                                             type="text"
@@ -353,7 +403,7 @@ const POIForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="neighborhood" className="label">
-                                            Bairro <span className="required">*</span>
+                                            Bairro
                                         </label>
                                         <input
                                             type="text"
@@ -368,7 +418,7 @@ const POIForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="city" className="label">
-                                            Cidade <span className="required">*</span>
+                                            Cidade
                                         </label>
                                         <input
                                             type="text"
@@ -383,7 +433,7 @@ const POIForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="state" className="label">
-                                            Estado <span className="required">*</span>
+                                            Estado
                                         </label>
                                         <select
                                             id="state"
@@ -424,7 +474,7 @@ const POIForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="country" className="label">
-                                            País <span className="required">*</span>
+                                            País
                                         </label>
                                         <input
                                             type="text"
@@ -439,7 +489,7 @@ const POIForm = () => {
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="zipCode" className="label">
-                                            CEP <span className="required">*</span>
+                                            CEP
                                         </label>
                                         <input
                                             type="text"
@@ -487,10 +537,10 @@ const POIForm = () => {
             <Footer />
             {showCancelModal && (
                 <Modal
-                    titulo="Cancelar Cadastro"
-                    texto="Tem certeza que deseja cancelar o cadastro? Todos os dados preenchidos serão perdidos."
+                    titulo="Cancelar Atualização"
+                    texto="Tem certeza que deseja cancelar a atualização do POI? Todos os dados preenchidos serão perdidos."
                     txtBtn01="Confirmar"
-                    onClickBtn01={() => navigate("/")}
+                    onClickBtn01={() => navigate("/POIs")}
                     txtBtn02="Voltar"
                     onClickBtn02={() => setShowCancelModal(false)}
                     onClickBtnClose={() => setShowCancelModal(false)}
@@ -499,15 +549,15 @@ const POIForm = () => {
 
             {showSuccessModal && (
                 <Modal
-                    titulo="Cadastro Realizado!"
-                    texto="POI cadastrado com sucesso!"
-                    txtBtn01="Voltar à Página Inicial"
-                    onClickBtn01={() => navigate("/")}
-                    onClickBtnClose={() => navigate("/")} 
+                    titulo="Atualização Realizada!"
+                    texto="POI atualizado com sucesso!"
+                    txtBtn01="Voltar aos POIs"
+                    onClickBtn01={() => navigate("/POIs")}
+                    onClickBtnClose={() => navigate("/POIs")}
                 />
             )}
         </div >
     );
 }
 
-export default POIForm;
+export default POIUpdateForm;

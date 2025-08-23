@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Button from '../../../components/Button';
-import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import Modal from '../../../components/Modal';
 import { getRecommendations } from "../../../services/recommender";
 
 const motivationLabels = {
@@ -75,6 +75,7 @@ const RecommendationForm = () => {
     const [country, setCountry] = useState("Brasil");
 
     const navigate = useNavigate();
+    const [showCancelModal, setShowCancelModal] = useState(false);
 
     const motivationOptions = Object.keys(motivationLabels);
     const hobbiesOptions = Object.keys(hobbyLabels);
@@ -165,7 +166,6 @@ const RecommendationForm = () => {
 
         return (
             <div className="containerForm">
-                <Header />
                 <div className="formBox">
                     <div className="formContent">
                         <div className="header">
@@ -387,10 +387,10 @@ const RecommendationForm = () => {
                                         tamanho="md"
                                         outline={true}
                                         className="cancelButton"
-                                        aoClicar={() => navigate("/")}
+                                        aoClicar={() => setShowCancelModal(true)}
                                     >
                                         <i className="bi bi-x-circle"></i>
-                                        Limpar
+                                        Cancelar
                                     </Button>
 
                                     <Button
@@ -410,6 +410,18 @@ const RecommendationForm = () => {
                     </div>
                 </div>
                 <Footer />
+
+                {showCancelModal && (
+                <Modal
+                    titulo="Cancelar Recomendação"
+                    texto="Tem certeza que deseja cancelar a recomendação? Todos os dados preenchidos serão perdidos."
+                    txtBtn01="Confirmar"
+                    onClickBtn01={() => navigate("/")}
+                    txtBtn02="Voltar"
+                    onClickBtn02={() => setShowCancelModal(false)}
+                    onClickBtnClose={() => setShowCancelModal(false)}
+                />
+            )}
             </div>
         );
     }
