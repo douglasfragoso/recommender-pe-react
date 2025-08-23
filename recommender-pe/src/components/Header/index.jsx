@@ -44,18 +44,27 @@ const Header = () => {
                             <li className="nav-item">
                                 <a className="nav-link" href="/">Home</a>
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/">Dashboard</a>
-                            </li>
+                            {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/">Dashboard</a>
+                                </li>
+                            )}
+                             {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
                             <li className="nav-item">
                                 <a className="nav-link" href="/users">Usuários</a>
                             </li>
+                             )}
                             <li className="nav-item">
                                 <a className="nav-link" href="/POIs">Pontos de Interesse</a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="/recommendation">Recomendações</a>
                             </li>
+                             {usuarioLogado && (
+                            <li className="nav-item">
+                                <a className="nav-link" href="/profile/me">Editar Perfil</a>
+                            </li>
+                             )}
                             <li className="nav-item">
                                 <Button
                                     cor="primary"
