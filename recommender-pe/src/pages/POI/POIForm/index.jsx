@@ -203,7 +203,8 @@ const POIForm = () => {
                                             required
                                         />
                                     </div>
-                                    <div className="inputGroup fullWidth">
+                                </div>
+                                <div className="inputGroup fullWidth">
                                         <label htmlFor="description" className="label">
                                             Descrição <span className="required">*</span>
                                         </label>
@@ -220,7 +221,6 @@ const POIForm = () => {
                                         />
                                         <p className="hint">{description.length}/1000 caracteres</p>
                                     </div>
-                                </div>
                             </div>
 
                             {/* Motivações */}

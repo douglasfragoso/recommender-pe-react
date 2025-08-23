@@ -22,41 +22,24 @@ const UserList = () => {
         fetchUsers();
     }, [currentPage]);
 
-   const fetchUsers = async () => {
-    setIsLoading(true);
-    try {
-        const response = await getAllUsers(currentPage, itemsPerPage);
-        
-        if (response.success) {
-            setUsers(response.data?.content ?? []);
-            setTotalPages(response.data?.totalPages ?? 0);
-            setTotalElements(response.data?.totalElements ?? 0);
-        } else {
-            console.error("Erro ao buscar usuários:", response.messages);
-        }
-    } catch (error) {
-        console.error("Erro ao buscar usuários:", error);
-    } finally {
-        setIsLoading(false);
-    }
-};
+    const fetchUsers = async () => {
+        setIsLoading(true);
+        try {
+            const response = await getAllUsers(currentPage, itemsPerPage);
 
-    // const handleDelete = async (id) => {
-    //     if (window.confirm("Tem certeza que deseja excluir este usuário?")) {
-    //         try {
-    //             await deleteUserById(id);
-    //             if (users.length === 1 && currentPage > 0) {
-    //                 setCurrentPage(currentPage - 1);
-    //             } else {
-    //                 fetchUsers();
-    //             }
-    //             alert("Usuário excluído com sucesso!");
-    //         } catch (error) {
-    //             alert("Erro ao excluir usuário.");
-    //             console.error("Erro:", error);
-    //         }
-    //     }
-    // };
+            if (response.success) {
+                setUsers(response.data?.content ?? []);
+                setTotalPages(response.data?.totalPages ?? 0);
+                setTotalElements(response.data?.totalElements ?? 0);
+            } else {
+                console.error("Erro ao buscar usuários:", response.messages);
+            }
+        } catch (error) {
+            console.error("Erro ao buscar usuários:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const getPageNumbers = () => {
         const pages = [];
@@ -170,13 +153,6 @@ const UserList = () => {
                                                                 onClick={() => navigate(`/users/${user.id}`)}
                                                             >
                                                                 <i className="bi bi-pencil"></i> Editar
-                                                            </button>
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-danger"
-                                                                onClick={() => handleDelete(user.id)}
-                                                            >
-                                                                <i className="bi bi-trash"></i> Excluir
                                                             </button>
                                                         </div>
                                                     </td>

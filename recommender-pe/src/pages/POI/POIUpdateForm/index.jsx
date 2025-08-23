@@ -81,6 +81,7 @@ const POIUpdateForm = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const { id } = useParams();
+    const [status, setStatus] = useState("");
 
     const motivationOptions = Object.keys(motivationLabels);
     const hobbiesOptions = Object.keys(hobbyLabels);
@@ -117,6 +118,7 @@ const POIUpdateForm = () => {
                 const poiData = result.data;
 
                 setName(poiData.name || "");
+                setStatus(poiData.status || "");
                 setDescription(poiData.description || "");
                 setMotivations(poiData.motivations || []);
                 setHobbies(poiData.hobbies || []);
@@ -132,6 +134,7 @@ const POIUpdateForm = () => {
                     setState(poiData.address.state || "");
                     setZipCode(poiData.address.zipCode || "");
                     setCountry(poiData.address.country || "Brasil");
+                    setState(poiData.address.state || "");
                 } else {
                     // Se não houver endereço, limpa todos os campos
                     setStreet("");
@@ -174,6 +177,7 @@ const POIUpdateForm = () => {
             motivations,
             hobbies,
             themes,
+            status,
             address: {
                 street,
                 number: parseInt(number),
@@ -253,7 +257,24 @@ const POIUpdateForm = () => {
                                             required
                                         />
                                     </div>
-                                    <div className="inputGroup fullWidth">
+
+                                    <div className="inputGroup">
+                                        <label htmlFor="status" className="label">
+                                            Status 
+                                        </label>
+                                        <select
+                                            id="status"
+                                            className="input"
+                                            value={status}
+                                            onChange={(e) => setStatus(e.target.value)}
+                                        >
+                                            <option value="">Selecione o status</option>
+                                            <option value="ACTIVE">Ativo</option>
+                                            <option value="INACTIVE">Inativo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="inputGroup fullWidth">
                                         <label htmlFor="description" className="label">
                                             Descrição
                                         </label>
@@ -265,12 +286,11 @@ const POIUpdateForm = () => {
                                             onChange={(e) => setDescription(e.target.value)}
                                             minLength="50"
                                             maxLength="1000"
-                                            rows="4"
+                                            rows="8"
                                             required
                                         />
                                         <p className="hint">{description.length}/1000 caracteres</p>
                                     </div>
-                                </div>
                             </div>
 
                             {/* Motivações */}
@@ -540,7 +560,7 @@ const POIUpdateForm = () => {
                     titulo="Cancelar Atualização"
                     texto="Tem certeza que deseja cancelar a atualização do POI? Todos os dados preenchidos serão perdidos."
                     txtBtn01="Confirmar"
-                    onClickBtn01={() => navigate("/POIs")}
+                    onClickBtn01={() => navigate("/POIs/list")}
                     txtBtn02="Voltar"
                     onClickBtn02={() => setShowCancelModal(false)}
                     onClickBtnClose={() => setShowCancelModal(false)}
@@ -552,8 +572,8 @@ const POIUpdateForm = () => {
                     titulo="Atualização Realizada!"
                     texto="POI atualizado com sucesso!"
                     txtBtn01="Voltar aos POIs"
-                    onClickBtn01={() => navigate("/POIs")}
-                    onClickBtnClose={() => navigate("/POIs")}
+                    onClickBtn01={() => navigate("/POIs/list")}
+                    onClickBtnClose={() => navigate("/POIs/list")}
                 />
             )}
         </div >

@@ -125,6 +125,7 @@ const POIList = () => {
                                         <th scope="col">Motivações</th>
                                         <th scope="col">Hobbies</th>
                                         <th scope="col">Temas</th>
+                                        <th scope="col">Status</th>
                                         {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
                                             <th scope="col">Opções</th>
                                         )}
@@ -161,6 +162,9 @@ const POIList = () => {
                                                 <td>
                                                     {poi.themes?.slice(0, 3).map(t => t.substring(0, 3)).join(', ')}
                                                     {poi.themes?.length > 3 && '...'}
+                                                </td>
+                                                <td>
+                                                    {poi.status}
                                                 </td>
                                                 {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
                                                     <td>
