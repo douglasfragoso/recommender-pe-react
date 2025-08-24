@@ -42,6 +42,10 @@
   opacity: 0.7;
 }
 
+.submitButton, .cancelButton {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
 /* FORMULÁRIOS UNIFICADOS */
 .containerForm {
   min-height: 100vh;
@@ -103,6 +107,7 @@
   gap: 24px;
 }
 
+/* HEADER UNIFICADOS */
 .sectionHeader {
   font-size: 18px;
   font-weight: 600;
@@ -212,29 +217,86 @@
   margin-top: auto;
 }
 
-/* Estilo para o badge de total de POIs */
+/* CARDS UNIFICADOS */
 .badge.bg-primary {
   background-color: #b8860b !important;
   color: white;
 }
 
-/* Estilo para o cabeçalho do card */
 .card-header.bg-primary {
   background-color: #b8860b !important;
   color: white;
 }
 
-/* Estilo para os títulos de seção */
-.sectionHeader {
-  color: #b8860b;
-  border-bottom-color: #b8860b;
-}
 
 /* Estilo para ícones */
 .icon,
 .sectionIcon {
   color: #b8860b;
 }
+
+.icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .formBody {
+    padding: 24px;
+  }
+  .sectionIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    padding: 12px;
+    text-align: left;
+  }
+
+  .table td {
+    padding: 12px;
+    border-top: 1px solid #dee2e6;
+    vertical-align: top;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+
+  .page-item.active .page-link {
+    background-color: #b8860b;
+    border-color: #b8860b;
+    color: white;
+  }
+
+  .page-link {
+    color: #b8860b;
+    min-width: 40px;
+    text-align: center;
+  }
+
+  .page-link:hover {
+    color: #8a6708;
+    background-color: #f8f9fa;
+  }
+
+  .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+  }
+
 
 @media (max-width: 640px) {
   .buttonGroup {
@@ -287,87 +349,7 @@
     gap: 8px;
   }
 
-  .icon {
-    width: 24px;
-    height: 24px;
-  }
-
-  .formBody {
-    padding: 24px;
-  }
-
-  .sectionHeader {
-    font-size: 18px;
-    font-weight: 600;
-    color: #b8860b;
-    /* Cor principal alterada */
-    border-bottom: 2px solid #b8860b;
-    /* Cor principal alterada */
-    padding-bottom: 8px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .sectionIcon {
-    width: 20px;
-    height: 20px;
-  }
-
-  .table-responsive {
-    overflow-x: auto;
-  }
-
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .table th {
-    background-color: #f8f9fa;
-    color: #495057;
-    font-weight: 600;
-    padding: 12px;
-    text-align: left;
-  }
-
-  .table td {
-    padding: 12px;
-    border-top: 1px solid #dee2e6;
-    vertical-align: top;
-  }
-
-  .table-hover tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.03);
-  }
-
-  .page-item.active .page-link {
-    background-color: #b8860b;
-    /* Cor principal alterada */
-    border-color: #b8860b;
-    /* Cor principal alterada */
-    color: white;
-  }
-
-  .page-link {
-    color: #b8860b;
-    /* Cor principal alterada */
-    min-width: 40px;
-    text-align: center;
-  }
-
-  .page-link:hover {
-    color: #8a6708;
-    /* Tom mais escuro da cor principal */
-    background-color: #f8f9fa;
-  }
-
-  .page-item.disabled .page-link {
-    color: #6c757d;
-    pointer-events: none;
-  }
-
+  
   .table-responsive {
     min-height: 300px;
   }
@@ -398,4 +380,5 @@
       margin: 20px 0;
     }
   }
+
 }

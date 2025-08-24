@@ -81,8 +81,8 @@ const Dashboard = () => {
     <div className="container-fluid" style={{ paddingTop: '0' }}>
       <Header />
       <div className="container-fluid py-4">
-        <div className="d-flex justify-content-center align-items-center mb-4">
-          <h1 className="h2 fw-bold" style={{ color: '#b8860b' }}>Dashboard do Sistema</h1>
+        <div className="header d-flex justify-content-center align-items-center mb-4">
+          <h2 className="headerTitle fw-bold">Dashboard do Sistema</h2>
         </div>
 
         {/* Cards de Estatísticas */}

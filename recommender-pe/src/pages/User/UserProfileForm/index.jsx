@@ -145,10 +145,6 @@ const UserProfileForm = () => {
         setNumber(value);
     };
 
-    const handleCancel = () => {
-        setShowCancelModal(true);
-    };
-
     const handleSuccessConfirm = () => {
         setShowSuccessModal(false);
         navigate("/");
@@ -401,7 +397,7 @@ const UserProfileForm = () => {
                                     tamanho="md"
                                     outline={true}
                                     className="cancelButton"
-                                    aoClicar={handleCancel}
+                                    aoClicar={() => setShowCancelModal(true)}
                                 >
                                     <i className="bi bi-x-circle"></i>
                                     Cancelar

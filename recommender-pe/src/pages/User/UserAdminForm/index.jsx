@@ -130,14 +130,6 @@ const UserAdminForm = () => {
         }
     };
 
-    const handleCancel = () => {
-        if (id) {
-            navigate("/users");
-        } else {
-            setShowCancelModal(true);
-        }
-    };
-
     const handleSuccessConfirm = () => {
         setShowSuccessModal(false);
         if (id) {
@@ -338,7 +330,7 @@ const UserAdminForm = () => {
                                     tamanho="md"
                                     outline={true}
                                     className="cancelButton"
-                                    aoClicar={handleCancel}
+                                    aoClicar={() => setShowCancelModal(true)}
                                 >
                                     <i className="bi bi-x-circle"></i>
                                     Cancelar

@@ -171,7 +171,7 @@ const POIList = () => {
                                                         <div className="btn-group" role="group">
                                                             <button
                                                                 type="button"
-                                                                className="btn btn-primary"
+                                                                className="cancelButton mx-2"
                                                                 onClick={() => navigate(`/POIs/${poi.id}`)}
                                                             >
                                                                 <i className="bi bi-pencil"></i> Editar
