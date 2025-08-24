@@ -1,19 +1,19 @@
-import Login from '../pages/Login';
-import UsuarioForm from '../pages/User/UserForm';
-import POIForm from '../pages/POI/POIForm';
-import Home from '../pages/Home';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Dashboard from '../pages/DashBoard';
-import RecommendationForm from '../pages/Recommendation/RecommendationForm';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import POIList from '../pages/POI/POIList';
-import Protection from './protection';
-import RecommendationResults from '../pages/Recommendation';
-import UserList from '../pages/User';
+import Home from '../pages/Home';
+import Login from '../pages/Login';
 import NotFoundPage from '../pages/NotFoundPage';
-import UserProfileForm from '../pages/User/UserProfileForm';
-import UserAdminForm from '../pages/User/UserAdminForm';
-import POIUpdateForm from '../pages/POI/POIUpdateForm';
 import POICards from '../pages/POI/POICard';
+import POIForm from '../pages/POI/POIForm';
+import POIList from '../pages/POI/POIList';
+import POIUpdateForm from '../pages/POI/POIUpdateForm';
+import RecommendationForm from '../pages/Recommendation/RecommendationForm';
+import RecommendationResults from '../pages/Recommendation/RecommendationResults';
+import UserAdminForm from '../pages/User/UserAdminForm';
+import UsuarioForm from '../pages/User/UserForm';
+import UserList from '../pages/User/UserList';
+import UserProfileForm from '../pages/User/UserProfileForm';
+import Protection from './protection';
 
 
 function RouteService() {

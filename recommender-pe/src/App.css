@@ -46,6 +46,25 @@
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+.btn-custom, 
+.loginButton, 
+.homeButton {
+  border: 1px solid #000 !important;
+  background-color: white !important;
+  color: #000 !important;
+  transition: all 0.3s ease;
+}
+
+.btn-custom:hover, 
+.loginButton:hover, 
+.homeButton:hover {
+  border-color: #b8860b !important;
+  color: #b8860b !important;
+  background-color: #f8f9fa !important;
+  transform: translateY(-2px);
+}
+
+
 /* FORMULÁRIOS UNIFICADOS */
 .containerForm {
   min-height: 100vh;

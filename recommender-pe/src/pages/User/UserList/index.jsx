@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import { getAllUsers } from "../../services/user";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../context/GlobalContext";
-import { useContext } from "react";
-import Button from "../../components/Button";
-import '../../App.css';
+import Header from '../../../components/Header'
+import Footer from '../../../components/Footer'
+import Button from '../../../components/Button'
+import { GlobalContext } from "../../../context/GlobalContext";
+import { getAllUsers } from "../../../services/user";
+import '../../../App.css';
 
 const UserList = () => {
     const navigate = useNavigate();

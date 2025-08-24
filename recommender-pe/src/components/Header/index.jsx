@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/logo.webp';
 import { GlobalContext } from '../../context/GlobalContext';
 import Button from '../Button';
-import './header.css';
+import "./header.css";
+import "../../App.css";
 
 const Header = () => {
     const navigate = useNavigate();

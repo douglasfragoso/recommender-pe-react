@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './recommendationResults.css';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import Button from '../../components/Button';
-import Modal from '../../components/Modal';
-import { sendScores } from '../../services/recommender';
-import '../../App.css';
+import Header from '../../../components/Header'
+import Footer from '../../../components/Footer'
+import Button from '../../../components/Button'
+import Modal from '../../../components/Modal';
+import { sendScores } from '../../../services/recommender';
+import '../../../App.css';
 
 const RecommendationResults = () => {
     const { state } = useLocation();
