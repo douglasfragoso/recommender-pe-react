@@ -24,14 +24,20 @@ The system achieved 79% precision, 100% minimum hit rate, and 86% coverage, demo
 
 ## Features  
 
+### Home
+### Dashboard
+
 ### User Management
 - User login  
 - User registration  
-- User management  
+- User List
+- User Update Admin
+- User Update Profile
 
 ### POI Management  
 - Register Points of Interest  
 - Browse available POIs  
+- POI Update
 
 ### Recommendation Engine  
 - Generate personalized recommendations  
