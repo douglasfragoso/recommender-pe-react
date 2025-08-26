@@ -5,20 +5,12 @@
   object-fit: cover;
 }
 
-.nav-link {
+.nav-link-footer {
   transition: all 0.3s ease; 
 }
 
-.nav-link:hover {
+.nav-link-footer:hover {
     color: #b8860b !important;
     transform: translateY(-2px); 
-}
-
-/* Hover para o botão do GitHub */
-.btn-outline-primary:hover {
-    background-color: #b8860b !important;
-    border-color: #b8860b !important;
-    color: white !important;
-    transform: scale(1.05); 
 }
 

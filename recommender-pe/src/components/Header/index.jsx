@@ -20,7 +20,7 @@ const Header = () => {
     };
 
     const getPOIUrl = () => {
-        if (!usuarioLogado) return "/POIs/cards"; 
+        if (!usuarioLogado) return "/POIs/cards";
         if (usuarioLogado.role === "USER") return "/POIs/cards";
         if (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") return "/POIs/list";
         return "/POIs/cards";
@@ -63,11 +63,25 @@ const Header = () => {
                                 </li>
                             )}
                             <li className="nav-item">
-                                <a className="nav-link"  href={getPOIUrl()}>Pontos de Interesse</a>
+                                <a className="nav-link" href={getPOIUrl()}>Pontos de Interesse</a>
                             </li>
-                            {usuarioLogado && (
+                            {usuarioLogado && (usuarioLogado.role === "USER") && (
                                 <li className="nav-item">
                                     <a className="nav-link" href="/recommendation">Recomendações</a>
+                                </li>
+                            )}
+                            {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
+                                <li className="nav-item-header dropdown">
+                                    <a
+                                        className="nav-link"
+                                        href="/recommendation"
+                                    >
+                                        Recomendações
+                                    </a>
+                                    <ul className="dropdown-menu">
+                                        <li><a className="dropdown-item-header" href="/recommendation/list">Ver Todas Recomendações</a></li>
+                                        <li><a className="dropdown-item-header" href="/recommendation/user">Minhas Recomendações</a></li>
+                                    </ul>
                                 </li>
                             )}
                             {usuarioLogado && (

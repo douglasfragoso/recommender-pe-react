@@ -14,6 +14,7 @@ import UsuarioForm from '../pages/User/UserForm';
 import UserList from '../pages/User/UserList';
 import UserProfileForm from '../pages/User/UserProfileForm';
 import Protection from './protection';
+import RecommendationList from '../pages/Recommendation/RecommendationList';
 
 
 function RouteService() {
@@ -62,6 +63,9 @@ function RouteService() {
                     <RecommendationResults />
                 </Protection>} />
 
+                <Route path="/recommendation/list" element={<Protection allowedRoles={['ADMIN', 'MASTER']}>
+                    <RecommendationList />
+                </Protection>} />
 
             </Routes>
         </BrowserRouter>

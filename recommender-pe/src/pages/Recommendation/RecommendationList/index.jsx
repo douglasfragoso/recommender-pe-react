@@ -1,45 +1,42 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from '../../../components/Header'
-import Footer from '../../../components/Footer'
-import Button from '../../../components/Button'
-import { GlobalContext } from "../../../context/GlobalContext";
-import { getAllUsers } from "../../../services/user";
+import Header from "../../../components/Header";
+import Footer from "../../../components/Footer";
+import Button from "../../../components/Button";
+import { getAllRecommendations } from "../../../services/recommender";
 import '../../../App.css';
 
-const UserList = () => {
+const RecommendationList = () => {
     const navigate = useNavigate();
-    const [users, setUsers] = useState([]);
+    const [recommendations, setRecommendations] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const { usuarioLogado } = useContext(GlobalContext);
     const itemsPerPage = 10;
 
     useEffect(() => {
-        fetchUsers();
+        fetchRecommendations();
     }, [currentPage]);
 
-    const fetchUsers = async () => {
+    const fetchRecommendations = async () => {
         setIsLoading(true);
         try {
-            const response = await getAllUsers(currentPage, itemsPerPage);
-
+            const response = await getAllRecommendations(currentPage, itemsPerPage);
             if (response.success) {
-                setUsers(response.data?.content ?? []);
-                setTotalPages(response.data?.totalPages ?? 0);
-                setTotalElements(response.data?.totalElements ?? 0);
+                setRecommendations(response.data.content || []);
+                setTotalPages(response.data.totalPages || 0);
+                setTotalElements(response.data.totalElements || 0);
             } else {
-                console.error("Erro ao buscar usuários:", response.messages);
+                console.error("Erro ao buscar recomendações:", response.messages);
             }
         } catch (error) {
-            console.error("Erro ao buscar usuários:", error);
+            console.error("Erro ao buscar recomendações:", error);
         } finally {
             setIsLoading(false);
         }
     };
-
+    
     const getPageNumbers = () => {
         const pages = [];
         const maxVisiblePages = 5;
@@ -60,46 +57,27 @@ const UserList = () => {
         return pages;
     };
 
-    // Função para mascarar parte do CPF
-    const maskCPF = (cpf) => {
-        if (!cpf) return '';
-        return cpf.substring(0, 3) + '.***.***-' + cpf.substring(9);
-    };
-
     return (
-        <div className="listContainer">
+        <div className="ListContainer">
             <Header />
 
-            <div className="listBox">
+            <div className="ListBox">
                 <div className="ListContent">
-                    <div className="header">
-                        <h2 className="headerTitle">
-                            <i className="bi bi-people-fill icon"></i>
-                            Usuários
+                    <div className="formHeader">
+                        <h2 className="formHeaderTitle">
+                            Recomendações
                         </h2>
                     </div>
 
                     <div className="formBody">
                         <div className="d-flex justify-content-between align-items-center mb-4">
                             <h5 className="sectionHeader">
-                                <i className="bi bi-person-lines-fill sectionIcon"></i>
-                                Lista de Usuários Cadastrados
+                                Lista de Recomendações
                             </h5>
                             <div className="d-flex align-items-center">
                                 <span className="me-3">
-                                    Total: {totalElements} usuários
+                                    Total: {totalElements} Recomendações
                                 </span>
-                                {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
-                                    <Button
-                                        aoClicar={() => navigate("/register")}
-                                        cor="primary"
-                                        tamanho="md"
-                                        className="submitButton"
-                                    >
-                                        <i className="bi bi-plus-circle"></i>
-                                        Novo Usuário
-                                    </Button>
-                                )}
                             </div>
                         </div>
 
@@ -107,62 +85,63 @@ const UserList = () => {
                             <table className="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Nome</th>
-                                        <th scope="col">Data de Nasc.</th>
-                                        <th scope="col">Gênero</th>
-                                        <th scope="col">CPF</th>
-                                        <th scope="col">Telefone</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Perfil</th>
-                                        <th scope="col">Status</th>
-                                        {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
-                                            <th scope="col">Opções</th>
-                                        )}
+                                        <th scope="col" style={{width: '10%'}}>ID</th>
+                                        <th scope="col" style={{width: '70%'}}>POIs Recomendados</th>
+                                        <th scope="col" style={{width: '20%'}}>Opções</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {isLoading ? (
                                         <tr>
-                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8}
-                                                className="text-center">
+                                            <td colSpan={3} className="text-center">
                                                 <div className="spinner-border text-primary" role="status">
                                                     <span className="visually-hidden">Carregando...</span>
                                                 </div>
                                             </td>
                                         </tr>
-                                    ) : users.length > 0 ? (
-                                        users.map((user) => (
-                                            <tr key={user.id}>
-                                                <th scope="row">{user.id}</th>
-                                                <td>{user.firstName} {user.lastName}</td>
-                                                <td>{user.birthDate}</td>
-                                                <td>{user.gender}</td>
-                                                <td>{maskCPF(user.cpf)}</td>
-                                                <td>{user.phone}</td>
-                                                <td>{user.email}</td>
-                                                <td>{user.role}</td>
-                                                <td>{user.status}</td>
-                                                {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
-                                                    <td>
+                                    ) : recommendations.length > 0 ? (
+                                        recommendations.map((recommendation) => (
+                                            <tr key={recommendation.id}>
+                                                <th scope="row">{recommendation.id}</th>
+                                                <td>
+                                                    <div className="d-flex flex-wrap">
+                                                        {recommendation.pois?.map(poi => (
+                                                            <span key={poi.id} className="mb-2 p-2 bg-light rounded">
+                                                                {poi.name}
+                                                            </span>
+                                                        ))}
+                                                        {(!recommendation.pois || recommendation.pois.length === 0) && (
+                                                            <span className="text-muted">Nenhum POI</span>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="d-flex">
                                                         <Button
                                                             cor="secondary"
                                                             outline={true}
                                                             tamanho="sm"
-                                                            aoClicar={() => navigate(`/users/${user.id}`)}
+                                                            aoClicar={() => navigate(`/recommendation/${recommendation.id}`)}
                                                             className="me-2"
                                                         >
-                                                            Editar
+                                                            Detalhes
                                                         </Button>
-                                                    </td>
-                                                )}
+                                                        <Button
+                                                            cor="secondary"
+                                                            outline={true}
+                                                            tamanho="sm"
+                                                            aoClicar={() => navigate(`/recommendation/preferences`)}
+                                                        >
+                                                            Preferências
+                                                        </Button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8}
-                                                className="text-center">
-                                                {currentPage === 0 ? "Nenhum usuário encontrado" : "Nenhum usuário nesta página"}
+                                            <td colSpan={3} className="text-center">
+                                                {currentPage === 0 ? "Nenhuma recomendação encontrada" : "Nenhuma recomendação nesta página"}
                                             </td>
                                         </tr>
                                     )}
@@ -229,7 +208,7 @@ const UserList = () => {
                         )}
 
                         <div className="text-center text-muted mt-2">
-                            Página {currentPage + 1} de {totalPages} - Mostrando {users.length} de {totalElements} itens
+                            Página {currentPage + 1} de {totalPages} - Mostrando {recommendations.length} de {totalElements} itens
                         </div>
                     </div>
                 </div>
@@ -239,5 +218,5 @@ const UserList = () => {
         </div>
     );
 }
-
-export default UserList;
+ 
+export default RecommendationList;

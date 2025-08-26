@@ -40,23 +40,6 @@ const POIList = () => {
         }
     };
 
-    // const handleDelete = async (id) => {
-    //     if (window.confirm("Tem certeza que deseja excluir este POI?")) {
-    //         try {
-    //             await deletePOIById(id);
-    //             if (pois.length === 1 && currentPage > 0) {
-    //                 setCurrentPage(currentPage - 1);
-    //             } else {
-    //                 fetchPOIs();
-    //             }
-    //             alert("POI excluído com sucesso!");
-    //         } catch (error) {
-    //             alert("Erro ao excluir POI.");
-    //             console.error("Erro:", error);
-    //         }
-    //     }
-    // };
-
     const getPageNumbers = () => {
         const pages = [];
         const maxVisiblePages = 5;
@@ -168,15 +151,15 @@ const POIList = () => {
                                                 </td>
                                                 {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
                                                     <td>
-                                                        <div className="btn-group" role="group">
-                                                            <button
-                                                                type="button"
-                                                                className="cancelButton mx-2"
-                                                                onClick={() => navigate(`/POIs/${poi.id}`)}
-                                                            >
-                                                                <i className="bi bi-pencil"></i> Editar
-                                                            </button>
-                                                        </div>
+                                                        <Button
+                                                            cor="secondary"
+                                                            outline={true}
+                                                            tamanho="sm"
+                                                            aoClicar={() => navigate(`/POIs/${poi.id}`)}
+                                                            className="me-2"
+                                                        >
+                                                            Editar
+                                                        </Button>
                                                     </td>
                                                 )}
                                             </tr>
