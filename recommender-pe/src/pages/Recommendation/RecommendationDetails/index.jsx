@@ -14,6 +14,30 @@ const RecommendationDetails = () => {
     const [similarityMetrics, setSimilarityMetrics] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const searchParams = new URLSearchParams(window.location.search);
+    const from = searchParams.get('from') || 'list';
+
+    const getBackUrl = () => {
+        switch (from) {
+            case 'user':
+                return '/recommendation/user';
+            case 'list':
+                return '/recommendation/list';
+            default:
+                return '/recommendation/list';
+        }
+    };
+
+    const getBackButtonText = () => {
+        switch (from) {
+            case 'user':
+                return '← Voltar para Minhas Recomendações';
+            case 'list':
+                return '← Voltar para Lista de Recomendações';
+            default:
+                return '← Voltar para Lista';
+        }
+    };
 
     useEffect(() => {
         if (id) {
@@ -24,7 +48,7 @@ const RecommendationDetails = () => {
     const fetchRecommendationDetails = async () => {
         setIsLoading(true);
         setError(null);
-        
+
         try {
             // Buscar dados da recomendação e métricas em paralelo
             const [recommendationResponse, metricsResponse] = await Promise.all([
@@ -106,10 +130,11 @@ const RecommendationDetails = () => {
                         </div>
                         <div className="text-center mt-3">
                             <Button
-                                cor="primary"
-                                aoClicar={() => navigate('/recommendations')}
+                                cor="secondary"
+                                outline={true}
+                                aoClicar={() => navigate(getBackUrl())}
                             >
-                                Voltar para Lista
+                                {getBackButtonText()}
                             </Button>
                         </div>
                     </div>
@@ -132,14 +157,13 @@ const RecommendationDetails = () => {
                     </div>
 
                     <div className="formBody">
-                        {/* Botão Voltar */}
                         <div className="mb-4">
                             <Button
                                 cor="secondary"
                                 outline={true}
-                                aoClicar={() => navigate('/recommendations')}
+                                aoClicar={() => navigate(getBackUrl())}
                             >
-                                ← Voltar para Lista
+                                {getBackButtonText()}
                             </Button>
                         </div>
 
@@ -158,7 +182,7 @@ const RecommendationDetails = () => {
                                                 <h6 className="card-subtitle mb-3 text-muted">
                                                     POIs Recomendados ({recommendation.pois?.length || 0} itens)
                                                 </h6>
-                                                
+
                                                 {recommendation.pois && recommendation.pois.length > 0 ? (
                                                     <div className="recommendationsList">
                                                         {recommendation.pois.map((poi, index) => (
@@ -216,13 +240,13 @@ const RecommendationDetails = () => {
                                                             <ResponsiveContainer>
                                                                 <RadarChart data={radarData}>
                                                                     <PolarGrid />
-                                                                    <PolarAngleAxis 
-                                                                        dataKey="poiId" 
+                                                                    <PolarAngleAxis
+                                                                        dataKey="poiId"
                                                                         tick={{ fontSize: 12 }}
                                                                     />
-                                                                    <PolarRadiusAxis 
-                                                                        angle={90} 
-                                                                        domain={[0, 100]} 
+                                                                    <PolarRadiusAxis
+                                                                        angle={90}
+                                                                        domain={[0, 100]}
                                                                         tick={{ fontSize: 10 }}
                                                                         tickFormatter={(value) => `${value}%`}
                                                                     />
@@ -267,7 +291,7 @@ const RecommendationDetails = () => {
                                                                         strokeWidth={3}
                                                                     />
                                                                     <Legend />
-                                                                    <Tooltip 
+                                                                    <Tooltip
                                                                         formatter={(value, name) => [`${value}%`, name]}
                                                                         labelFormatter={(label) => `POI: ${label}`}
                                                                     />

@@ -69,9 +69,9 @@ export const getRecommendationById = async (id) => {
     }
 };
 
-export const getRecommendationByUserId = async (userId) => {
+export const getUserRecommendations = async (page = 0, size = 10, sort = "id,asc") => {
     try {
-        const response = await api.get(`/recommendation/user/${userId}`);
+        const response = await api.get(`/recommendation/user?page=${page}&size=${size}&sort=${sort}`);
         return {
             success: true,
             data: response.data

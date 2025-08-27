@@ -66,8 +66,16 @@ const Header = () => {
                                 <a className="nav-link" href={getPOIUrl()}>Pontos de Interesse</a>
                             </li>
                             {usuarioLogado && (usuarioLogado.role === "USER") && (
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/recommendation">Recomendações</a>
+                                <li className="nav-item-header dropdown">
+                                    <a
+                                        className="nav-link"
+                                        href="/recommendation"
+                                    >
+                                        Recomendações
+                                    </a>
+                                    <ul className="dropdown-menu">
+                                        <li><a className="dropdown-item-header" href="/recommendation/user">Minhas Recomendações</a></li>
+                                    </ul>
                                 </li>
                             )}
                             {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (

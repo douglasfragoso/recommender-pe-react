@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import Button from "../../../components/Button";
-import { getAllRecommendations } from "../../../services/recommender";
+import { getUserRecommendations } from "../../../services/recommender";
 import '../../../App.css';
 
-const RecommendationList = () => {
+const RecommendationByUser = () => {
     const navigate = useNavigate();
     const [recommendations, setRecommendations] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
@@ -16,27 +16,27 @@ const RecommendationList = () => {
     const itemsPerPage = 10;
 
     useEffect(() => {
-        fetchRecommendations();
+        fetchUserRecommendations();
     }, [currentPage]);
 
-    const fetchRecommendations = async () => {
+    const fetchUserRecommendations = async () => {
         setIsLoading(true);
         try {
-            const response = await getAllRecommendations(currentPage, itemsPerPage);
+            const response = await getUserRecommendations(currentPage, itemsPerPage);
             if (response.success) {
                 setRecommendations(response.data.content || []);
                 setTotalPages(response.data.totalPages || 0);
                 setTotalElements(response.data.totalElements || 0);
             } else {
-                console.error("Erro ao buscar recomendações:", response.messages);
+                console.error("Erro ao buscar recomendações do usuário:", response.messages);
             }
         } catch (error) {
-            console.error("Erro ao buscar recomendações:", error);
+            console.error("Erro ao buscar recomendações do usuário:", error);
         } finally {
             setIsLoading(false);
         }
     };
-    
+
     const getPageNumbers = () => {
         const pages = [];
         const maxVisiblePages = 5;
@@ -65,19 +65,28 @@ const RecommendationList = () => {
                 <div className="ListContent">
                     <div className="formHeader">
                         <h2 className="formHeaderTitle">
-                            Recomendações
+                            Minhas Recomendações
                         </h2>
                     </div>
 
                     <div className="formBody">
                         <div className="d-flex justify-content-between align-items-center mb-4">
                             <h5 className="sectionHeader">
-                                Lista de Recomendações
+                                Histórico de Recomendações
                             </h5>
                             <div className="d-flex align-items-center">
                                 <span className="me-3">
                                     Total: {totalElements} Recomendações
                                 </span>
+                                <Button
+                                    aoClicar={() => navigate("/recommendation")}
+                                    cor="primary"
+                                    tamanho="md"
+                                    className="submitButton"
+                                >
+                                    <i className="bi bi-plus-circle"></i>
+                                    Nova Recomendação
+                                </Button>
                             </div>
                         </div>
 
@@ -85,15 +94,15 @@ const RecommendationList = () => {
                             <table className="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col" style={{width: '10%'}}>ID</th>
-                                        <th scope="col" style={{width: '70%'}}>POIs Recomendados</th>
-                                        <th scope="col" style={{width: '20%'}}>Opções</th>
+                                        <th scope="col" style={{ width: '10%' }}>ID</th>
+                                        <th scope="col" style={{ width: '60%' }}>POIs Recomendados</th>
+                                        <th scope="col" style={{ width: '15%' }}>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {isLoading ? (
                                         <tr>
-                                            <td colSpan={3} className="text-center">
+                                            <td colSpan={4} className="text-center">
                                                 <div className="spinner-border text-primary" role="status">
                                                     <span className="visually-hidden">Carregando...</span>
                                                 </div>
@@ -121,7 +130,7 @@ const RecommendationList = () => {
                                                             cor="secondary"
                                                             outline={true}
                                                             tamanho="sm"
-                                                            aoClicar={() => navigate(`/recommendation/${recommendation.id}?from=list`)}
+                                                            aoClicar={() => navigate(`/recommendation/${recommendation.id}?from=user`)}
                                                             className="me-2"
                                                         >
                                                             Detalhes
@@ -140,8 +149,23 @@ const RecommendationList = () => {
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan={3} className="text-center">
-                                                {currentPage === 0 ? "Nenhuma recomendação encontrada" : "Nenhuma recomendação nesta página"}
+                                            <td colSpan={4} className="text-center py-5">
+                                                <div className="d-flex flex-column align-items-center">
+                                                    <i className="bi bi-inbox fs-1 text-muted mb-3"></i>
+                                                    <h5 className="text-muted mb-2">Nenhuma recomendação encontrada</h5>
+                                                    <p className="text-muted mb-3">
+                                                        Você ainda não possui recomendações. Que tal criar uma nova?
+                                                    </p>
+                                                    <Button
+                                                        aoClicar={() => navigate("/recommendation")}
+                                                        cor="primary"
+                                                        tamanho="md"
+                                                        className="submitButton"
+                                                    >
+                                                        <i className="bi bi-plus-circle"></i>
+                                                        Nova Recomendação
+                                                    </Button>
+                                                </div>
                                             </td>
                                         </tr>
                                     )}
@@ -218,5 +242,5 @@ const RecommendationList = () => {
         </div>
     );
 }
- 
-export default RecommendationList;
+
+export default RecommendationByUser;
