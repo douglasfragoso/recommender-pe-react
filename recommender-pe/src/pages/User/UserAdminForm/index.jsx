@@ -3,7 +3,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import Button from '../../../components/Button';
 import { useNavigate, useParams } from 'react-router-dom';
 import { updateUserById, getUserById } from '../../../services/user';
-import '../../../App.css';
 import Modal from '../../../components/Modal';
 import Footer from '../../../components/Footer';
 
@@ -30,6 +29,24 @@ const UserAdminForm = () => {
     const [carregando, setCarregando] = useState(false);
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    // Mapeamentos para tradução
+    const roleLabels = {
+        ADMIN: "Administrador",
+        USER: "Usuário",
+        MASTER: "Master"
+    };
+
+    const statusLabels = {
+        ACTIVE: "Ativo",
+        INACTIVE: "Inativo"
+    };
+
+    const genderLabels = {
+        MALE: "Masculino",
+        FEMALE: "Feminino",
+        OTHER: "Outro"
+    };
 
     useEffect(() => {
         if (id) {
@@ -132,11 +149,7 @@ const UserAdminForm = () => {
 
     const handleSuccessConfirm = () => {
         setShowSuccessModal(false);
-        if (id) {
-            navigate("/users");
-        } else {
-            navigate("/users");
-        }
+        navigate("/users/list");
     };
 
     return (
@@ -146,8 +159,8 @@ const UserAdminForm = () => {
                     <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
                         {/* Header Section */}
                         <div className="text-center mb-5 default-list-header">
-                            <h1 className="default-list-header-title">Editar Perfil</h1>
-                            <p className="default-list-header-subtitle">Editar Perfis no sistema</p>
+                            <h1 className="default-list-header-title">Editar Usuário</h1>
+                            <p className="default-list-header-subtitle">Editar informações do usuário no sistema</p>
                             <div className="default-list-header-divider"></div>
                         </div>
                     </div>
@@ -179,7 +192,6 @@ const UserAdminForm = () => {
                                             value={firstName}
                                             onChange={(e) => setFirstName(e.target.value)}
                                             maxLength="20"
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -194,7 +206,6 @@ const UserAdminForm = () => {
                                             value={lastName}
                                             onChange={(e) => setLastName(e.target.value)}
                                             maxLength="20"
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -207,7 +218,6 @@ const UserAdminForm = () => {
                                             className="input"
                                             value={birthDate}
                                             onChange={(e) => setBirthDate(e.target.value)}
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -219,12 +229,11 @@ const UserAdminForm = () => {
                                             className="input"
                                             value={gender}
                                             onChange={(e) => setGender(e.target.value)}
-
                                         >
                                             <option value="">Selecione o gênero</option>
-                                            <option value="Masculino">Masculino</option>
-                                            <option value="Feminino">Feminino</option>
-                                            <option value="Outro">Outro</option>
+                                            <option value="MALE">Masculino</option>
+                                            <option value="FEMALE">Feminino</option>
+                                            <option value="OTHER">Outro</option>
                                         </select>
                                     </div>
                                 </div>
@@ -248,7 +257,6 @@ const UserAdminForm = () => {
                                             placeholder="000.000.000-00"
                                             value={cpf}
                                             onChange={handleCPFChange}
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -262,7 +270,6 @@ const UserAdminForm = () => {
                                             placeholder="(00) 00000-0000"
                                             value={phone}
                                             onChange={handlePhoneChange}
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -277,7 +284,6 @@ const UserAdminForm = () => {
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             maxLength="50"
-
                                         />
                                     </div>
                                 </div>
@@ -345,8 +351,17 @@ const UserAdminForm = () => {
                                     className="submitButton"
                                     disabled={carregando}
                                 >
-                                    {carregando ? 'Carregando...' : 'Atualizar'}
-                                    <i className="bi bi-check2-circle"></i>
+                                    {carregando ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                            Carregando...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <i className="bi bi-check2-circle me-2"></i>
+                                            Atualizar
+                                        </>
+                                    )}
                                 </Button>
                             </div>
                         </form>
@@ -360,7 +375,7 @@ const UserAdminForm = () => {
                     titulo="Cancelar Operação"
                     texto={`Tem certeza que deseja cancelar a edição? Todos os dados preenchidos serão perdidos.`}
                     txtBtn01="Confirmar"
-                    onClickBtn01={() => navigate("/users")}
+                    onClickBtn01={() => navigate("/users/list")}
                     txtBtn02="Voltar"
                     onClickBtn02={() => setShowCancelModal(false)}
                     onClickBtnClose={() => setShowCancelModal(false)}

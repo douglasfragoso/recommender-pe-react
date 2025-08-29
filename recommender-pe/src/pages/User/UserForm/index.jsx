@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { saveUser } from '../../../services/user';
-import '../../../App.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Modal from '../../../components/Modal';
 import Footer from '../../../components/Footer';
+import { GlobalContext } from '../../../context/GlobalContext';
 
 const UserForm = () => {
     // Dados Pessoais
@@ -13,6 +13,7 @@ const UserForm = () => {
     const [lastName, setLastName] = useState("");
     const [birthDate, setBirthDate] = useState("");
     const [gender, setGender] = useState("");
+    const { usuarioLogado } = useContext(GlobalContext);
 
     // Documentos e Contato
     const [cpf, setCpf] = useState("");
@@ -38,6 +39,21 @@ const UserForm = () => {
     const navigate = useNavigate();
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    // Obter parâmetro 'from' da URL
+    const searchParams = new URLSearchParams(window.location.search);
+    const from = searchParams.get('from') || '';
+
+    const getBackUrl = () => {
+        switch (from) {
+            case 'users':
+                return '/users/list';
+            case 'list':
+                return '/users/list';
+            default:
+                return '/login';
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -112,7 +128,6 @@ const UserForm = () => {
         }
     };
 
-
     const formatCPF = (value) => {
         const numbers = value.replace(/\D/g, '');
         return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
@@ -157,7 +172,6 @@ const UserForm = () => {
         setNumber(value);
     };
 
-
     return (
         <div className="containerForm">
             <div className="formBox">
@@ -165,12 +179,19 @@ const UserForm = () => {
                     <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
                         {/* Header Section */}
                         <div className="text-center mb-5 default-list-header">
-                            <h1 className="default-list-header-title">Cadastro de Perfil</h1>
-                            <p className="default-list-header-subtitle">Cadastrados no sistema de Perfis</p>
+                            <h1 className="default-list-header-title">Cadastro de Usuário</h1>
+                            <p className="default-list-header-subtitle">Cadastre um novo usuário no sistema</p>
                             <div className="default-list-header-divider"></div>
                         </div>
                     </div>
                     <div className="formBody">
+                        {error && (
+                            <div className="alert alert-danger" role="alert">
+                                <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                                {error}
+                            </div>
+                        )}
+
                         <form onSubmit={handleSubmit} className="form">
                             {/* Dados Pessoais */}
                             <div className="section">
@@ -234,9 +255,9 @@ const UserForm = () => {
                                             required
                                         >
                                             <option value="">Selecione o gênero</option>
-                                            <option value="Masculino">Masculino</option>
-                                            <option value="Feminino">Feminino</option>
-                                            <option value="Outro">Outro</option>
+                                            <option value="MALE">Masculino</option>
+                                            <option value="FEMALE">Feminino</option>
+                                            <option value="OTHER">Outro</option>
                                         </select>
                                     </div>
                                 </div>
@@ -517,8 +538,17 @@ const UserForm = () => {
                                     className="submitButton"
                                     disabled={carregando}
                                 >
-                                    {carregando ? 'Carregando...' : 'Cadastrar'}
-                                    <i className="bi bi-check2-circle"></i>
+                                    {carregando ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                            Carregando...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <i className="bi bi-check2-circle me-2"></i>
+                                            Cadastrar
+                                        </>
+                                    )}
                                 </Button>
                             </div>
                         </form>
@@ -532,7 +562,7 @@ const UserForm = () => {
                     titulo="Cancelar Cadastro"
                     texto="Tem certeza que deseja cancelar o cadastro? Todos os dados preenchidos serão perdidos."
                     txtBtn01="Confirmar"
-                    onClickBtn01={() => navigate("/")}
+                    onClickBtn01={() => navigate(getBackUrl())}
                     txtBtn02="Voltar"
                     onClickBtn02={() => setShowCancelModal(false)}
                     onClickBtnClose={() => setShowCancelModal(false)}
@@ -542,10 +572,10 @@ const UserForm = () => {
             {showSuccessModal && (
                 <Modal
                     titulo="Cadastro Realizado!"
-                    texto="Usuário cadastrado com sucesso! Você será redirecionado para a página de login."
-                    txtBtn01="Ir para Login"
-                    onClickBtn01={() => navigate("/login")}
-                    onClickBtnClose={() => navigate("/login")}
+                    texto="Usuário cadastrado com sucesso!"
+                    txtBtn01="OK"
+                    onClickBtn01={() => navigate(getBackUrl())}
+                    onClickBtnClose={() => navigate(getBackUrl())}
                 />
             )}
         </div>

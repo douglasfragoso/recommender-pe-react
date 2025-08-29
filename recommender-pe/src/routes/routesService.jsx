@@ -29,7 +29,7 @@ function RouteService() {
                 <Route path="*" element={<NotFoundPage />} />
                 <Route path="/POIs/cards" element={<POICards />} />
 
-                <Route path="/users" element={<Protection allowedRoles={['ADMIN', 'MASTER']}>
+                <Route path="/users/list" element={<Protection allowedRoles={['ADMIN', 'MASTER']}>
                     <UserList />
                 </Protection>} />
 

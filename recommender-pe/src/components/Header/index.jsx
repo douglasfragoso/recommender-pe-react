@@ -59,7 +59,7 @@ const Header = () => {
                             )}
                             {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
                                 <li className="nav-item">
-                                    <a className="nav-link" href="/users">Usuários</a>
+                                    <a className="nav-link" href="/users/list">Usuários</a>
                                 </li>
                             )}
                             <li className="nav-item">
