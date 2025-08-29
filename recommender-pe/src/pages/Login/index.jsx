@@ -99,7 +99,7 @@ const Login = () => {
                                 <div className='d-flex justify-content-center'>
                                     <Button
                                         type="submit"
-                                        cor="primary" 
+                                        cor="dark" 
                                         tamanho="md" 
                                         className="submitButton mt-2 px-4 mx-2"
                                         disabled={carregando}

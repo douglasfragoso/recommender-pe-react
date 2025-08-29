@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../../context/GlobalContext";
 import { useContext } from "react";
 import Button from "../../../components/Button";
-import './POIList.css';
 
 // Objetos de mapeamento para tradução (os mesmos usados no POIForm)
 const motivationLabels = {

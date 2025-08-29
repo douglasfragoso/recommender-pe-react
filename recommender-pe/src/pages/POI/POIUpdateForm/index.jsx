@@ -5,7 +5,6 @@ import Button from '../../../components/Button';
 import { getPOIById, updatePOI } from '../../../services/POI';
 import Footer from '../../../components/Footer';
 import Modal from '../../../components/Modal';
-import './POIForm.css';
 
 const motivationLabels = {
     ARTISTIC_VALUE: "Valor Artístico",
