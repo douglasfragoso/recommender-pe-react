@@ -21,3 +21,11 @@
   object-fit: cover;
 }
 
+.logo-clickable {
+    transition: transform 0.3s ease;
+}
+
+.logo-clickable:hover {
+    transform: scale(1.05);
+}
+
