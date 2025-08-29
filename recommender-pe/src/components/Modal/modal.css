@@ -1,3 +1,4 @@
+/* ===== MODAL STYLES ===== */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -9,12 +10,14 @@
     justify-content: center;
     align-items: center;
     z-index: 1050;
+    animation: fadeIn 0.3s ease;
 }
 
 .modal-dialog {
     width: 100%;
     max-width: 500px;
     margin: 1.75rem auto;
+    animation: slideIn 0.3s ease;
 }
 
 .modal-content {
@@ -22,6 +25,7 @@
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    border: none;
 }
 
 .modal-header {
@@ -38,6 +42,7 @@
     font-size: 1.25rem;
     font-weight: 600;
     color: #374151;
+    text-transform: none; /* Remove transformação de texto */
 }
 
 .modal-close-btn {
@@ -49,6 +54,9 @@
     transition: color 0.2s;
     padding: 0.25rem;
     line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-close-btn:hover {
@@ -59,6 +67,8 @@
     padding: 1.5rem;
     color: #374151;
     line-height: 1.6;
+    font-size: 1rem;
+    text-transform: none; /* Remove transformação de texto */
 }
 
 .modal-footer {
@@ -80,24 +90,73 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    text-transform: none; /* Remove transformação de texto */
 }
 
 .btn-primary-custom {
-    background-color: #b8860b;
-    color: white;
+    background-color: white !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
 }
 
 .btn-primary-custom:hover {
-    background-color: #a3780a;
-    color: white;
+    background-color: #f8f9fa !important;
+    border-color: #b8860b !important;
+    color: #b8860b !important;
+    transform: translateY(-2px);
 }
 
 .btn-secondary-custom {
     background-color: #374151;
     color: white;
+    border: 1px solid #374151;
 }
 
 .btn-secondary-custom:hover {
     background-color: #2d3748;
     color: white;
+    border-color: #2d3748;
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateY(-50px); 
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0); 
+    }
+}
+
+/* Responsividade */
+@media (max-width: 576px) {
+    .modal-dialog {
+        max-width: 95%;
+        margin: 1rem auto;
+    }
+    
+    .modal-header {
+        padding: 1rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    .modal-footer {
+        padding: 1rem;
+        flex-direction: column;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+        margin: 0.25rem 0;
+    }
 }
