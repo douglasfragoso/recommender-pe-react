@@ -5,7 +5,7 @@ import Button from '../../../components/Button';
 import { getPOIById, updatePOI } from '../../../services/POI';
 import Footer from '../../../components/Footer';
 import Modal from '../../../components/Modal';
-import '../../../App.css';
+import './POIForm.css';
 
 const motivationLabels = {
     ARTISTIC_VALUE: "Valor Artístico",
@@ -120,9 +120,19 @@ const POIUpdateForm = () => {
                 setName(poiData.name || "");
                 setStatus(poiData.status || "");
                 setDescription(poiData.description || "");
-                setMotivations(poiData.motivations || []);
-                setHobbies(poiData.hobbies || []);
-                setThemes(poiData.themes || []);
+                
+                // CORREÇÃO CRÍTICA: Garantir que os arrays sejam únicos e válidos
+                setMotivations(Array.isArray(poiData.motivations) 
+                    ? [...new Set(poiData.motivations.filter(item => motivationOptions.includes(item)))] 
+                    : []);
+                
+                setHobbies(Array.isArray(poiData.hobbies) 
+                    ? [...new Set(poiData.hobbies.filter(item => hobbiesOptions.includes(item)))] 
+                    : []);
+                
+                setThemes(Array.isArray(poiData.themes) 
+                    ? [...new Set(poiData.themes.filter(item => themesOptions.includes(item)))] 
+                    : []);
 
                 // Lógica segura para o endereço
                 if (poiData.address) {
@@ -134,7 +144,6 @@ const POIUpdateForm = () => {
                     setState(poiData.address.state || "");
                     setZipCode(poiData.address.zipCode || "");
                     setCountry(poiData.address.country || "Brasil");
-                    setState(poiData.address.state || "");
                 } else {
                     // Se não houver endereço, limpa todos os campos
                     setStreet("");
@@ -157,19 +166,22 @@ const POIUpdateForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("✅ 1. handleSubmit iniciado. O recarregamento da página foi prevenido.");
+        console.log("✅ handleSubmit iniciado");
 
         setError("");
         setCarregando(true);
 
+        // CORREÇÃO: Validação com mensagem mais clara
         if (motivations.length !== 5 || hobbies.length !== 5 || themes.length !== 5) {
-            console.error("❌ Erro: Quantidade incorreta de seleções. Devem ser 5 motivações, hobbies e temas.");
-            setError("Selecione exatamente 5 itens em cada categoria (Motivações, Hobbies e Temas)");
+            const errors = [];
+            if (motivations.length !== 5) errors.push(`Motivações (${motivations.length}/5)`);
+            if (hobbies.length !== 5) errors.push(`Hobbies (${hobbies.length}/5)`);
+            if (themes.length !== 5) errors.push(`Temas (${themes.length}/5)`);
+            
+            setError(`Selecione exatamente 5 itens em cada categoria: ${errors.join(', ')}`);
             setCarregando(false);
             return;
         }
-
-        console.log("✅ 2. Validação de seleção passou.");
 
         const poiData = {
             name,
@@ -180,7 +192,7 @@ const POIUpdateForm = () => {
             status,
             address: {
                 street,
-                number: parseInt(number),
+                number: parseInt(number) || 0,
                 complement,
                 neighborhood,
                 city,
@@ -190,50 +202,83 @@ const POIUpdateForm = () => {
             }
         };
 
-        console.log("✅ 3. Objeto 'poiData' foi criado. Dados que serão enviados:", poiData);
-
         try {
-            console.log("⏳ 4. Tentando chamar 'updatePOI'. Enviando dados ao backend...");
             const result = await updatePOI(id, poiData);
-
-            console.log("🎉 5. 'updatePOI' retornou um resultado:", result);
-
             if (result.success) {
                 setShowSuccessModal(true);
             } else {
-                const errorMessage = result.messages?.join(', ') || "Erro ao cadastrar POI";
-                console.error("❌ 6. Erro retornado pelo backend:", errorMessage);
+                const errorMessage = result.messages?.join(', ') || "Erro ao atualizar POI";
                 setError(errorMessage);
             }
         } catch (erro) {
-            console.error("💥 7. Ocorreu um erro CRÍTICO na chamada da API:", erro);
-            setError(erro.message || "Erro ao processar o cadastro do POI");
+            console.error("Erro na chamada da API:", erro);
+            setError(erro.message || "Erro ao processar a atualização do POI");
         } finally {
             setCarregando(false);
-            console.log("🏁 8. Fim da execução de handleSubmit.");
         }
     };
 
-
-    const handleCheckboxChange = (value, list, setList) => {
-        if (list.includes(value)) {
-            setList(list.filter(item => item !== value));
-        } else if (list.length < 5) {
-            setList([...list, value]);
-        }
+    // CORREÇÃO: Função de checkbox completamente revisada
+    const handleCheckboxChange = (category, value) => {
+        console.log(`Checkbox ${category} alterado:`, value);
+        
+        const setters = {
+            motivations: setMotivations,
+            hobbies: setHobbies,
+            themes: setThemes
+        };
+        
+        const currentValues = {
+            motivations: motivations,
+            hobbies: hobbies,
+            themes: themes
+        };
+        
+        const setCategory = setters[category];
+        const currentList = currentValues[category];
+        
+        if (!setCategory) return;
+        
+        setCategory(prev => {
+            // Verifica se o valor já está na lista
+            if (prev.includes(value)) {
+                // Remove o valor
+                const newList = prev.filter(item => item !== value);
+                console.log(`Removendo ${value} de ${category}. Nova lista:`, newList);
+                return newList;
+            } else {
+                // Adiciona o valor se não exceder o limite
+                if (prev.length < 5) {
+                    const newList = [...prev, value];
+                    console.log(`Adicionando ${value} a ${category}. Nova lista:`, newList);
+                    return newList;
+                }
+                // Não faz nada se já tiver 5 itens
+                console.log(`Limite de 5 atingido para ${category}`);
+                return prev;
+            }
+        });
     };
 
     return (
         <div className="containerForm">
             <div className="formBox">
                 <div className="formContent">
-                    <div className="header">
-                        <h2 className="headerTitle">
-                            <i className="bi bi-geo-alt-fill icon"></i>
-                            Cadastro de POI (Ponto de Interesse)
-                        </h2>
+                    <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                        {/* Header Section */}
+                        <div className="text-center mb-5 default-form-header">
+                            <h1 className="default-form-header-title">Pontos de Interesse</h1>
+                            <p className="default-form-header-subtitle">Atualização no sistema de POIs</p>
+                            <div className="default-form-header-divider"></div>
+                        </div>
                     </div>
                     <div className="formBody">
+                        {error && (
+                            <div className="alert alert-danger" role="alert">
+                                <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                                {error}
+                            </div>
+                        )}
                         <form onSubmit={handleSubmit} className="form">
                             {/* Informações Básicas */}
                             <div className="section">
@@ -267,6 +312,7 @@ const POIUpdateForm = () => {
                                             className="input"
                                             value={status}
                                             onChange={(e) => setStatus(e.target.value)}
+                                            required
                                         >
                                             <option value="">Selecione o status</option>
                                             <option value="ACTIVE">Ativo</option>
@@ -275,22 +321,22 @@ const POIUpdateForm = () => {
                                     </div>
                                 </div>
                                 <div className="inputGroup fullWidth">
-                                        <label htmlFor="description" className="label">
-                                            Descrição
-                                        </label>
-                                        <textarea
-                                            id="description"
-                                            className="input textArea"
-                                            placeholder="Descreva o ponto de interesse (mínimo 50 caracteres)"
-                                            value={description}
-                                            onChange={(e) => setDescription(e.target.value)}
-                                            minLength="50"
-                                            maxLength="1000"
-                                            rows="8"
-                                            required
-                                        />
-                                        <p className="hint">{description.length}/1000 caracteres</p>
-                                    </div>
+                                    <label htmlFor="description" className="label">
+                                        Descrição
+                                    </label>
+                                    <textarea
+                                        id="description"
+                                        className="input textArea"
+                                        placeholder="Descreva o ponto de interesse (mínimo 50 caracteres)"
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        minLength="50"
+                                        maxLength="1000"
+                                        rows="8"
+                                        required
+                                    />
+                                    <p className="hint">{description.length}/1000 caracteres</p>
+                                </div>
                             </div>
 
                             {/* Motivações */}
@@ -307,7 +353,7 @@ const POIUpdateForm = () => {
                                                 type="checkbox"
                                                 id={`motivation-${motivation}`}
                                                 checked={motivations.includes(motivation)}
-                                                onChange={() => handleCheckboxChange(motivation, motivations, setMotivations)}
+                                                onChange={() => handleCheckboxChange('motivations', motivation)}
                                                 disabled={!motivations.includes(motivation) && motivations.length >= 5}
                                             />
                                             <label htmlFor={`motivation-${motivation}`} className="checkboxLabel">
@@ -316,7 +362,9 @@ const POIUpdateForm = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <p className="selectionCount">Selecionadas: {motivations.length}/5</p>
+                                <p className={`selectionCount ${motivations.length > 5 ? 'error' : ''}`}>
+                                    Selecionadas: {motivations.length}/5
+                                </p>
                             </div>
 
                             {/* Hobbies */}
@@ -333,7 +381,7 @@ const POIUpdateForm = () => {
                                                 type="checkbox"
                                                 id={`hobby-${hobby}`}
                                                 checked={hobbies.includes(hobby)}
-                                                onChange={() => handleCheckboxChange(hobby, hobbies, setHobbies)}
+                                                onChange={() => handleCheckboxChange('hobbies', hobby)}
                                                 disabled={!hobbies.includes(hobby) && hobbies.length >= 5}
                                             />
                                             <label htmlFor={`hobby-${hobby}`} className="checkboxLabel">
@@ -342,7 +390,9 @@ const POIUpdateForm = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <p className="selectionCount">Selecionadas: {hobbies.length}/5</p>
+                                <p className={`selectionCount ${hobbies.length > 5 ? 'error' : ''}`}>
+                                    Selecionadas: {hobbies.length}/5
+                                </p>
                             </div>
 
                             {/* Temas */}
@@ -359,7 +409,7 @@ const POIUpdateForm = () => {
                                                 type="checkbox"
                                                 id={`theme-${theme}`}
                                                 checked={themes.includes(theme)}
-                                                onChange={() => handleCheckboxChange(theme, themes, setThemes)}
+                                                onChange={() => handleCheckboxChange('themes', theme)}
                                                 disabled={!themes.includes(theme) && themes.length >= 5}
                                             />
                                             <label htmlFor={`theme-${theme}`} className="checkboxLabel">
@@ -368,13 +418,15 @@ const POIUpdateForm = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <p className="selectionCount">Selecionadas: {themes.length}/5</p>
+                                <p className={`selectionCount ${themes.length > 5 ? 'error' : ''}`}>
+                                    Selecionadas: {themes.length}/5
+                                </p>
                             </div>
 
                             {/* Endereço */}
                             <div className="section">
                                 <h5 className="sectionHeader">
-                                    <i className="bi bi-house-door sectionIcon"></i>
+                                    <i className="bi bi-geo-alt sectionIcon"></i>
                                     Endereço
                                 </h5>
                                 <div className="gridContainer">
@@ -389,7 +441,7 @@ const POIUpdateForm = () => {
                                             placeholder="Digite o nome da rua"
                                             value={street}
                                             onChange={(e) => setStreet(e.target.value)}
-                                            maxLength="40"
+                                            maxLength="100"
                                             required
                                         />
                                     </div>
@@ -404,6 +456,7 @@ const POIUpdateForm = () => {
                                             placeholder="Digite o número"
                                             value={number}
                                             onChange={handleNumberChange}
+                                            maxLength="10"
                                             required
                                         />
                                     </div>
@@ -415,7 +468,7 @@ const POIUpdateForm = () => {
                                             type="text"
                                             id="complement"
                                             className="input"
-                                            placeholder="Apto, bloco, etc."
+                                            placeholder="Ex: Apto 101"
                                             value={complement}
                                             onChange={(e) => setComplement(e.target.value)}
                                             maxLength="50"
@@ -432,7 +485,7 @@ const POIUpdateForm = () => {
                                             placeholder="Digite o bairro"
                                             value={neighborhood}
                                             onChange={(e) => setNeighborhood(e.target.value)}
-                                            maxLength="30"
+                                            maxLength="50"
                                             required
                                         />
                                     </div>
@@ -447,7 +500,7 @@ const POIUpdateForm = () => {
                                             placeholder="Digite a cidade"
                                             value={city}
                                             onChange={(e) => setCity(e.target.value)}
-                                            maxLength="30"
+                                            maxLength="50"
                                             required
                                         />
                                     </div>
@@ -455,42 +508,16 @@ const POIUpdateForm = () => {
                                         <label htmlFor="state" className="label">
                                             Estado
                                         </label>
-                                        <select
+                                        <input
+                                            type="text"
                                             id="state"
                                             className="input"
+                                            placeholder="Digite o estado (UF)"
                                             value={state}
                                             onChange={(e) => setState(e.target.value)}
+                                            maxLength="2"
                                             required
-                                        >
-                                            <option value="">Selecione o estado</option>
-                                            <option value="AC">Acre</option>
-                                            <option value="AL">Alagoas</option>
-                                            <option value="AP">Amapá</option>
-                                            <option value="AM">Amazonas</option>
-                                            <option value="BA">Bahia</option>
-                                            <option value="CE">Ceará</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="ES">Espírito Santo</option>
-                                            <option value="GO">Goiás</option>
-                                            <option value="MA">Maranhão</option>
-                                            <option value="MT">Mato Grosso</option>
-                                            <option value="MS">Mato Grosso do Sul</option>
-                                            <option value="MG">Minas Gerais</option>
-                                            <option value="PA">Pará</option>
-                                            <option value="PB">Paraíba</option>
-                                            <option value="PR">Paraná</option>
-                                            <option value="PE">Pernambuco</option>
-                                            <option value="PI">Piauí</option>
-                                            <option value="RJ">Rio de Janeiro</option>
-                                            <option value="RN">Rio Grande do Norte</option>
-                                            <option value="RS">Rio Grande do Sul</option>
-                                            <option value="RO">Rondônia</option>
-                                            <option value="RR">Roraima</option>
-                                            <option value="SC">Santa Catarina</option>
-                                            <option value="SP">São Paulo</option>
-                                            <option value="SE">Sergipe</option>
-                                            <option value="TO">Tocantins</option>
-                                        </select>
+                                        />
                                     </div>
                                     <div className="inputGroup">
                                         <label htmlFor="country" className="label">
@@ -535,6 +562,7 @@ const POIUpdateForm = () => {
                                     outline={true}
                                     className="cancelButton"
                                     aoClicar={() => setShowCancelModal(true)}
+                                    disabled={carregando}
                                 >
                                     <i className="bi bi-x-circle"></i>
                                     Cancelar
@@ -545,9 +573,10 @@ const POIUpdateForm = () => {
                                     cor="primary"
                                     tamanho="md"
                                     className="submitButton"
+                                    disabled={carregando}
                                 >
                                     <i className="bi bi-check2-circle"></i>
-                                    Cadastrar
+                                    {carregando ? 'Editando...' : 'Editar'}
                                 </Button>
                             </div>
                         </form>
@@ -576,7 +605,7 @@ const POIUpdateForm = () => {
                     onClickBtnClose={() => navigate("/POIs/list")}
                 />
             )}
-        </div >
+        </div>
     );
 }
 

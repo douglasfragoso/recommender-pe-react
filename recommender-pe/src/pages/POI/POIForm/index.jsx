@@ -5,7 +5,7 @@ import Button from '../../../components/Button';
 import { savePOI } from '../../../services/POI';
 import Footer from '../../../components/Footer';
 import Modal from '../../../components/Modal';
-import '../../../App.css';
+import './POIForm.css';
 
 const motivationLabels = {
     ARTISTIC_VALUE: "Valor Artístico",
@@ -173,11 +173,14 @@ const POIForm = () => {
         <div className="containerForm">
             <div className="formBox">
                 <div className="formContent">
-                    <div className="header">
-                        <h2 className="headerTitle">
-                            <i className="bi bi-geo-alt-fill icon"></i>
-                            Cadastro de POI (Ponto de Interesse)
-                        </h2>
+                    <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                        {/* Header Section */}
+                        <div className="text-center mb-5 default-list-header">
+                            <h1 className="default-list-header-title">Pontos de Interesse</h1>
+                            <p className="default-list-header-subtitle">Cadastrados no sistema de POIs</p>
+                            <div className="default-list-header-divider"></div>
+                        </div>
+
                     </div>
                     <div className="formBody">
                         <form onSubmit={handleSubmit} className="form">
@@ -205,22 +208,22 @@ const POIForm = () => {
                                     </div>
                                 </div>
                                 <div className="inputGroup fullWidth">
-                                        <label htmlFor="description" className="label">
-                                            Descrição <span className="required">*</span>
-                                        </label>
-                                        <textarea
-                                            id="description"
-                                            className="input textArea"
-                                            placeholder="Descreva o ponto de interesse (mínimo 50 caracteres)"
-                                            value={description}
-                                            onChange={(e) => setDescription(e.target.value)}
-                                            minLength="50"
-                                            maxLength="1000"
-                                            rows="4"
-                                            required
-                                        />
-                                        <p className="hint">{description.length}/1000 caracteres</p>
-                                    </div>
+                                    <label htmlFor="description" className="label">
+                                        Descrição <span className="required">*</span>
+                                    </label>
+                                    <textarea
+                                        id="description"
+                                        className="input textArea"
+                                        placeholder="Descreva o ponto de interesse (mínimo 50 caracteres)"
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        minLength="50"
+                                        maxLength="1000"
+                                        rows="4"
+                                        required
+                                    />
+                                    <p className="hint">{description.length}/1000 caracteres</p>
+                                </div>
                             </div>
 
                             {/* Motivações */}
@@ -503,7 +506,7 @@ const POIForm = () => {
                     texto="POI cadastrado com sucesso!"
                     txtBtn01="Voltar à Página Inicial"
                     onClickBtn01={() => navigate("/")}
-                    onClickBtnClose={() => navigate("/")} 
+                    onClickBtnClose={() => navigate("/")}
                 />
             )}
         </div >

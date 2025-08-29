@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext  } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import Header from "../../../components/Header";
@@ -6,6 +6,7 @@ import Footer from "../../../components/Footer";
 import Button from "../../../components/Button";
 import { getRecommendationById, getSimilarityMetrics } from "../../../services/recommender";
 import '../../../App.css';
+import { GlobalContext } from "../../../context/GlobalContext";
 
 const RecommendationDetails = () => {
     const navigate = useNavigate();
@@ -15,7 +16,8 @@ const RecommendationDetails = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const searchParams = new URLSearchParams(window.location.search);
-    const from = searchParams.get('from') || 'list';
+    const from = searchParams.get('from') || 'user';
+    const { usuarioLogado, logout } = useContext(GlobalContext);
 
     const getBackUrl = () => {
         switch (from) {
@@ -24,7 +26,7 @@ const RecommendationDetails = () => {
             case 'list':
                 return '/recommendation/list';
             default:
-                return '/recommendation/list';
+                return '/recommendation/user';
         }
     };
 
@@ -224,7 +226,7 @@ const RecommendationDetails = () => {
                                     </div>
                                 </div>
 
-                                {/* Gráfico Radar das Métricas de Similaridade */}
+                                {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
                                 <div className="row">
                                     <div className="col-12">
                                         <div className="card">
@@ -340,6 +342,7 @@ const RecommendationDetails = () => {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </>
                         )}
                     </div>

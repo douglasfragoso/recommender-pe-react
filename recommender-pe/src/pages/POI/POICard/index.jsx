@@ -3,6 +3,7 @@ import Header from "../../../components/Header";
 import Footer from '../../../components/Footer';
 import { getAllPOI } from "../../../services/POI";
 import '../../../App.css';
+import './POICard.css'; 
 
 const POICards = () => {
     const [pois, setPOIs] = useState([]);
@@ -19,21 +20,18 @@ const POICards = () => {
             let allPOIs = [];
             let currentPage = 0;
             let hasMorePages = true;
-            const itemsPerPage = 100; // Usar um número alto para buscar muitos por vez
+            const itemsPerPage = 100;
 
             while (hasMorePages) {
                 const response = await getAllPOI(currentPage, itemsPerPage);
-                if (response.success && response.data) { // Verifica se response.data existe
+                if (response.success && response.data) {
                     const content = response.data.content || [];
                     allPOIs = [...allPOIs, ...content];
 
-                    // Determina se há mais páginas
-                    // Se totalPages for 0 ou 1, ou se a página atual for a última página, para.
-                    // Se content estiver vazio, significa que não há mais dados, então para.
                     hasMorePages = content.length > 0 && (currentPage < (response.data.totalPages || 0) - 1);
                     currentPage++;
                 } else {
-                    hasMorePages = false; // Para se não for bem-sucedido ou não houver dados
+                    hasMorePages = false;
                     if (!response.success) {
                         console.error("Erro ao buscar POIs:", response.messages);
                     } else {
@@ -52,92 +50,144 @@ const POICards = () => {
     };
 
     return (
-        <div className="ListContainer">
+        <div className="container-fluid poi-container">
             <Header />
 
-            <div className="ListBox">
-                <div className="ListContent">
-                    <div className="formHeader">
-                        <h2 className="formHeaderTitle">
-                            <i className="bi bi-geo-alt-fill icon"></i>
-                            Pontos de Interesse
-                        </h2>
-                    </div>
+            <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                {/* Header Section */}
+                <div className="text-center mb-5 poi-header">
+                    <h1 className="poi-header-title">Pontos de Interesse</h1>
+                    <p className="poi-header-subtitle">Explore todos os locais cadastrados no sistema</p>
+                    <div className="poi-header-divider"></div>
+                </div>
 
-                    <div className="formBody">
-                        <div className="d-flex justify-content-between align-items-center mb-4">
-                            <h5 className="sectionHeader">
-                                <i className="bi bi-pin-map sectionIcon"></i>
-                                Lista de POIs Cadastrados
-                            </h5>
-                            <span className="badge bg-primary fs-6">
-                                Total: {totalElements} POIs
-                            </span>
-                        </div>
-
-                        {isLoading ? (
-                            <div className="text-center py-5">
-                                <div className="spinner-border text-primary" role="status">
-                                    <span className="visually-hidden">Carregando...</span>
+                {/* Stats Card */}
+                <div className="row mb-5">
+                    <div className="col-12">
+                        <div className="card poi-stats-card">
+                            <div className="card-body p-4">
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div className="d-flex align-items-center">
+                                        <div className="poi-stats-icon-container me-4">
+                                            <i className="bi bi-geo-alt-fill poi-stats-icon"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="fw-bold text-dark mb-1">POIs Cadastrados</h4>
+                                            <p className="text-muted mb-0">Total de pontos de interesse no sistema</p>
+                                        </div>
+                                    </div>
+                                    <div className="text-end">
+                                        <div className="poi-stats-count">
+                                            {totalElements.toLocaleString()}
+                                        </div>
+                                        <small className="poi-stats-label">
+                                            Locais únicos
+                                        </small>
+                                    </div>
                                 </div>
-                                <p className="mt-3">Carregando POIs...</p>
                             </div>
-                        ) : pois.length > 0 ? (
-                            <div className="row g-4">
-                                {pois.map((poi) => (
-                                    <div key={poi.id} className="col-12 col-md-6 col-lg-4">
-                                        <div className="card h-100 shadow-sm border-0" style={{ borderRadius: '15px' }}>
-                                            <div className="card-header bg-primary text-white" style={{ borderRadius: '15px 15px 0 0' }}>
-                                                <h5 className="card-title mb-0 d-flex align-items-center">
-                                                    <i className="bi bi-geo-alt-fill me-2"></i>
-                                                    {poi.name}
-                                                </h5>
-                                            </div>
-                                            <div className="card-body d-flex flex-column">
-                                                <div className="mb-3 flex-grow-1">
-                                                    <h6 className="text-muted mb-2">
-                                                        <i className="bi bi-info-circle me-1"></i>
-                                                        Descrição
-                                                    </h6>
-                                                    <p className="card-text">{poi.description}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Loading State */}
+                {isLoading ? (
+                    <div className="d-flex justify-content-center align-items-center poi-loading-container">
+                        <div className="text-center">
+                            <div className="spinner-border text-dark mb-3 poi-spinner" role="status">
+                                <span className="visually-hidden">Carregando...</span>
+                            </div>
+                            <h5 className="text-muted">Carregando pontos de interesse...</h5>
+                        </div>
+                    </div>
+                ) : pois.length > 0 ? (
+                    /* POI Cards Grid */
+                    <div className="row g-4">
+                        {pois.map((poi) => (
+                            <div key={poi.id} className="col-12 col-md-6 col-xl-4">
+                                <div className="card poi-card">
+                                    {/* Card Header */}
+                                    <div className="card-header poi-card-header">
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div className="d-flex align-items-center">
+                                                <div className="poi-card-icon me-3">
+                                                    <i className="bi bi-geo-alt-fill text-dark"></i>
                                                 </div>
-                                                
-                                                <div className="mt-auto">
-                                                    <h6 className="text-muted mb-2">
-                                                        <i className="bi bi-house-door me-1"></i>
-                                                        Endereço
-                                                    </h6>
-                                                    <div className="address-info">
-                                                        <p className="mb-1 fw-semibold">
+                                                <div>
+                                                    <h5 className="poi-card-title">
+                                                        {poi.name}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Card Body */}
+                                    <div className="card-body p-4 d-flex flex-column">
+                                        {/* Description Section */}
+                                        <div className="mb-4 flex-grow-1 poi-card-section">
+                                            <div className="poi-card-section-header">
+                                                <i className="bi bi-info-circle text-muted me-2"></i>
+                                                <h6 className="poi-card-section-title">Descrição</h6>
+                                            </div>
+                                            <p className="poi-description text-muted">
+                                                {poi.description}
+                                            </p>
+                                        </div>
+
+                                        {/* Address Section */}
+                                        <div className="mt-auto">
+                                            <div className="poi-card-section-header">
+                                                <i className="bi bi-house-door text-muted me-2"></i>
+                                                <h6 className="poi-card-section-title">Localização</h6>
+                                            </div>
+
+                                            <div className="poi-address-container">
+                                                <div className="poi-address-line">
+                                                    <i className="bi bi-geo-alt text-muted me-2 mt-1"></i>
+                                                    <div>
+                                                        <div className="poi-address-text">
                                                             {poi.address?.street}, {poi.address?.number}
-                                                        </p>
-                                                        <p className="mb-0 text-muted small">
+                                                        </div>
+                                                        <div className="poi-address-detail mb-1">
                                                             {poi.address?.neighborhood}, {poi.address?.city}
-                                                        </p>
+                                                        </div>
                                                         {poi.address?.state && (
-                                                            <p className="mb-0 text-muted small">
+                                                            <div className="poi-address-detail">
                                                                 {poi.address.state}
                                                                 {poi.address?.zipCode && ` - CEP: ${poi.address.zipCode}`}
-                                                            </p>
+                                                            </div>
                                                         )}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                ))}
+
+                                    {/* Bottom accent line */}
+                                    <div className="poi-card-divider"></div>
+                                </div>
                             </div>
-                        ) : (
-                            <div className="text-center py-5">
-                                <i className="bi bi-geo-alt display-1 text-muted"></i>
-                                <h4 className="mt-3 text-muted">Nenhum POI encontrado</h4>
-                                <p className="text-muted">
-                                    Não há pontos de interesse cadastrados no momento.
-                                </p>
-                            </div>
-                        )}
+                        ))}
                     </div>
-                </div>
+                ) : (
+                    /* Empty State */
+                    <div className="text-center py-5">
+                        <div className="mb-4">
+                            <div className="poi-empty-icon-container">
+                                <i className="bi bi-geo-alt poi-empty-icon text-muted"></i>
+                            </div>
+                        </div>
+                        <h3 className="poi-empty-title">Nenhum POI encontrado</h3>
+                        <p className="text-muted mb-4">
+                            Não há pontos de interesse cadastrados no momento.
+                        </p>
+                        <div className="poi-empty-action">
+                            <i className="bi bi-plus-circle text-muted poi-empty-action-icon"></i>
+                            <p className="text-muted fw-medium mb-0">Cadastre o primeiro POI</p>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <Footer />

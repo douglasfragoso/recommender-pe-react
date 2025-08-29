@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../../context/GlobalContext";
 import { useContext } from "react";
 import Button from "../../../components/Button";
-import '../../../App.css';
+import './POIList.css'; 
 
 const POIList = () => {
     const navigate = useNavigate();
@@ -60,182 +60,253 @@ const POIList = () => {
         return pages;
     };
 
+    const truncateText = (text, maxLength) => {
+        return text && text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+    };
+
+    const formatArray = (array, maxItems = 2) => {
+        if (!array || array.length === 0) return '-';
+        const items = array.slice(0, maxItems);
+        const result = items.join(', ');
+        return array.length > maxItems ? `${result}...` : result;
+    };
+
     return (
-        <div className="ListContainer">
+        <div className="container-fluid default-list-container">
             <Header />
+            
+            <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                {/* Header Section */}
+                <div className="text-center mb-5 default-list-header">
+                    <h1 className="default-list-header-title">Pontos de Interesse</h1>
+                    <p className="default-list-header-subtitle">Gerencie todos os locais cadastrados no sistema</p>
+                    <div className="default-list-header-divider"></div>
+                </div>
 
-            <div className="ListBox">
-                <div className="ListContent">
-                    <div className="formHeader">
-                        <h2 className="formHeaderTitle">
-                            <i className="bi bi-geo-alt-fill icon"></i>
-                            Pontos de Interesse
-                        </h2>
-                    </div>
-
-                    <div className="formBody">
-                        <div className="d-flex justify-content-between align-items-center mb-4">
-                            <h5 className="sectionHeader">
-                                <i className="bi bi-pin-map sectionIcon"></i>
-                                Lista de POIs Cadastrados
-                            </h5>
-                            <div className="d-flex align-items-center">
-                                <span className="me-3">
-                                    Total: {totalElements} POIs
-                                </span>
-                                {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
-                                    <Button
-                                        aoClicar={() => navigate("/POIs/register")}
-                                        cor="primary"
-                                        tamanho="md"
-                                        className="submitButton"
-                                    >
-                                        <i className="bi bi-plus-circle"></i>
-                                        Novo POI
-                                    </Button>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="table-responsive">
-                            <table className="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Nome</th>
-                                        <th scope="col">Descrição</th>
-                                        <th scope="col">Endereço</th>
-                                        <th scope="col">Motivações</th>
-                                        <th scope="col">Hobbies</th>
-                                        <th scope="col">Temas</th>
-                                        <th scope="col">Status</th>
-                                        {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
-                                            <th scope="col">Opções</th>
+                {/* Main Content Card */}
+                <div className="row">
+                    <div className="col-12">
+                        <div className="card default-list-card">
+                            {/* Card Header with Actions */}
+                            <div className="card-header default-list-card-header">
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div className="d-flex align-items-center">
+                                        <div className="default-list-card-icon me-3">
+                                            <i className="bi bi-list-ul text-dark"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="default-list-card-title">Lista de POIs</h4>
+                                            <p className="default-list-card-subtitle">
+                                                {totalElements} {totalElements === 1 ? 'item encontrado' : 'itens encontrados'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="d-flex align-items-center gap-3">
+                                        <span className="default-list-page-badge">
+                                            Página {currentPage + 1} de {totalPages}
+                                        </span>
+                                        {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
+                                            <button
+                                                onClick={() => navigate("/POIs/register")}
+                                                className="btn btn-dark d-flex align-items-center gap-2 default-list-new-button"
+                                            >
+                                                <i className="bi bi-plus-circle"></i>
+                                                Novo POI
+                                            </button>
                                         )}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {isLoading ? (
-                                        <tr>
-                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 8 : 7}
-                                                className="text-center">
-                                                <div className="spinner-border text-primary" role="status">
-                                                    <span className="visually-hidden">Carregando...</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ) : pois.length > 0 ? (
-                                        pois.map((poi) => (
-                                            <tr key={poi.id}>
-                                                <th scope="row">{poi.id}</th>
-                                                <td>{poi.name}</td>
-                                                <td>{poi.description.length > 50 ? `${poi.description.substring(0, 50)}...` : poi.description}</td>
-                                                <td>
-                                                    {poi.address?.street}, {poi.address?.number}<br />
-                                                    {poi.address?.neighborhood}, {poi.address?.city}
-                                                </td>
-                                                <td>
-                                                    {poi.motivations?.slice(0, 3).map(m => m.substring(0, 3)).join(', ')}
-                                                    {poi.motivations?.length > 3 && '...'}
-                                                </td>
-                                                <td>
-                                                    {poi.hobbies?.slice(0, 3).map(h => h.substring(0, 3)).join(', ')}
-                                                    {poi.hobbies?.length > 3 && '...'}
-                                                </td>
-                                                <td>
-                                                    {poi.themes?.slice(0, 3).map(t => t.substring(0, 3)).join(', ')}
-                                                    {poi.themes?.length > 3 && '...'}
-                                                </td>
-                                                <td>
-                                                    {poi.status}
-                                                </td>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Table Container */}
+                            <div className="card-body p-0">
+                                <div className="table-responsive">
+                                    <table className="table table-hover mb-0 default-list-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" className="py-3 px-4">ID</th>
+                                                <th scope="col" className="py-3">Nome</th>
+                                                <th scope="col" className="py-3">Descrição</th>
+                                                <th scope="col" className="py-3">Endereço</th>
+                                                <th scope="col" className="py-3">Motivações</th>
+                                                <th scope="col" className="py-3">Hobbies</th>
+                                                <th scope="col" className="py-3">Temas</th>
+                                                <th scope="col" className="py-3">Status</th>
                                                 {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
-                                                    <td>
-                                                        <Button
-                                                            cor="secondary"
-                                                            outline={true}
-                                                            tamanho="sm"
-                                                            aoClicar={() => navigate(`/POIs/${poi.id}`)}
-                                                            className="me-2"
-                                                        >
-                                                            Editar
-                                                        </Button>
-                                                    </td>
+                                                    <th scope="col" className="py-3">Ações</th>
                                                 )}
                                             </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 8 : 7}
-                                                className="text-center">
-                                                {currentPage === 0 ? "Nenhum POI encontrado" : "Nenhum POI nesta página"}
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
+                                        </thead>
+                                        <tbody>
+                                            {isLoading ? (
+                                                <tr>
+                                                    <td 
+                                                        colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8}
+                                                        className="text-center py-5"
+                                                    >
+                                                        <div className="d-flex flex-column align-items-center default-list-loading-container">
+                                                            <div className="spinner-border text-dark mb-3 default-list-loading-spinner" role="status">
+                                                                <span className="visually-hidden">Carregando...</span>
+                                                            </div>
+                                                            <span className="text-muted">Carregando POIs...</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ) : pois.length > 0 ? (
+                                                pois.map((poi, index) => (
+                                                    <tr 
+                                                        key={poi.id} 
+                                                        style={{ 
+                                                            borderBottom: index === pois.length - 1 ? 'none' : '1px solid #f0f0f0'
+                                                        }}
+                                                    >
+                                                        <td className="px-4">
+                                                            <span className="default-list-id-badge">
+                                                                {poi.id}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <div className="fw-medium text-dark">
+                                                                {truncateText(poi.name, 30)}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="default-list-truncated-text">
+                                                                {truncateText(poi.description, 40)}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div>
+                                                                <div className="default-list-address-line">
+                                                                    {poi.address?.street}, {poi.address?.number}
+                                                                </div>
+                                                                <div className="default-list-address-detail">
+                                                                    {poi.address?.neighborhood}, {poi.address?.city}
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <span className="default-list-truncated-text">
+                                                                {formatArray(poi.motivations)}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span className="default-list-truncated-text">
+                                                                {formatArray(poi.hobbies)}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span className="default-list-truncated-text">
+                                                                {formatArray(poi.themes)}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span className={`default-list-status-badge ${poi.status === 'ACTIVE' ? 'bg-success bg-opacity-10 text-success' : 'bg-secondary bg-opacity-10 text-secondary'}`}>
+                                                                {poi.status}
+                                                            </span>
+                                                        </td>
+                                                        {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
+                                                            <td>
+                                                                <button
+                                                                    onClick={() => navigate(`/POIs/${poi.id}`)}
+                                                                    className="btn btn-outline-dark btn-sm d-flex align-items-center gap-1 default-list-edit-button"
+                                                                >
+                                                                    <i className="bi bi-pencil"></i>
+                                                                    Editar
+                                                                </button>
+                                                            </td>
+                                                        )}
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td 
+                                                        colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8}
+                                                        className="text-center py-5"
+                                                    >
+                                                        <div className="d-flex flex-column align-items-center default-list-empty-container">
+                                                            <div className="default-list-empty-icon mb-3">
+                                                                <i className="bi bi-inbox display-6 text-muted"></i>
+                                                            </div>
+                                                            <h5 className="text-dark mb-2 default-list-empty-title">
+                                                                {currentPage === 0 ? "Nenhum POI encontrado" : "Nenhum POI nesta página"}
+                                                            </h5>
+                                                            <p className="text-muted mb-0">
+                                                                {currentPage === 0 ? "Cadastre o primeiro POI para começar" : "Tente navegar para outra página"}
+                                                            </p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-                        {/* Componente de Paginação */}
-                        {totalPages > 1 && (
-                            <nav aria-label="Page navigation">
-                                <ul className="pagination justify-content-center mt-4">
-                                    <li className={`page-item ${currentPage === 0 ? 'disabled' : ''}`}>
-                                        <button
-                                            className="page-link"
-                                            onClick={() => setCurrentPage(0)}
-                                            disabled={currentPage === 0}
-                                        >
-                                            &laquo; Primeira
-                                        </button>
-                                    </li>
+                            {/* Pagination Footer */}
+                            {totalPages > 1 && (
+                                <div className="card-footer default-list-pagination">
+                                    <nav aria-label="Page navigation">
+                                        <ul className="pagination justify-content-center mb-0">
+                                            <li className={`default-list-page-item ${currentPage === 0 ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="default-list-page-link"
+                                                    onClick={() => setCurrentPage(0)}
+                                                    disabled={currentPage === 0}
+                                                >
+                                                    <i className="bi bi-chevron-double-left"></i>
+                                                </button>
+                                            </li>
 
-                                    <li className={`page-item ${currentPage === 0 ? 'disabled' : ''}`}>
-                                        <button
-                                            className="page-link"
-                                            onClick={() => setCurrentPage(prev => prev - 1)}
-                                            disabled={currentPage === 0}
-                                        >
-                                            Anterior
-                                        </button>
-                                    </li>
+                                            <li className={`default-list-page-item ${currentPage === 0 ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="default-list-page-link"
+                                                    onClick={() => setCurrentPage(prev => prev - 1)}
+                                                    disabled={currentPage === 0}
+                                                >
+                                                    <i className="bi bi-chevron-left"></i>
+                                                </button>
+                                            </li>
 
-                                    {getPageNumbers().map(number => (
-                                        <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-                                            <button
-                                                className="page-link"
-                                                onClick={() => setCurrentPage(number)}
-                                            >
-                                                {number + 1}
-                                            </button>
-                                        </li>
-                                    ))}
+                                            {getPageNumbers().map(number => (
+                                                <li key={number} className={`default-list-page-item ${currentPage === number ? 'active' : ''}`}>
+                                                    <button
+                                                        className="default-list-page-link"
+                                                        onClick={() => setCurrentPage(number)}
+                                                    >
+                                                        {number + 1}
+                                                    </button>
+                                                </li>
+                                            ))}
 
-                                    <li className={`page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`}>
-                                        <button
-                                            className="page-link"
-                                            onClick={() => setCurrentPage(prev => prev + 1)}
-                                            disabled={currentPage === totalPages - 1}
-                                        >
-                                            Próxima
-                                        </button>
-                                    </li>
+                                            <li className={`default-list-page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="default-list-page-link"
+                                                    onClick={() => setCurrentPage(prev => prev + 1)}
+                                                    disabled={currentPage === totalPages - 1}
+                                                >
+                                                    <i className="bi bi-chevron-right"></i>
+                                                </button>
+                                            </li>
 
-                                    <li className={`page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`}>
-                                        <button
-                                            className="page-link"
-                                            onClick={() => setCurrentPage(totalPages - 1)}
-                                            disabled={currentPage === totalPages - 1}
-                                        >
-                                            Última &raquo;
-                                        </button>
-                                    </li>
-                                </ul>
-                            </nav>
-                        )}
+                                            <li className={`default-list-page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="default-list-page-link"
+                                                    onClick={() => setCurrentPage(totalPages - 1)}
+                                                    disabled={currentPage === totalPages - 1}
+                                                >
+                                                    <i className="bi bi-chevron-double-right"></i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </nav>
 
-                        <div className="text-center text-muted mt-2">
-                            Página {currentPage + 1} de {totalPages} - Mostrando {pois.length} de {totalElements} itens
+                                    <div className="text-center default-list-pagination-info">
+                                        Mostrando {pois.length} de {totalElements} registros
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -244,6 +315,6 @@ const POIList = () => {
             <Footer />
         </div>
     );
-}
+};
 
 export default POIList;

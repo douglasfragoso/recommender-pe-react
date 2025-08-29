@@ -1,0 +1,196 @@
+/* POIList.css */
+.default-list-container {
+  padding-top: 0;
+}
+
+.default-list-header {
+  margin-bottom: 3rem;
+}
+
+.default-list-header-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.default-list-header-subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+}
+
+.default-list-header-divider {
+  height: 2px;
+  width: 25%;
+  margin: 0 auto;
+  background-color: #6c757d;
+  opacity: 0.3;
+}
+
+/* Main Card */
+.default-list-card {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.default-list-card-header {
+  background-color: white;
+  border: none;
+  padding: 1.5rem;
+}
+
+.default-list-card-icon {
+  background-color: #f8f9fa;
+  border-radius: 50%;
+  padding: 0.5rem;
+}
+
+.default-list-card-title {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.default-list-card-subtitle {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+.default-list-page-badge {
+  background-color: #f8f9fa;
+  color: #212529;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+}
+
+.default-list-new-button {
+  transition: all 0.2s ease;
+}
+
+/* Table Styles */
+.default-list-table {
+  margin-bottom: 0;
+}
+
+.default-list-table thead {
+  background-color: #f8f9fa;
+}
+
+.default-list-table th {
+  font-weight: 600;
+  border: none;
+  padding: 0.75rem 1rem;
+  color: #212529;
+}
+
+.default-list-table td {
+  border: none;
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+.default-list-table tbody tr {
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.default-list-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.default-list-id-badge {
+  background-color: #f8f9fa;
+  color: #212529;
+  font-weight: 700;
+  border-radius: 0.375rem;
+}
+
+.default-list-truncated-text {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.default-list-address-line {
+  color: #212529;
+  margin-bottom: 0.25rem;
+}
+
+.default-list-address-detail {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.default-list-status-badge {
+  padding: 0.35rem 0.65rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.default-list-edit-button {
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+/* Loading State */
+.default-list-loading-container {
+  padding: 3rem 0;
+}
+
+.default-list-loading-spinner {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Empty State */
+.default-list-empty-container {
+  padding: 3rem 0;
+}
+
+.default-list-empty-icon {
+  background-color: #f8f9fa;
+  border-radius: 50%;
+  padding: 1rem;
+  display: inline-flex;
+}
+
+.default-list-empty-title {
+  margin-bottom: 0.5rem;
+}
+
+/* Pagination */
+.default-list-pagination {
+  padding: 1.5rem;
+  background-color: white;
+  border: none;
+}
+
+.default-list-page-item {
+  margin: 0 0.25rem;
+}
+
+.default-list-page-link {
+  border: none;
+  color: #212529;
+  background-color: transparent;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.default-list-page-link:hover {
+  background-color: #f8f9fa;
+}
+
+.default-list-page-item.active .default-list-page-link {
+  background-color: #212529;
+  color: white;
+}
+
+.default-list-page-item.disabled .default-list-page-link {
+  color: #6c757d;
+  opacity: 0.6;
+}
+
+.default-list-pagination-info {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-top: 0.75rem;
+}

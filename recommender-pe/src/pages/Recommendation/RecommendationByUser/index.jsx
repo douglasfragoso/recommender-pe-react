@@ -135,14 +135,6 @@ const RecommendationByUser = () => {
                                                         >
                                                             Detalhes
                                                         </Button>
-                                                        <Button
-                                                            cor="secondary"
-                                                            outline={true}
-                                                            tamanho="sm"
-                                                            aoClicar={() => navigate(`/recommendation/preferences`)}
-                                                        >
-                                                            Preferências
-                                                        </Button>
                                                     </div>
                                                 </td>
                                             </tr>
