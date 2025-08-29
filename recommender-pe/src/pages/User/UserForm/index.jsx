@@ -162,11 +162,13 @@ const UserForm = () => {
         <div className="containerForm">
             <div className="formBox">
                 <div className="formContent">
-                    <div className="formHeader">
-                        <h2 className="formHeaderTitle">
-                            <i className="bi bi-person-circle icon"></i>
-                            Cadastro de Usuário
-                        </h2>
+                    <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                        {/* Header Section */}
+                        <div className="text-center mb-5 default-list-header">
+                            <h1 className="default-list-header-title">Cadastro de Perfil</h1>
+                            <p className="default-list-header-subtitle">Cadastrados no sistema de Perfis</p>
+                            <div className="default-list-header-divider"></div>
+                        </div>
                     </div>
                     <div className="formBody">
                         <form onSubmit={handleSubmit} className="form">

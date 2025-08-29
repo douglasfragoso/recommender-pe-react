@@ -143,11 +143,13 @@ const UserAdminForm = () => {
         <div className="containerForm">
             <div className="formBox">
                 <div className="formContent">
-                    <div className="header">
-                        <h2 className="headerTitle">
-                            <i className={`bi-person-gear icon`}></i>
-                            {'Editar Usuário (Admin)'}
-                        </h2>
+                    <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                        {/* Header Section */}
+                        <div className="text-center mb-5 default-list-header">
+                            <h1 className="default-list-header-title">Editar Perfil</h1>
+                            <p className="default-list-header-subtitle">Editar Perfis no sistema</p>
+                            <div className="default-list-header-divider"></div>
+                        </div>
                     </div>
                     <div className="formBody">
                         {error && (

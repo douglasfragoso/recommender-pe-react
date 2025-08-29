@@ -71,13 +71,15 @@ const UserList = () => {
             <Header />
 
             <div className="listBox">
-                <div className="ListContent">
-                    <div className="header">
-                        <h2 className="headerTitle">
-                            <i className="bi bi-people-fill icon"></i>
-                            Usuários
-                        </h2>
-                    </div>
+                <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                {/* Header Section */}
+                <div className="text-center mb-5 default-list-header">
+                    <h1 className="default-list-header-title">Usuários</h1>
+                    <p className="default-list-header-subtitle">Gerencie todos os usuários cadastrados no sistema</p>
+                    <div className="default-list-header-divider"></div>
+                </div>
+
+                
 
                     <div className="formBody">
                         <div className="d-flex justify-content-between align-items-center mb-4">

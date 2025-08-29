@@ -154,11 +154,13 @@ const UserProfileForm = () => {
         <div className="containerForm">
             <div className="formBox">
                 <div className="formContent">
-                    <div className="header">
-                        <h2 className="formHeaderTitle">
-                            <i className="bi bi-person-gear icon"></i>
-                            Editar Meu Perfil
-                        </h2>
+                    <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                        {/* Header Section */}
+                        <div className="text-center mb-5 default-list-header">
+                            <h1 className="default-list-header-title">Editar Meu Perfil</h1>
+                            <p className="default-list-header-subtitle">Editar Perfil no sistema</p>
+                            <div className="default-list-header-divider"></div>
+                        </div>
                     </div>
                     <div className="formBody">
                         {error && (

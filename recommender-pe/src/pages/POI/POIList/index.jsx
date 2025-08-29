@@ -6,7 +6,62 @@ import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../../context/GlobalContext";
 import { useContext } from "react";
 import Button from "../../../components/Button";
-import './POIList.css'; 
+import './POIList.css';
+
+// Objetos de mapeamento para tradução (os mesmos usados no POIForm)
+const motivationLabels = {
+    ARTISTIC_VALUE: "Valor Artístico",
+    CREATIVITY: "Criatividade",
+    CULTURE: "Cultura",
+    ENTERTAINMENT: "Entretenimento",
+    EXPLORATION: "Exploração",
+    EDUCATION: "Educação",
+    FAMILY: "Família",
+    GASTRONOMY: "Gastronomia",
+    HERITAGE: "Patrimônio",
+    IDENTITY: "Identidade",
+    IMMERSIVE_EXPERIENCE: "Experiência Imersiva",
+    RELAXATION: "Relaxamento",
+    SOCIAL: "Social",
+    SPIRITUALITY: "Espiritualidade",
+    TRADITION: "Tradição"
+};
+
+const hobbyLabels = {
+    ADVENTURE: "Aventura",
+    ART: "Arte",
+    DANCING: "Dança",
+    GASTRONOMY: "Gastronomia",
+    GARDENING: "Jardinagem",
+    HIKING: "Caminhada",
+    LEARNING: "Aprendizado",
+    MUSIC: "Música",
+    PHOTOGRAPHY: "Fotografia",
+    READING: "Leitura",
+    SOCIAL: "Social",
+    TECH: "Tecnologia",
+    THEATER: "Teatro",
+    TRAVELING: "Viagem",
+    VOLUNTEERING: "Voluntariado"
+};
+
+const themeLabels = {
+    ADVENTURE: "Aventura",
+    AFRO_BRAZILIAN: "Afro-brasileiro",
+    BAROQUE: "Barroco",
+    COLONIAL: "Colonial",
+    CULTURAL: "Cultural",
+    FAMILY_FRIENDLY: "Para Família",
+    FOLKLORE: "Folclore",
+    GASTRONOMIC: "Gastronômico",
+    HISTORY: "Histórico",
+    ARCHITECTURAL_STYLE: "Estilo Arquitetônico",
+    MODERN: "Moderno",
+    NATURE: "Natureza",
+    RELIGIOUS: "Religioso",
+    ROMANTIC: "Romântico",
+    URBAN_ART: "Arte Urbana"
+};
 
 const POIList = () => {
     const navigate = useNavigate();
@@ -64,9 +119,22 @@ const POIList = () => {
         return text && text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
     };
 
-    const formatArray = (array, maxItems = 2) => {
+    // Função modificada para traduzir os valores
+    const formatArray = (array, maxItems = 2, type = "") => {
         if (!array || array.length === 0) return '-';
-        const items = array.slice(0, maxItems);
+        
+        // Seleciona o objeto de mapeamento correto baseado no tipo
+        let labelsMap = {};
+        if (type === "motivations") labelsMap = motivationLabels;
+        else if (type === "hobbies") labelsMap = hobbyLabels;
+        else if (type === "themes") labelsMap = themeLabels;
+        
+        // Traduz os itens se um mapeamento for fornecido
+        const translatedItems = labelsMap 
+            ? array.map(item => labelsMap[item] || item)
+            : array;
+        
+        const items = translatedItems.slice(0, maxItems);
         const result = items.join(', ');
         return array.length > maxItems ? `${result}...` : result;
     };
@@ -74,7 +142,7 @@ const POIList = () => {
     return (
         <div className="container-fluid default-list-container">
             <Header />
-            
+
             <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
                 {/* Header Section */}
                 <div className="text-center mb-5 default-list-header">
@@ -101,19 +169,20 @@ const POIList = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="d-flex align-items-center gap-3">
                                         <span className="default-list-page-badge">
                                             Página {currentPage + 1} de {totalPages}
                                         </span>
                                         {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
-                                            <button
-                                                onClick={() => navigate("/POIs/register")}
-                                                className="btn btn-dark d-flex align-items-center gap-2 default-list-new-button"
+                                            <Button
+                                                cor="dark"
+                                                aoClicar={() => navigate("/POIs/register")}
+                                                className="default-list-new-button"
                                             >
                                                 <i className="bi bi-plus-circle"></i>
                                                 Novo POI
-                                            </button>
+                                            </Button>
                                         )}
                                     </div>
                                 </div>
@@ -141,7 +210,7 @@ const POIList = () => {
                                         <tbody>
                                             {isLoading ? (
                                                 <tr>
-                                                    <td 
+                                                    <td
                                                         colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8}
                                                         className="text-center py-5"
                                                     >
@@ -155,9 +224,9 @@ const POIList = () => {
                                                 </tr>
                                             ) : pois.length > 0 ? (
                                                 pois.map((poi, index) => (
-                                                    <tr 
-                                                        key={poi.id} 
-                                                        style={{ 
+                                                    <tr
+                                                        key={poi.id}
+                                                        style={{
                                                             borderBottom: index === pois.length - 1 ? 'none' : '1px solid #f0f0f0'
                                                         }}
                                                     >
@@ -188,40 +257,43 @@ const POIList = () => {
                                                         </td>
                                                         <td>
                                                             <span className="default-list-truncated-text">
-                                                                {formatArray(poi.motivations)}
+                                                                {formatArray(poi.motivations, 2, "motivations")}
                                                             </span>
                                                         </td>
                                                         <td>
                                                             <span className="default-list-truncated-text">
-                                                                {formatArray(poi.hobbies)}
+                                                                {formatArray(poi.hobbies, 2, "hobbies")}
                                                             </span>
                                                         </td>
                                                         <td>
                                                             <span className="default-list-truncated-text">
-                                                                {formatArray(poi.themes)}
+                                                                {formatArray(poi.themes, 2, "themes")}
                                                             </span>
                                                         </td>
                                                         <td>
                                                             <span className={`default-list-status-badge ${poi.status === 'ACTIVE' ? 'bg-success bg-opacity-10 text-success' : 'bg-secondary bg-opacity-10 text-secondary'}`}>
-                                                                {poi.status}
+                                                                {poi.status === 'ACTIVE' ? 'Ativo' : 'Inativo'}
                                                             </span>
                                                         </td>
                                                         {(usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER") && (
                                                             <td>
-                                                                <button
-                                                                    onClick={() => navigate(`/POIs/${poi.id}`)}
-                                                                    className="btn btn-outline-dark btn-sm d-flex align-items-center gap-1 default-list-edit-button"
+                                                                <Button
+                                                                    outline
+                                                                    cor="dark"
+                                                                    tamanho="sm"
+                                                                    aoClicar={() => navigate(`/POIs/${poi.id}`)}
+                                                                    className="default-list-edit-button"
                                                                 >
                                                                     <i className="bi bi-pencil"></i>
                                                                     Editar
-                                                                </button>
+                                                                </Button>
                                                             </td>
                                                         )}
                                                     </tr>
                                                 ))
                                             ) : (
                                                 <tr>
-                                                    <td 
+                                                    <td
                                                         colSpan={usuarioLogado?.role === "ADMIN" || usuarioLogado?.role === "MASTER" ? 9 : 8}
                                                         className="text-center py-5"
                                                     >

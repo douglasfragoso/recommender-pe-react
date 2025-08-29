@@ -180,7 +180,6 @@ const POIForm = () => {
                             <p className="default-list-header-subtitle">Cadastrados no sistema de POIs</p>
                             <div className="default-list-header-divider"></div>
                         </div>
-
                     </div>
                     <div className="formBody">
                         <form onSubmit={handleSubmit} className="form">
@@ -493,7 +492,7 @@ const POIForm = () => {
                     titulo="Cancelar Cadastro"
                     texto="Tem certeza que deseja cancelar o cadastro? Todos os dados preenchidos serão perdidos."
                     txtBtn01="Confirmar"
-                    onClickBtn01={() => navigate("/")}
+                    onClickBtn01={() => navigate("/POIs/list")}
                     txtBtn02="Voltar"
                     onClickBtn02={() => setShowCancelModal(false)}
                     onClickBtnClose={() => setShowCancelModal(false)}
@@ -505,8 +504,8 @@ const POIForm = () => {
                     titulo="Cadastro Realizado!"
                     texto="POI cadastrado com sucesso!"
                     txtBtn01="Voltar à Página Inicial"
-                    onClickBtn01={() => navigate("/")}
-                    onClickBtnClose={() => navigate("/")}
+                    onClickBtn01={() => navigate("/POIs/list")}
+                    onClickBtnClose={() => navigate("/POIs/list")}
                 />
             )}
         </div >
