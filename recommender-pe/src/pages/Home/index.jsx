@@ -230,9 +230,9 @@ const Home = () => {
                   <h6 className="card-subtitle mb-3 text-muted">Autor Correspondente</h6>
                   <p className="card-text small text-muted">
                     Universidade de São Paulo (USP)<br />
-                    MBA em Engenharia de Software<br />
                     Escola Superior de Agricultura Luiz de Queiroz (Esalq), Pecege<br />
-                    <span className="text-primary">douglas.iff@gmail.com</span>
+                    MBA em Engenharia de Software<br />
+                    <span className="text-primary">douglas.iff@usp.br</span>
                   </p>
                    <div className="d-flex justify-content-center align-items-center gap-3 mb-4">
                     <Button

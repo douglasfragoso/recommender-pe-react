@@ -255,9 +255,9 @@ const UserForm = () => {
                                             required
                                         >
                                             <option value="">Selecione o gênero</option>
-                                            <option value="MALE">Masculino</option>
-                                            <option value="FEMALE">Feminino</option>
-                                            <option value="OTHER">Outro</option>
+                                            <option value="Male">Masculino</option>
+                                            <option value="Female">Feminino</option>
+                                            <option value="Other">Outro</option>
                                         </select>
                                     </div>
                                 </div>
