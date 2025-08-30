@@ -57,9 +57,18 @@ const Login = () => {
                         <div className='row justify-content-center my-4'>
                             <div className='col-8'>
                                 <div className='d-flex justify-content-center'>
-                                    <img src={logo} className="logo-oval mb-3" alt="Sistema de Gerenciamento de Projetos" />
+                                    <div
+                                        className="logo-clickable"
+                                        onClick={() => navigate("/")}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        <img
+                                            src={logo}
+                                            className="logo-oval mb-3"
+                                            alt="Sistema de Gerenciamento de Projetos"
+                                        />
+                                    </div>
                                 </div>
-
                                 {erro && (
                                     <div className='d-flex justify-content-center'>
                                         <span className='text-danger mb-2'>{erro}</span>
@@ -99,8 +108,8 @@ const Login = () => {
                                 <div className='d-flex justify-content-center'>
                                     <Button
                                         type="submit"
-                                        cor="primary" 
-                                        tamanho="md" 
+                                        cor="dark"
+                                        tamanho="md"
                                         className="submitButton mt-2 px-4 mx-2"
                                         disabled={carregando}
                                     >
@@ -108,9 +117,9 @@ const Login = () => {
                                     </Button>
 
                                     <Button
-                                        cor="" 
-                                        tamanho="md" 
-                                        outline={true} 
+                                        cor=""
+                                        tamanho="md"
+                                        outline={true}
                                         className="cancelButton mt-2 px-4 mx-2"
                                         aoClicar={() => navigate("/register")}
                                     >

@@ -1,0 +1,174 @@
+/* POICards.css */
+.poi-container {
+  padding-top: 0;
+}
+
+.poi-header {
+  margin-bottom: 3rem;
+}
+
+.poi-header-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.poi-header-subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+}
+
+.poi-header-divider {
+  height: 3px;
+  width: 25%;
+  margin: 0 auto;
+  background: linear-gradient(90deg, #b8860b, #ececec);
+}
+
+/* Stats Card */
+.poi-stats-card {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.poi-stats-icon-container {
+  background-color: #f8f9fa;
+  border-radius: 50%;
+  padding: 1rem;
+}
+
+.poi-stats-icon {
+  font-size: 1.5rem;
+  color: #212529;
+}
+
+.poi-stats-count {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.poi-stats-label {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Loading State */
+.poi-loading-container {
+  height: 50vh;
+}
+
+.poi-spinner {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* POI Card */
+.poi-card {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  height: 100%;
+}
+
+.poi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.poi-card-header {
+  background-color: white;
+  border: none;
+  padding: 1.5rem;
+}
+
+.poi-card-icon {
+  background-color: #f8f9fa;
+  border-radius: 50%;
+  padding: 0.5rem;
+}
+
+.poi-card-title {
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.poi-card-section {
+  margin-bottom: 1.5rem;
+}
+
+.poi-card-section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.poi-card-section-title {
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.poi-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.poi-address-container {
+  background-color: #f8f9fa;
+  border-radius: 0.375rem;
+  padding: 1rem;
+}
+
+.poi-address-line {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.poi-address-text {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.poi-address-detail {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.poi-card-divider {
+  border-top: 2px solid #212529;
+  opacity: 0.1;
+}
+
+/* Empty State */
+.poi-empty-icon-container {
+  background-color: #f8f9fa;
+  border-radius: 50%;
+  padding: 1.5rem;
+  display: inline-flex;
+}
+
+.poi-empty-icon {
+  font-size: 3.5rem;
+}
+
+.poi-empty-title {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.poi-empty-action {
+  background-color: #f8f9fa;
+  border-radius: 0.375rem;
+  padding: 1.5rem;
+  display: inline-block;
+}
+
+.poi-empty-action-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}

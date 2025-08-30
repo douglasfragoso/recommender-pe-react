@@ -97,7 +97,7 @@ const Home = () => {
           <div className="row">
             <div className="col-lg-8 mx-auto">
               <p className="lead text-muted text-center">
-                A Vamu! nasceu como projeto de pesquisa acadêmica na USP,
+                A Vamu!Rec nasceu como projeto de pesquisa acadêmica na USP,
                 com o objetivo de resolver problemas reais do turismo em Recife.<br /><br />
                 Recife tem grande potencial turístico, mas necessita de soluções digitais para promover seus Pontos de Interesse (POIs). A implementação de um sistema inteligente representa uma oportunidade de inovação no setor. Foi proposto um Sistema de Recomendação via Filtragem Baseada em Conteúdo, que usa TF-IDF e métricas de similaridade para correlacionar as preferências dos usuários com as características dos POIs. O sistema obteve 79% de precisão, 100% de taxa mínima de acerto e 86% de cobertura, demonstrando bom desempenho em cenários de cold start. Sendo assim, o modelo mostrou eficácia na recomendação personalizada, apresentando potencial para impulsionar o turismo local.
               </p>
@@ -230,9 +230,9 @@ const Home = () => {
                   <h6 className="card-subtitle mb-3 text-muted">Autor Correspondente</h6>
                   <p className="card-text small text-muted">
                     Universidade de São Paulo (USP)<br />
-                    MBA em Engenharia de Software<br />
                     Escola Superior de Agricultura Luiz de Queiroz (Esalq), Pecege<br />
-                    <span className="text-primary">douglas.iff@gmail.com</span>
+                    MBA em Engenharia de Software<br />
+                    <span className="text-primary">douglas.iff@usp.br</span>
                   </p>
                    <div className="d-flex justify-content-center align-items-center gap-3 mb-4">
                     <Button

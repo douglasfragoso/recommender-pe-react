@@ -3,7 +3,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { updateUser, getOwnProfile } from '../../../services/user';
-import '../../../App.css';
 import Modal from '../../../components/Modal';
 import Footer from '../../../components/Footer';
 import { useContext } from 'react';
@@ -36,6 +35,13 @@ const UserProfileForm = () => {
     const [carregando, setCarregando] = useState(false);
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    // Mapeamentos para tradução
+    const genderLabels = {
+        MALE: "Masculino",
+        FEMALE: "Feminino",
+        OTHER: "Outro"
+    };
 
     useEffect(() => {
         if (usuarioLogado) {
@@ -71,7 +77,6 @@ const UserProfileForm = () => {
             setCarregando(false);
         }
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -154,11 +159,13 @@ const UserProfileForm = () => {
         <div className="containerForm">
             <div className="formBox">
                 <div className="formContent">
-                    <div className="header">
-                        <h2 className="formHeaderTitle">
-                            <i className="bi bi-person-gear icon"></i>
-                            Editar Meu Perfil
-                        </h2>
+                    <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                        {/* Header Section */}
+                        <div className="text-center mb-5 default-list-header">
+                            <h1 className="default-list-header-title">Editar Meu Perfil</h1>
+                            <p className="default-list-header-subtitle">Atualize suas informações pessoais</p>
+                            <div className="default-list-header-divider"></div>
+                        </div>
                     </div>
                     <div className="formBody">
                         {error && (
@@ -188,7 +195,6 @@ const UserProfileForm = () => {
                                             value={firstName}
                                             onChange={(e) => setFirstName(e.target.value)}
                                             maxLength="20"
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -203,7 +209,6 @@ const UserProfileForm = () => {
                                             value={lastName}
                                             onChange={(e) => setLastName(e.target.value)}
                                             maxLength="20"
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -216,7 +221,6 @@ const UserProfileForm = () => {
                                             className="input"
                                             value={birthDate}
                                             onChange={(e) => setBirthDate(e.target.value)}
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -228,12 +232,11 @@ const UserProfileForm = () => {
                                             className="input"
                                             value={gender}
                                             onChange={(e) => setGender(e.target.value)}
-
                                         >
                                             <option value="">Selecione o gênero</option>
-                                            <option value="Masculino">Masculino</option>
-                                            <option value="Feminino">Feminino</option>
-                                            <option value="Outro">Outro</option>
+                                            <option value="Male">Masculino</option>
+                                            <option value="Female">Feminino</option>
+                                            <option value="Other">Outro</option>
                                         </select>
                                     </div>
                                 </div>
@@ -257,7 +260,6 @@ const UserProfileForm = () => {
                                             placeholder="(00) 00000-0000"
                                             value={phone}
                                             onChange={handlePhoneChange}
-
                                         />
                                     </div>
                                 </div>
@@ -282,7 +284,6 @@ const UserProfileForm = () => {
                                             value={street}
                                             onChange={(e) => setStreet(e.target.value)}
                                             maxLength="40"
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -296,7 +297,6 @@ const UserProfileForm = () => {
                                             placeholder="Digite o número"
                                             value={number}
                                             onChange={handleNumberChange}
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -325,7 +325,6 @@ const UserProfileForm = () => {
                                             value={neighborhood}
                                             onChange={(e) => setNeighborhood(e.target.value)}
                                             maxLength="30"
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -340,7 +339,6 @@ const UserProfileForm = () => {
                                             value={city}
                                             onChange={(e) => setCity(e.target.value)}
                                             maxLength="30"
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -355,7 +353,6 @@ const UserProfileForm = () => {
                                             value={state}
                                             onChange={(e) => setState(e.target.value)}
                                             maxLength="30"
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -369,7 +366,6 @@ const UserProfileForm = () => {
                                             value={country}
                                             onChange={(e) => setCountry(e.target.value)}
                                             maxLength="30"
-
                                         />
                                     </div>
                                     <div className="inputGroup">
@@ -383,7 +379,6 @@ const UserProfileForm = () => {
                                             placeholder="00000-000"
                                             value={zipCode}
                                             onChange={handleCEPChange}
-
                                         />
                                     </div>
                                 </div>
@@ -410,8 +405,17 @@ const UserProfileForm = () => {
                                     className="submitButton"
                                     disabled={carregando}
                                 >
-                                    {carregando ? 'Carregando...' : 'Atualizar Perfil'}
-                                    <i className="bi bi-check2-circle"></i>
+                                    {carregando ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                            Carregando...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <i className="bi bi-check2-circle me-2"></i>
+                                            Atualizar Perfil
+                                        </>
+                                    )}
                                 </Button>
                             </div>
                         </form>
