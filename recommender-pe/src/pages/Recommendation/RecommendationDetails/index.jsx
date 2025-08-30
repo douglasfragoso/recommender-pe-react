@@ -105,14 +105,17 @@ const RecommendationDetails = () => {
 
     if (isLoading) {
         return (
-            <div className="ListContainer">
+            <div className="container-fluid default-list-container">
                 <Header />
-                <div className="ListBox">
-                    <div className="ListContent">
-                        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
-                            <div className="spinner-border text-primary" role="status">
-                                <span className="visually-hidden">Carregando...</span>
-                            </div>
+                <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                    <div className="text-center mb-5 default-list-header">
+                        <h1 className="default-list-header-title">Detalhes da Recomendação</h1>
+                        <p className="default-list-header-subtitle">Carregando informações da recomendação...</p>
+                        <div className="default-list-header-divider"></div>
+                    </div>
+                    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Carregando...</span>
                         </div>
                     </div>
                 </div>
@@ -123,22 +126,25 @@ const RecommendationDetails = () => {
 
     if (error) {
         return (
-            <div className="ListContainer">
+            <div className="container-fluid default-list-container">
                 <Header />
-                <div className="ListBox">
-                    <div className="ListContent">
-                        <div className="alert alert-danger" role="alert">
-                            {error}
-                        </div>
-                        <div className="text-center mt-3">
-                            <Button
-                                cor="secondary"
-                                outline={true}
-                                aoClicar={() => navigate(getBackUrl())}
-                            >
-                                {getBackButtonText()}
-                            </Button>
-                        </div>
+                <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                    <div className="text-center mb-5 default-list-header">
+                        <h1 className="default-list-header-title">Detalhes da Recomendação</h1>
+                        <p className="default-list-header-subtitle">Ocorreu um erro ao carregar os dados</p>
+                        <div className="default-list-header-divider"></div>
+                    </div>
+                    <div className="alert alert-danger" role="alert">
+                        {error}
+                    </div>
+                    <div className="text-center mt-3">
+                        <Button
+                            cor="secondary"
+                            outline={true}
+                            aoClicar={() => navigate(getBackUrl())}
+                        >
+                            {getBackButtonText()}
+                        </Button>
                     </div>
                 </div>
                 <Footer />
@@ -147,204 +153,233 @@ const RecommendationDetails = () => {
     }
 
     return (
-        <div className="ListContainer">
+        <div className="container-fluid default-list-container">
             <Header />
 
-            <div className="ListBox">
-                <div className="ListContent">
-                    <div className="formHeader">
-                        <h2 className="formHeaderTitle">
-                            Detalhes da Recomendação
-                        </h2>
-                    </div>
+            <div className="container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
+                {/* Header Section */}
+                <div className="text-center mb-5 default-list-header">
+                    <h1 className="default-list-header-title">Detalhes da Recomendação</h1>
+                    <p className="default-list-header-subtitle">
+                        {recommendation ? `Recomendação #${recommendation.id}` : 'Visualize os detalhes da recomendação'}
+                    </p>
+                    <div className="default-list-header-divider"></div>
+                </div>
 
-                    <div className="formBody">
-                        <div className="mb-4">
-                            <Button
-                                cor="secondary"
-                                outline={true}
-                                aoClicar={() => navigate(getBackUrl())}
-                            >
-                                {getBackButtonText()}
-                            </Button>
-                        </div>
+                {/* Main Content Card */}
+                <div className="row">
+                    <div className="col-12">
+                        <div className="card default-list-card">
+                            {/* Card Header with Actions */}
+                            <div className="card-header default-list-card-header">
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div className="d-flex align-items-center">
+                                        <div className="default-list-card-icon me-3">
+                                            <i className="bi bi-info-circle text-dark"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="default-list-card-title">Detalhes da Recomendação</h4>
+                                            <p className="default-list-card-subtitle">
+                                                {recommendation && recommendation.pois 
+                                                    ? `${recommendation.pois.length} POI(s) recomendado(s)` 
+                                                    : 'Carregando informações...'
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
 
-                        {recommendation && (
-                            <>
-                                {/* Informações da Recomendação */}
-                                <div className="row mb-4">
-                                    <div className="col-12">
-                                        <div className="card">
-                                            <div className="card-header">
-                                                <h5 className="card-title mb-0">
-                                                    Recomendação #{recommendation.id}
-                                                </h5>
-                                            </div>
-                                            <div className="card-body">
-                                                <h6 className="card-subtitle mb-3 text-muted">
-                                                    POIs Recomendados ({recommendation.pois?.length || 0} itens)
-                                                </h6>
+                                    <div className="d-flex align-items-center gap-3">
+                                        <Button
+                                            cor="secondary"
+                                            outline={true}
+                                            aoClicar={() => navigate(getBackUrl())}
+                                        >
+                                            {getBackButtonText()}
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
 
-                                                {recommendation.pois && recommendation.pois.length > 0 ? (
-                                                    <div className="recommendationsList">
-                                                        {recommendation.pois.map((poi, index) => (
-                                                            <div key={poi.id} className="recommendationItem">
-                                                                <div className="itemHeader">
-                                                                    <span className="itemRank">#{index + 1}</span>
-                                                                    <h3 className="itemTitle">{poi.name}</h3>
-                                                                </div>
-                                                                <p className="itemDescription">
-                                                                    {poi.description?.length > 1000
-                                                                        ? `${poi.description.substring(0, 1000)}...`
-                                                                        : poi.description
-                                                                    }
-                                                                </p>
-                                                                <div className="itemFooter">
-                                                                    <div className="itemLocation">
-                                                                        <i className="bi bi-geo-alt"></i>
-                                                                        <span>{poi.address?.neighborhood || 'Bairro não especificado'}, {poi.address?.city || 'Cidade não especificada'}</span>
-                                                                    </div>
-                                                                    {poi.motivations && poi.motivations.length > 0 && (
-                                                                        <div className="itemFeatures">
-                                                                            {poi.motivations.slice(0, 3).map((m, i) => (
-                                                                                <span key={i} className="featureTag">{m}</span>
-                                                                            ))}
-                                                                            {poi.motivations.length > 3 && (
-                                                                                <span className="featureMore">+{poi.motivations.length - 3}</span>
+                            {/* Card Body */}
+                            <div className="card-body">
+                                {recommendation && (
+                                    <>
+                                        {/* Informações da Recomendação */}
+                                        <div className="row mb-4">
+                                            <div className="col-12">
+                                                <div className="card mb-4">
+                                                    <div className="card-header bg-light">
+                                                        <h5 className="card-title mb-0">
+                                                            Recomendação #{recommendation.id}
+                                                        </h5>
+                                                    </div>
+                                                    <div className="card-body">
+                                                        <h6 className="card-subtitle mb-3 text-muted">
+                                                            POIs Recomendados ({recommendation.pois?.length || 0} itens)
+                                                        </h6>
+
+                                                        {recommendation.pois && recommendation.pois.length > 0 ? (
+                                                            <div className="recommendationsList">
+                                                                {recommendation.pois.map((poi, index) => (
+                                                                    <div key={poi.id} className="recommendationItem border-bottom pb-3 mb-3">
+                                                                        <div className="itemHeader d-flex align-items-center mb-2">
+                                                                            <span className="itemRank badge bg-primary me-2">#{index + 1}</span>
+                                                                            <h3 className="itemTitle mb-0">{poi.name}</h3>
+                                                                        </div>
+                                                                        <p className="itemDescription text-muted">
+                                                                            {poi.description?.length > 1000
+                                                                                ? `${poi.description.substring(0, 1000)}...`
+                                                                                : poi.description
+                                                                            }
+                                                                        </p>
+                                                                        <div className="itemFooter d-flex justify-content-between align-items-center">
+                                                                            <div className="itemLocation">
+                                                                                <i className="bi bi-geo-alt me-1"></i>
+                                                                                <span>{poi.address?.neighborhood || 'Bairro não especificado'}, {poi.address?.city || 'Cidade não especificada'}</span>
+                                                                            </div>
+                                                                            {poi.motivations && poi.motivations.length > 0 && (
+                                                                                <div className="itemFeatures">
+                                                                                    {poi.motivations.slice(0, 3).map((m, i) => (
+                                                                                        <span key={i} className="featureTag badge bg-light text-dark me-1">{m}</span>
+                                                                                    ))}
+                                                                                    {poi.motivations.length > 3 && (
+                                                                                        <span className="featureMore badge bg-secondary">+{poi.motivations.length - 3}</span>
+                                                                                    )}
+                                                                                </div>
                                                                             )}
                                                                         </div>
-                                                                    )}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <p className="text-muted">Nenhum POI encontrado nesta recomendação.</p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <div className="card">
+                                                    <div className="card-header bg-light">
+                                                        <h5 className="card-title mb-0">
+                                                            Métricas de Similaridade
+                                                        </h5>
+                                                    </div>
+                                                    <div className="card-body">
+                                                        {radarData && radarData.length > 0 ? (
+                                                            <>
+                                                                <div style={{ width: '100%', height: '500px' }}>
+                                                                    <ResponsiveContainer>
+                                                                        <RadarChart data={radarData}>
+                                                                            <PolarGrid />
+                                                                            <PolarAngleAxis
+                                                                                dataKey="poiId"
+                                                                                tick={{ fontSize: 12 }}
+                                                                            />
+                                                                            <PolarRadiusAxis
+                                                                                angle={90}
+                                                                                domain={[0, 100]}
+                                                                                tick={{ fontSize: 10 }}
+                                                                                tickFormatter={(value) => `${value}%`}
+                                                                            />
+                                                                            <Radar
+                                                                                name="Cosine"
+                                                                                dataKey="Cosine"
+                                                                                stroke={metricColors.Cosine}
+                                                                                fill={metricColors.Cosine}
+                                                                                fillOpacity={0.1}
+                                                                                strokeWidth={2}
+                                                                            />
+                                                                            <Radar
+                                                                                name="Euclidean"
+                                                                                dataKey="Euclidean"
+                                                                                stroke={metricColors.Euclidean}
+                                                                                fill={metricColors.Euclidean}
+                                                                                fillOpacity={0.1}
+                                                                                strokeWidth={2}
+                                                                            />
+                                                                            <Radar
+                                                                                name="Pearson"
+                                                                                dataKey="Pearson"
+                                                                                stroke={metricColors.Pearson}
+                                                                                fill={metricColors.Pearson}
+                                                                                fillOpacity={0.1}
+                                                                                strokeWidth={2}
+                                                                            />
+                                                                            <Radar
+                                                                                name="Jaccard"
+                                                                                dataKey="Jaccard"
+                                                                                stroke={metricColors.Jaccard}
+                                                                                fill={metricColors.Jaccard}
+                                                                                fillOpacity={0.1}
+                                                                                strokeWidth={2}
+                                                                            />
+                                                                            <Radar
+                                                                                name="Média"
+                                                                                dataKey="Média"
+                                                                                stroke={metricColors.Média}
+                                                                                fill={metricColors.Média}
+                                                                                fillOpacity={0.2}
+                                                                                strokeWidth={3}
+                                                                            />
+                                                                            <Legend />
+                                                                            <Tooltip
+                                                                                formatter={(value, name) => [`${value}%`, name]}
+                                                                                labelFormatter={(label) => `POI: ${label}`}
+                                                                            />
+                                                                        </RadarChart>
+                                                                    </ResponsiveContainer>
                                                                 </div>
+
+                                                                {/* Tabela de Métricas */}
+                                                                <div className="mt-4">
+                                                                    <h6 className="mb-3">Detalhes das Métricas (%)</h6>
+                                                                    <div className="table-responsive">
+                                                                        <table className="table table-sm table-striped">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>POI ID</th>
+                                                                                    <th>Cosine</th>
+                                                                                    <th>Euclidean</th>
+                                                                                    <th>Pearson</th>
+                                                                                    <th>Jaccard</th>
+                                                                                    <th>Média</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                {similarityMetrics.map((metric) => (
+                                                                                    <tr key={metric.poiId}>
+                                                                                        <td><strong>{metric.poiId}</strong></td>
+                                                                                        <td>{(metric.cosine * 100).toFixed(2)}%</td>
+                                                                                        <td>{(metric.euclidean * 100).toFixed(2)}%</td>
+                                                                                        <td>{(metric.pearson * 100).toFixed(2)}%</td>
+                                                                                        <td>{(metric.jaccard * 100).toFixed(2)}%</td>
+                                                                                        <td><strong>{(metric.average * 100).toFixed(2)}%</strong></td>
+                                                                                    </tr>
+                                                                                ))}
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <div className="text-center text-muted py-4">
+                                                                <i className="bi bi-bar-chart fs-1 mb-3"></i>
+                                                                <p>Nenhuma métrica de similaridade disponível para esta recomendação.</p>
                                                             </div>
-                                                        ))}
+                                                        )}
                                                     </div>
-                                                ) : (
-                                                    <p className="text-muted">Nenhum POI encontrado nesta recomendação.</p>
-                                                )}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-
-                                {usuarioLogado && (usuarioLogado.role === "ADMIN" || usuarioLogado.role === "MASTER") && (
-                                <div className="row">
-                                    <div className="col-12">
-                                        <div className="card">
-                                            <div className="card-header">
-                                                <h5 className="card-title mb-0">
-                                                    Métricas de Similaridade
-                                                </h5>
-                                            </div>
-                                            <div className="card-body">
-                                                {radarData && radarData.length > 0 ? (
-                                                    <>
-                                                        <div style={{ width: '100%', height: '500px' }}>
-                                                            <ResponsiveContainer>
-                                                                <RadarChart data={radarData}>
-                                                                    <PolarGrid />
-                                                                    <PolarAngleAxis
-                                                                        dataKey="poiId"
-                                                                        tick={{ fontSize: 12 }}
-                                                                    />
-                                                                    <PolarRadiusAxis
-                                                                        angle={90}
-                                                                        domain={[0, 100]}
-                                                                        tick={{ fontSize: 10 }}
-                                                                        tickFormatter={(value) => `${value}%`}
-                                                                    />
-                                                                    <Radar
-                                                                        name="Cosine"
-                                                                        dataKey="Cosine"
-                                                                        stroke={metricColors.Cosine}
-                                                                        fill={metricColors.Cosine}
-                                                                        fillOpacity={0.1}
-                                                                        strokeWidth={2}
-                                                                    />
-                                                                    <Radar
-                                                                        name="Euclidean"
-                                                                        dataKey="Euclidean"
-                                                                        stroke={metricColors.Euclidean}
-                                                                        fill={metricColors.Euclidean}
-                                                                        fillOpacity={0.1}
-                                                                        strokeWidth={2}
-                                                                    />
-                                                                    <Radar
-                                                                        name="Pearson"
-                                                                        dataKey="Pearson"
-                                                                        stroke={metricColors.Pearson}
-                                                                        fill={metricColors.Pearson}
-                                                                        fillOpacity={0.1}
-                                                                        strokeWidth={2}
-                                                                    />
-                                                                    <Radar
-                                                                        name="Jaccard"
-                                                                        dataKey="Jaccard"
-                                                                        stroke={metricColors.Jaccard}
-                                                                        fill={metricColors.Jaccard}
-                                                                        fillOpacity={0.1}
-                                                                        strokeWidth={2}
-                                                                    />
-                                                                    <Radar
-                                                                        name="Média"
-                                                                        dataKey="Média"
-                                                                        stroke={metricColors.Média}
-                                                                        fill={metricColors.Média}
-                                                                        fillOpacity={0.2}
-                                                                        strokeWidth={3}
-                                                                    />
-                                                                    <Legend />
-                                                                    <Tooltip
-                                                                        formatter={(value, name) => [`${value}%`, name]}
-                                                                        labelFormatter={(label) => `POI: ${label}`}
-                                                                    />
-                                                                </RadarChart>
-                                                            </ResponsiveContainer>
-                                                        </div>
-
-                                                        {/* Tabela de Métricas */}
-                                                        <div className="mt-4">
-                                                            <h6 className="mb-3">Detalhes das Métricas (%)</h6>
-                                                            <div className="table-responsive">
-                                                                <table className="table table-sm table-striped">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>POI ID</th>
-                                                                            <th>Cosine</th>
-                                                                            <th>Euclidean</th>
-                                                                            <th>Pearson</th>
-                                                                            <th>Jaccard</th>
-                                                                            <th>Média</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        {similarityMetrics.map((metric) => (
-                                                                            <tr key={metric.poiId}>
-                                                                                <td><strong>{metric.poiId}</strong></td>
-                                                                                <td>{(metric.cosine * 100).toFixed(2)}%</td>
-                                                                                <td>{(metric.euclidean * 100).toFixed(2)}%</td>
-                                                                                <td>{(metric.pearson * 100).toFixed(2)}%</td>
-                                                                                <td>{(metric.jaccard * 100).toFixed(2)}%</td>
-                                                                                <td><strong>{(metric.average * 100).toFixed(2)}%</strong></td>
-                                                                            </tr>
-                                                                        ))}
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </>
-                                                ) : (
-                                                    <div className="text-center text-muted">
-                                                        <i className="bi bi-bar-chart fs-1 mb-3"></i>
-                                                        <p>Nenhuma métrica de similaridade disponível para esta recomendação.</p>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                        )}
+                                    </>
                                 )}
-                            </>
-                        )}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
