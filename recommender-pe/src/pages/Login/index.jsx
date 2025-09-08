@@ -3,7 +3,7 @@ import './login.css';
 import logo from '../../assets/images/logo.webp';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { GlobalContext } from "../../context/GlobalContext";
+import { GlobalContext } from "../../context/globalContext";
 import '../../App.css';
 
 

@@ -1,6 +1,6 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useContext } from 'react';
-import { GlobalContext } from '../../context/GlobalContext';
+import { GlobalContext } from '../../context/globalContext';
 import logo from '../../assets/images/logo.webp';
 import './footer.css';
 

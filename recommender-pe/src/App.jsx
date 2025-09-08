@@ -1,4 +1,4 @@
-import { GlobalProvider } from "./context/GlobalContext";
+import { GlobalProvider } from "./context/globalContext";
 import RouteService from "./routes/routesService";
 
 function App() {

@@ -3,7 +3,7 @@ import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import { getAllPOI } from "../../../services/POI";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../../context/GlobalContext";
+import { GlobalContext } from "../../../context/globalContext";
 import { useContext } from "react";
 import Button from "../../../components/Button";
 

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/logo.webp';
-import { GlobalContext } from '../../context/GlobalContext';
+import { GlobalContext } from '../../context/globalContext';
 import Button from '../Button';
 import "./header.css";
 import "../../App.css";

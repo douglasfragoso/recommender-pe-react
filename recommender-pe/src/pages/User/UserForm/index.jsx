@@ -5,7 +5,7 @@ import { saveUser } from '../../../services/user';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Modal from '../../../components/Modal';
 import Footer from '../../../components/Footer';
-import { GlobalContext } from '../../../context/GlobalContext';
+import { GlobalContext } from '../../../context/globalContext';
 
 const UserForm = () => {
     // Dados Pessoais

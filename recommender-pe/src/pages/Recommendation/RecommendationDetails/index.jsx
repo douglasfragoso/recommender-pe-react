@@ -6,7 +6,7 @@ import Footer from "../../../components/Footer";
 import Button from "../../../components/Button";
 import { getRecommendationById, getSimilarityMetrics } from "../../../services/recommender";
 import '../../../App.css';
-import { GlobalContext } from "../../../context/GlobalContext";
+import { GlobalContext } from "../../../context/globalContext";
 
 const RecommendationDetails = () => {
     const navigate = useNavigate();

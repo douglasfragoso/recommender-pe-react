@@ -6,7 +6,7 @@ import { updateUser, getOwnProfile } from '../../../services/user';
 import Modal from '../../../components/Modal';
 import Footer from '../../../components/Footer';
 import { useContext } from 'react';
-import { GlobalContext } from '../../../context/GlobalContext';
+import { GlobalContext } from '../../../context/globalContext';
 
 const UserProfileForm = () => {
     const navigate = useNavigate();
